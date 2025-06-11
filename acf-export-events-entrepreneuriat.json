@@ -1,0 +1,1103 @@
+{
+  "version": 2,
+  "groups": [
+    {
+      "key": "group_events_entrepreneuriat",
+      "title": "Détails de l'événement - Entrepreneuriat & PME",
+      "fields": [
+        {
+          "key": "field_event_start_date",
+          "label": "Date de début",
+          "name": "start_date",
+          "type": "date_time_picker",
+          "instructions": "Date et heure de début de l'événement",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "50",
+            "class": "",
+            "id": ""
+          },
+          "display_format": "d/m/Y H:i",
+          "return_format": "Y-m-d H:i:s",
+          "first_day": 1
+        },
+        {
+          "key": "field_event_end_date",
+          "label": "Date de fin",
+          "name": "end_date",
+          "type": "date_time_picker",
+          "instructions": "Date et heure de fin de l'événement",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "50",
+            "class": "",
+            "id": ""
+          },
+          "display_format": "d/m/Y H:i",
+          "return_format": "Y-m-d H:i:s",
+          "first_day": 1
+        },
+        {
+          "key": "field_event_location",
+          "label": "Lieu",
+          "name": "location",
+          "type": "text",
+          "instructions": "Adresse complète du lieu de l'événement",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "50",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "placeholder": "Ex: Centre d'affaires La Défense, 1 Place de la Défense",
+          "prepend": "",
+          "append": "",
+          "maxlength": ""
+        },
+        {
+          "key": "field_event_city",
+          "label": "Ville",
+          "name": "city",
+          "type": "select",
+          "instructions": "Ville où se déroule l'événement",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "50",
+            "class": "",
+            "id": ""
+          },
+          "choices": {
+            "Paris": "Paris",
+            "Lyon": "Lyon",
+            "Marseille": "Marseille",
+            "Toulouse": "Toulouse",
+            "Nice": "Nice",
+            "Nantes": "Nantes",
+            "Strasbourg": "Strasbourg",
+            "Montpellier": "Montpellier",
+            "Bordeaux": "Bordeaux",
+            "Lille": "Lille",
+            "Rennes": "Rennes",
+            "Reims": "Reims",
+            "Le Havre": "Le Havre",
+            "Saint-Étienne": "Saint-Étienne",
+            "Toulon": "Toulon",
+            "Grenoble": "Grenoble",
+            "Dijon": "Dijon",
+            "Angers": "Angers",
+            "Nîmes": "Nîmes",
+            "Villeurbanne": "Villeurbanne"
+          },
+          "default_value": "Paris",
+          "allow_null": 0,
+          "multiple": 0,
+          "ui": 1,
+          "ajax": 0,
+          "return_format": "value",
+          "placeholder": ""
+        },
+        {
+          "key": "field_event_category",
+          "label": "Catégorie",
+          "name": "category",
+          "type": "select",
+          "instructions": "Type d'événement",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "33",
+            "class": "",
+            "id": ""
+          },
+          "choices": {
+            "Conférence": "Conférence",
+            "Atelier": "Atelier",
+            "Formation": "Formation",
+            "Networking": "Networking",
+            "Salon": "Salon",
+            "Webinaire": "Webinaire",
+            "Pitch": "Session de Pitch",
+            "Mentoring": "Mentoring",
+            "Hackathon": "Hackathon",
+            "Table Ronde": "Table Ronde"
+          },
+          "default_value": "Conférence",
+          "allow_null": 0,
+          "multiple": 0,
+          "ui": 1,
+          "ajax": 0,
+          "return_format": "value",
+          "placeholder": ""
+        },
+        {
+          "key": "field_event_target_audience",
+          "label": "Public cible",
+          "name": "target_audience",
+          "type": "checkbox",
+          "instructions": "Sélectionnez le public cible de l'événement",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "67",
+            "class": "",
+            "id": ""
+          },
+          "choices": {
+            "entrepreneurs": "Entrepreneurs",
+            "dirigeants_pme": "Dirigeants de PME",
+            "startups": "Startups",
+            "freelances": "Freelances",
+            "investisseurs": "Investisseurs",
+            "etudiants": "Étudiants entrepreneurs",
+            "consultants": "Consultants",
+            "commerciaux": "Équipes commerciales",
+            "marketing": "Responsables marketing",
+            "rh": "Responsables RH",
+            "finance": "Directeurs financiers",
+            "tech": "Responsables techniques"
+          },
+          "allow_custom": 0,
+          "default_value": [],
+          "layout": "horizontal",
+          "toggle": 0,
+          "return_format": "value",
+          "save_custom": 0
+        },
+        {
+          "key": "field_event_max_attendees",
+          "label": "Nombre maximum de participants",
+          "name": "max_attendees",
+          "type": "number",
+          "instructions": "Capacité maximale d'accueil",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "33",
+            "class": "",
+            "id": ""
+          },
+          "default_value": 50,
+          "placeholder": "",
+          "prepend": "",
+          "append": "personnes",
+          "min": 1,
+          "max": 1000,
+          "step": 1
+        },
+        {
+          "key": "field_event_current_attendees",
+          "label": "Participants inscrits",
+          "name": "current_attendees",
+          "type": "number",
+          "instructions": "Nombre actuel d'inscrits",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "33",
+            "class": "",
+            "id": ""
+          },
+          "default_value": 0,
+          "placeholder": "",
+          "prepend": "",
+          "append": "inscrits",
+          "min": 0,
+          "max": "",
+          "step": 1
+        },
+        {
+          "key": "field_event_registration_deadline",
+          "label": "Date limite d'inscription",
+          "name": "registration_deadline",
+          "type": "date_time_picker",
+          "instructions": "Date limite pour s'inscrire à l'événement",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "34",
+            "class": "",
+            "id": ""
+          },
+          "display_format": "d/m/Y H:i",
+          "return_format": "Y-m-d H:i:s",
+          "first_day": 1
+        },
+        {
+          "key": "field_event_price",
+          "label": "Prix",
+          "name": "price",
+          "type": "number",
+          "instructions": "Prix de participation en euros (0 pour gratuit)",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "50",
+            "class": "",
+            "id": ""
+          },
+          "default_value": 0,
+          "placeholder": "",
+          "prepend": "",
+          "append": "€",
+          "min": 0,
+          "max": "",
+          "step": 0.01
+        },
+        {
+          "key": "field_event_is_free",
+          "label": "Événement gratuit",
+          "name": "is_free",
+          "type": "true_false",
+          "instructions": "Cochez si l'événement est gratuit",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "50",
+            "class": "",
+            "id": ""
+          },
+          "message": "Cet événement est gratuit",
+          "default_value": 1,
+          "ui": 1,
+          "ui_on_text": "Gratuit",
+          "ui_off_text": "Payant"
+        },
+        {
+          "key": "field_event_speakers",
+          "label": "Intervenants",
+          "name": "speakers",
+          "type": "repeater",
+          "instructions": "Ajoutez les intervenants de l'événement",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+          },
+          "collapsed": "",
+          "min": 0,
+          "max": 10,
+          "layout": "table",
+          "button_label": "Ajouter un intervenant",
+          "sub_fields": [
+            {
+              "key": "field_speaker_name",
+              "label": "Nom",
+              "name": "name",
+              "type": "text",
+              "instructions": "",
+              "required": 1,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "30",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "placeholder": "Nom de l'intervenant",
+              "prepend": "",
+              "append": "",
+              "maxlength": ""
+            },
+            {
+              "key": "field_speaker_title",
+              "label": "Titre/Fonction",
+              "name": "title",
+              "type": "text",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "35",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "placeholder": "Ex: CEO, Fondateur, Expert...",
+              "prepend": "",
+              "append": "",
+              "maxlength": ""
+            },
+            {
+              "key": "field_speaker_company",
+              "label": "Entreprise",
+              "name": "company",
+              "type": "text",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "35",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "placeholder": "Nom de l'entreprise",
+              "prepend": "",
+              "append": "",
+              "maxlength": ""
+            }
+          ]
+        },
+        {
+          "key": "field_event_agenda",
+          "label": "Programme",
+          "name": "agenda",
+          "type": "repeater",
+          "instructions": "Détaillez le programme de l'événement",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+          },
+          "collapsed": "",
+          "min": 0,
+          "max": 20,
+          "layout": "table",
+          "button_label": "Ajouter une session",
+          "sub_fields": [
+            {
+              "key": "field_agenda_time",
+              "label": "Heure",
+              "name": "time",
+              "type": "time_picker",
+              "instructions": "",
+              "required": 1,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "15",
+                "class": "",
+                "id": ""
+              },
+              "display_format": "H:i",
+              "return_format": "H:i"
+            },
+            {
+              "key": "field_agenda_title",
+              "label": "Titre",
+              "name": "title",
+              "type": "text",
+              "instructions": "",
+              "required": 1,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "40",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "placeholder": "Titre de la session",
+              "prepend": "",
+              "append": "",
+              "maxlength": ""
+            },
+            {
+              "key": "field_agenda_speaker",
+              "label": "Intervenant",
+              "name": "speaker",
+              "type": "text",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "placeholder": "Nom de l'intervenant",
+              "prepend": "",
+              "append": "",
+              "maxlength": ""
+            },
+            {
+              "key": "field_agenda_duration",
+              "label": "Durée",
+              "name": "duration",
+              "type": "text",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "placeholder": "Ex: 45 min",
+              "prepend": "",
+              "append": "",
+              "maxlength": ""
+            }
+          ]
+        },
+        {
+          "key": "field_event_requirements",
+          "label": "Prérequis",
+          "name": "requirements",
+          "type": "textarea",
+          "instructions": "Prérequis ou matériel nécessaire pour participer",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "50",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "placeholder": "Ex: Ordinateur portable, connaissances de base en gestion...",
+          "maxlength": "",
+          "rows": 4,
+          "new_lines": "br"
+        },
+        {
+          "key": "field_event_benefits",
+          "label": "Ce que vous allez apprendre",
+          "name": "benefits",
+          "type": "textarea",
+          "instructions": "Bénéfices et apprentissages de l'événement",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "50",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "placeholder": "Ex: Stratégies de croissance, outils de financement...",
+          "maxlength": "",
+          "rows": 4,
+          "new_lines": "br"
+        },
+        {
+          "key": "field_event_contact_email",
+          "label": "Email de contact",
+          "name": "contact_email",
+          "type": "email",
+          "instructions": "Email pour les questions sur l'événement",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "50",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "placeholder": "contact@exemple.com",
+          "prepend": "",
+          "append": ""
+        },
+        {
+          "key": "field_event_website",
+          "label": "Site web",
+          "name": "website",
+          "type": "url",
+          "instructions": "Site web de l'événement ou de l'organisateur",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "50",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "placeholder": "https://www.exemple.com"
+        },
+        {
+          "key": "field_event_social_links",
+          "label": "Réseaux sociaux",
+          "name": "social_links",
+          "type": "group",
+          "instructions": "Liens vers les réseaux sociaux de l'événement",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+          },
+          "layout": "table",
+          "sub_fields": [
+            {
+              "key": "field_social_linkedin",
+              "label": "LinkedIn",
+              "name": "linkedin",
+              "type": "url",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "placeholder": "https://linkedin.com/company/..."
+            },
+            {
+              "key": "field_social_twitter",
+              "label": "Twitter/X",
+              "name": "twitter",
+              "type": "url",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "placeholder": "https://twitter.com/..."
+            },
+            {
+              "key": "field_social_facebook",
+              "label": "Facebook",
+              "name": "facebook",
+              "type": "url",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "placeholder": "https://facebook.com/..."
+            },
+            {
+              "key": "field_social_instagram",
+              "label": "Instagram",
+              "name": "instagram",
+              "type": "url",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "placeholder": "https://instagram.com/..."
+            }
+          ]
+        },
+        {
+          "key": "field_event_tags",
+          "label": "Mots-clés",
+          "name": "tags",
+          "type": "text",
+          "instructions": "Mots-clés séparés par des virgules",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "placeholder": "entrepreneuriat, PME, financement, croissance, innovation",
+          "prepend": "",
+          "append": "",
+          "maxlength": ""
+        }
+      ],
+      "location": [
+        [
+          {
+            "param": "post_type",
+            "operator": "==",
+            "value": "events"
+          }
+        ]
+      ],
+      "menu_order": 0,
+      "position": "normal",
+      "style": "default",
+      "label_placement": "top",
+      "instruction_placement": "label",
+      "hide_on_screen": "",
+      "active": true,
+      "description": "Champs personnalisés pour les événements entrepreneuriat et PME"
+    }
+  ],
+  "posts": [
+    {
+      "post_title": "Forum des Entrepreneurs 2024",
+      "post_content": "<p>Le plus grand rassemblement d'entrepreneurs de France revient pour sa 15ème édition ! Rejoignez plus de 500 entrepreneurs, dirigeants de PME et investisseurs pour deux jours d'échanges, de networking et d'inspiration.</p>\n\n<h3>Au programme :</h3>\n<ul>\n<li>Conférences plénières avec des entrepreneurs à succès</li>\n<li>Ateliers pratiques sur la croissance et le financement</li>\n<li>Sessions de networking ciblées</li>\n<li>Pitch sessions pour startups</li>\n<li>Exposition de solutions innovantes</li>\n</ul>\n\n<h3>Pourquoi participer ?</h3>\n<p>Que vous soyez entrepreneur débutant ou dirigeant expérimenté, ce forum vous permettra de :</p>\n<ul>\n<li>Découvrir les dernières tendances entrepreneuriales</li>\n<li>Rencontrer des partenaires potentiels</li>\n<li>Accéder à des financements</li>\n<li>Développer votre réseau professionnel</li>\n<li>Trouver des solutions à vos défis business</li>\n</ul>",
+      "post_excerpt": "Le plus grand rassemblement d'entrepreneurs de France : 2 jours d'échanges, networking et inspiration avec 500+ participants.",
+      "post_status": "publish",
+      "post_type": "events",
+      "meta": {
+        "start_date": "2024-03-15 09:00:00",
+        "end_date": "2024-03-16 18:00:00",
+        "location": "Palais des Congrès de Paris, 2 Place de la Porte Maillot",
+        "city": "Paris",
+        "category": "Salon",
+        "target_audience": ["entrepreneurs", "dirigeants_pme", "startups", "investisseurs"],
+        "max_attendees": 500,
+        "current_attendees": 287,
+        "registration_deadline": "2024-03-10 23:59:59",
+        "price": 0,
+        "is_free": true,
+        "speakers": [
+          {
+            "name": "Marie Dubois",
+            "title": "CEO & Fondatrice",
+            "company": "TechStart Ventures"
+          },
+          {
+            "name": "Pierre Martin",
+            "title": "Directeur Innovation",
+            "company": "BPI France"
+          },
+          {
+            "name": "Sophie Chen",
+            "title": "Serial Entrepreneur",
+            "company": "Chen & Associates"
+          }
+        ],
+        "agenda": [
+          {
+            "time": "09:00",
+            "title": "Accueil et petit-déjeuner networking",
+            "speaker": "",
+            "duration": "60 min"
+          },
+          {
+            "time": "10:00",
+            "title": "Keynote : L'entrepreneuriat en 2024",
+            "speaker": "Marie Dubois",
+            "duration": "45 min"
+          },
+          {
+            "time": "11:00",
+            "title": "Table ronde : Financer sa croissance",
+            "speaker": "Pierre Martin, Sophie Chen",
+            "duration": "60 min"
+          },
+          {
+            "time": "14:00",
+            "title": "Ateliers parallèles : Marketing digital / Ressources humaines",
+            "speaker": "Experts sectoriels",
+            "duration": "90 min"
+          },
+          {
+            "time": "16:00",
+            "title": "Session de pitch startups",
+            "speaker": "Startups sélectionnées",
+            "duration": "90 min"
+          }
+        ],
+        "requirements": "Aucun prérequis. Apportez vos cartes de visite pour le networking.",
+        "benefits": "Stratégies de croissance, techniques de financement, développement de réseau, veille concurrentielle, outils digitaux",
+        "contact_email": "contact@forumentrepreneurs.fr",
+        "website": "https://www.forumentrepreneurs.fr",
+        "social_links": {
+          "linkedin": "https://linkedin.com/company/forum-entrepreneurs",
+          "twitter": "https://twitter.com/ForumEntrepren",
+          "facebook": "https://facebook.com/ForumEntrepreneurs",
+          "instagram": "https://instagram.com/forumentrepreneurs"
+        },
+        "tags": "entrepreneuriat, PME, financement, networking, innovation, startup"
+      }
+    },
+    {
+      "post_title": "Atelier : Digitaliser son PME en 2024",
+      "post_content": "<p>La transformation digitale n'est plus une option pour les PME ! Participez à cet atelier pratique pour découvrir comment digitaliser efficacement votre entreprise et booster votre croissance.</p>\n\n<h3>Ce que vous allez apprendre :</h3>\n<ul>\n<li>Audit digital de votre PME</li>\n<li>Choix des outils adaptés à votre secteur</li>\n<li>Stratégie de mise en œuvre progressive</li>\n<li>ROI et mesure de performance</li>\n<li>Accompagnement au changement</li>\n</ul>\n\n<h3>Format interactif :</h3>\n<p>Cet atelier combine théorie et pratique avec :</p>\n<ul>\n<li>Présentations d'experts</li>\n<li>Études de cas concrets</li>\n<li>Exercices pratiques sur votre entreprise</li>\n<li>Sessions de questions-réponses</li>\n<li>Remise d'un plan d'action personnalisé</li>\n</ul>",
+      "post_excerpt": "Atelier pratique pour digitaliser efficacement votre PME : audit, outils, stratégie et plan d'action personnalisé.",
+      "post_status": "publish",
+      "post_type": "events",
+      "meta": {
+        "start_date": "2024-02-20 14:00:00",
+        "end_date": "2024-02-20 18:00:00",
+        "location": "CCI Paris Île-de-France, 27 Avenue de Friedland",
+        "city": "Paris",
+        "category": "Atelier",
+        "target_audience": ["dirigeants_pme", "entrepreneurs", "tech"],
+        "max_attendees": 25,
+        "current_attendees": 18,
+        "registration_deadline": "2024-02-18 12:00:00",
+        "price": 150,
+        "is_free": false,
+        "speakers": [
+          {
+            "name": "Thomas Leroy",
+            "title": "Consultant Digital",
+            "company": "Digital PME Solutions"
+          },
+          {
+            "name": "Amélie Rousseau",
+            "title": "Directrice Transformation",
+            "company": "TechConseil"
+          }
+        ],
+        "agenda": [
+          {
+            "time": "14:00",
+            "title": "Accueil et présentation",
+            "speaker": "Thomas Leroy",
+            "duration": "15 min"
+          },
+          {
+            "time": "14:15",
+            "title": "État des lieux : où en est votre PME ?",
+            "speaker": "Thomas Leroy",
+            "duration": "45 min"
+          },
+          {
+            "time": "15:15",
+            "title": "Pause networking",
+            "speaker": "",
+            "duration": "15 min"
+          },
+          {
+            "time": "15:30",
+            "title": "Outils et solutions adaptées aux PME",
+            "speaker": "Amélie Rousseau",
+            "duration": "60 min"
+          },
+          {
+            "time": "16:30",
+            "title": "Atelier pratique : votre plan d'action",
+            "speaker": "Thomas Leroy, Amélie Rousseau",
+            "duration": "75 min"
+          },
+          {
+            "time": "17:45",
+            "title": "Synthèse et prochaines étapes",
+            "speaker": "Thomas Leroy",
+            "duration": "15 min"
+          }
+        ],
+        "requirements": "Ordinateur portable recommandé. Connaissances de base en informatique souhaitées.",
+        "benefits": "Audit digital, sélection d'outils, stratégie de déploiement, plan d'action personnalisé, réseau d'experts",
+        "contact_email": "ateliers@cciparis.fr",
+        "website": "https://www.cci-paris-idf.fr/formations",
+        "social_links": {
+          "linkedin": "https://linkedin.com/company/cci-paris",
+          "twitter": "https://twitter.com/CCIParis",
+          "facebook": "",
+          "instagram": ""
+        },
+        "tags": "digitalisation, PME, transformation digitale, outils, stratégie"
+      }
+    },
+    {
+      "post_title": "Conférence : Financer sa startup en 2024",
+      "post_content": "<p>Levée de fonds, subventions, crowdfunding... Découvrez toutes les options de financement disponibles pour votre startup et les stratégies pour convaincre les investisseurs.</p>\n\n<h3>Programme détaillé :</h3>\n<ul>\n<li><strong>Panorama du financement startup</strong> : Vue d'ensemble des solutions disponibles</li>\n<li><strong>Préparer sa levée de fonds</strong> : Business plan, pitch deck, valorisation</li>\n<li><strong>Rencontrer les bons investisseurs</strong> : Business angels, VCs, fonds d'amorçage</li>\n<li><strong>Négocier les termes</strong> : Valorisation, dilution, pacte d'actionnaires</li>\n<li><strong>Alternatives au capital</strong> : Subventions, prêts, crowdfunding</li>\n</ul>\n\n<h3>Intervenants experts :</h3>\n<p>Cette conférence réunit des professionnels reconnus du financement startup :</p>\n<ul>\n<li>Investisseurs en capital-risque</li>\n<li>Business angels expérimentés</li>\n<li>Entrepreneurs ayant levé des fonds</li>\n<li>Experts en financement public</li>\n</ul>",
+      "post_excerpt": "Découvrez toutes les options de financement pour votre startup : levée de fonds, subventions, crowdfunding avec des experts.",
+      "post_status": "publish",
+      "post_type": "events",
+      "meta": {
+        "start_date": "2024-02-28 19:00:00",
+        "end_date": "2024-02-28 21:30:00",
+        "location": "Station F, 5 Parvis Alan Turing",
+        "city": "Paris",
+        "category": "Conférence",
+        "target_audience": ["startups", "entrepreneurs", "investisseurs"],
+        "max_attendees": 150,
+        "current_attendees": 89,
+        "registration_deadline": "2024-02-26 18:00:00",
+        "price": 0,
+        "is_free": true,
+        "speakers": [
+          {
+            "name": "Jean-Baptiste Rudelle",
+            "title": "Managing Partner",
+            "company": "ISAI Venture"
+          },
+          {
+            "name": "Caroline Ramade",
+            "title": "Business Angel",
+            "company": "50 Partners"
+          },
+          {
+            "name": "Alexandre Barbera",
+            "title": "Fondateur",
+            "company": "Memo Bank (levée 80M€)"
+          }
+        ],
+        "agenda": [
+          {
+            "time": "19:00",
+            "title": "Accueil et networking",
+            "speaker": "",
+            "duration": "30 min"
+          },
+          {
+            "time": "19:30",
+            "title": "Panorama du financement startup 2024",
+            "speaker": "Jean-Baptiste Rudelle",
+            "duration": "30 min"
+          },
+          {
+            "time": "20:00",
+            "title": "Table ronde : Réussir sa levée de fonds",
+            "speaker": "Tous les intervenants",
+            "duration": "45 min"
+          },
+          {
+            "time": "20:45",
+            "title": "Questions-réponses avec le public",
+            "speaker": "Tous les intervenants",
+            "duration": "30 min"
+          },
+          {
+            "time": "21:15",
+            "title": "Networking et échanges informels",
+            "speaker": "",
+            "duration": "15 min"
+          }
+        ],
+        "requirements": "Aucun prérequis. Idéal pour porteurs de projets et entrepreneurs en phase de financement.",
+        "benefits": "Stratégies de financement, réseau d'investisseurs, préparation pitch, négociation, alternatives de financement",
+        "contact_email": "events@stationf.co",
+        "website": "https://stationf.co/events",
+        "social_links": {
+          "linkedin": "https://linkedin.com/company/stationf",
+          "twitter": "https://twitter.com/StationF",
+          "facebook": "https://facebook.com/StationF",
+          "instagram": "https://instagram.com/stationf"
+        },
+        "tags": "financement, startup, levée de fonds, investisseurs, capital-risque"
+      }
+    },
+    {
+      "post_title": "Formation : Développer son leadership en PME",
+      "post_content": "<p>En tant que dirigeant de PME, votre leadership est crucial pour la réussite de votre entreprise. Cette formation intensive vous donnera les clés pour développer un leadership efficace et inspirant.</p>\n\n<h3>Objectifs de la formation :</h3>\n<ul>\n<li>Comprendre les différents styles de leadership</li>\n<li>Développer sa communication managériale</li>\n<li>Motiver et fédérer ses équipes</li>\n<li>Gérer les conflits et les résistances</li>\n<li>Conduire le changement efficacement</li>\n</ul>\n\n<h3>Méthodes pédagogiques :</h3>\n<ul>\n<li>Autodiagnostic de son style de leadership</li>\n<li>Mises en situation et jeux de rôles</li>\n<li>Études de cas d'entreprises</li>\n<li>Plan de développement personnel</li>\n<li>Coaching individuel inclus</li>\n</ul>\n\n<h3>Certification :</h3>\n<p>Cette formation est certifiante et peut être prise en charge par votre OPCO.</p>",
+      "post_excerpt": "Formation intensive pour développer un leadership efficace en PME : communication, motivation, gestion des conflits.",
+      "post_status": "publish",
+      "post_type": "events",
+      "meta": {
+        "start_date": "2024-03-05 09:00:00",
+        "end_date": "2024-03-06 17:00:00",
+        "location": "Centre de Formation CEGOS, 19 rue René Jacques",
+        "city": "Lyon",
+        "category": "Formation",
+        "target_audience": ["dirigeants_pme", "entrepreneurs", "rh"],
+        "max_attendees": 12,
+        "current_attendees": 8,
+        "registration_deadline": "2024-02-28 17:00:00",
+        "price": 1200,
+        "is_free": false,
+        "speakers": [
+          {
+            "name": "Dr. Patricia Moreau",
+            "title": "Coach Executive",
+            "company": "Leadership Excellence"
+          },
+          {
+            "name": "Marc Durand",
+            "title": "Consultant RH",
+            "company": "CEGOS"
+          }
+        ],
+        "agenda": [
+          {
+            "time": "09:00",
+            "title": "Accueil et présentation",
+            "speaker": "Dr. Patricia Moreau",
+            "duration": "30 min"
+          },
+          {
+            "time": "09:30",
+            "title": "Autodiagnostic : quel leader êtes-vous ?",
+            "speaker": "Dr. Patricia Moreau",
+            "duration": "90 min"
+          },
+          {
+            "time": "11:00",
+            "title": "Pause",
+            "speaker": "",
+            "duration": "15 min"
+          },
+          {
+            "time": "11:15",
+            "title": "Les styles de leadership efficaces",
+            "speaker": "Marc Durand",
+            "duration": "105 min"
+          },
+          {
+            "time": "14:00",
+            "title": "Communication et influence",
+            "speaker": "Dr. Patricia Moreau",
+            "duration": "120 min"
+          },
+          {
+            "time": "16:00",
+            "title": "Mises en situation pratiques",
+            "speaker": "Marc Durand, Dr. Patricia Moreau",
+            "duration": "60 min"
+          }
+        ],
+        "requirements": "Expérience managériale souhaitée. Questionnaire de positionnement à remplir avant la formation.",
+        "benefits": "Développement personnel, techniques de management, gestion d'équipe, communication, plan d'action personnalisé",
+        "contact_email": "formation@cegos.fr",
+        "website": "https://www.cegos.fr/formations/leadership",
+        "social_links": {
+          "linkedin": "https://linkedin.com/company/cegos",
+          "twitter": "https://twitter.com/Cegos_France",
+          "facebook": "",
+          "instagram": ""
+        },
+        "tags": "leadership, management, PME, formation, développement personnel"
+      }
+    },
+    {
+      "post_title": "Networking : Petit-déjeuner Entrepreneurs Marseille",
+      "post_content": "<p>Rejoignez la communauté entrepreneuriale marseillaise pour un petit-déjeuner networking convivial ! Un moment privilégié pour échanger, partager vos expériences et développer votre réseau professionnel.</p>\n\n<h3>Format du networking :</h3>\n<ul>\n<li><strong>8h00 - 8h30</strong> : Accueil et petit-déjeuner</li>\n<li><strong>8h30 - 9h00</strong> : Tour de table des participants</li>\n<li><strong>9h00 - 9h30</strong> : Présentation d'un entrepreneur local</li>\n<li><strong>9h30 - 10h00</strong> : Échanges libres et networking</li>\n</ul>\n\n<h3>Qui participe ?</h3>\n<ul>\n<li>Entrepreneurs de tous secteurs</li>\n<li>Dirigeants de PME locales</li>\n<li>Freelances et consultants</li>\n<li>Porteurs de projets</li>\n<li>Investisseurs et business angels</li>\n</ul>\n\n<p><strong>Événement mensuel</strong> - Prochain rendez-vous le premier mardi de chaque mois !</p>",
+      "post_excerpt": "Petit-déjeuner networking mensuel pour entrepreneurs marseillais : échanges, partage d'expériences et développement de réseau.",
+      "post_status": "publish",
+      "post_type": "events",
+      "meta": {
+        "start_date": "2024-02-06 08:00:00",
+        "end_date": "2024-02-06 10:00:00",
+        "location": "Hôtel Villa Massalia, 2 Rue Hélène Boucher",
+        "city": "Marseille",
+        "category": "Networking",
+        "target_audience": ["entrepreneurs", "dirigeants_pme", "freelances", "investisseurs"],
+        "max_attendees": 40,
+        "current_attendees": 32,
+        "registration_deadline": "2024-02-05 18:00:00",
+        "price": 25,
+        "is_free": false,
+        "speakers": [
+          {
+            "name": "Sylvie Moreau",
+            "title": "Fondatrice",
+            "company": "Med Tech Innovations"
+          }
+        ],
+        "agenda": [
+          {
+            "time": "08:00",
+            "title": "Accueil et petit-déjeuner",
+            "speaker": "",
+            "duration": "30 min"
+          },
+          {
+            "time": "08:30",
+            "title": "Tour de table des participants",
+            "speaker": "Modérateur",
+            "duration": "30 min"
+          },
+          {
+            "time": "09:00",
+            "title": "Témoignage : Créer une medtech à Marseille",
+            "speaker": "Sylvie Moreau",
+            "duration": "30 min"
+          },
+          {
+            "time": "09:30",
+            "title": "Networking libre",
+            "speaker": "",
+            "duration": "30 min"
+          }
+        ],
+        "requirements": "Aucun prérequis. Apportez vos cartes de visite !",
+        "benefits": "Réseau professionnel, échanges d'expériences, opportunités business, veille sectorielle",
+        "contact_email": "marseille@entrepreneurs-network.fr",
+        "website": "https://entrepreneurs-marseille.fr",
+        "social_links": {
+          "linkedin": "https://linkedin.com/groups/entrepreneurs-marseille",
+          "twitter": "",
+          "facebook": "https://facebook.com/EntrepreneursMarseille",
+          "instagram": ""
+        },
+        "tags": "networking, entrepreneurs, Marseille, petit-déjeuner, réseau"
+      }
+    },
+    {
+      "post_title": "Webinaire : E-commerce pour PME - Les clés du succès",
+      "post_content": "<p>Le e-commerce représente une opportunité majeure pour les PME. Découvrez comment développer efficacement votre activité en ligne et booster vos ventes grâce à ce webinaire animé par des experts du secteur.</p>\n\n<h3>Au programme :</h3>\n<ul>\n<li><strong>Stratégie e-commerce</strong> : Définir sa stratégie digitale</li>\n<li><strong>Choix de la plateforme</strong> : Shopify, WooCommerce, Prestashop...</li>\n<li><strong>Marketing digital</strong> : SEO, SEA, réseaux sociaux</li>\n<li><strong>Logistique</strong> : Gestion des stocks et livraisons</li>\n<li><strong>Fidélisation</strong> : CRM et marketing automation</li>\n</ul>\n\n<h3>Format interactif :</h3>\n<ul>\n<li>Présentation de 45 minutes</li>\n<li>Démonstrations d'outils</li>\n<li>Session Q&A en direct</li>\n<li>Replay disponible 30 jours</li>\n<li>Ressources téléchargeables</li>\n</ul>\n\n<p><strong>Bonus</strong> : Tous les participants recevront un guide pratique \"Checklist e-commerce PME\" et 30 minutes de consultation gratuite.</p>",
+      "post_excerpt": "Webinaire expert pour développer votre e-commerce PME : stratégie, outils, marketing digital et fidélisation client.",
+      "post_status": "publish",
+      "post_type": "events",
+      "meta": {
+        "start_date": "2024-02-14 14:00:00",
+        "end_date": "2024-02-14 15:30:00",
+        "location": "En ligne - Lien envoyé par email",
+        "city": "Paris",
+        "category": "Webinaire",
+        "target_audience": ["dirigeants_pme", "entrepreneurs", "commerciaux", "marketing"],
+        "max_attendees": 200,
+        "current_attendees": 156,
+        "registration_deadline": "2024-02-14 12:00:00",
+        "price": 0,
+        "is_free": true,
+        "speakers": [
+          {
+            "name": "Julien Fontaine",
+            "title": "Expert E-commerce",
+            "company": "Digital Commerce Solutions"
+          },
+          {
+            "name": "Laura Petit",
+            "title": "Consultante Marketing Digital",
+            "company": "WebMarketing Pro"
+          }
+        ],
+        "agenda": [
+          {
+            "time": "14:00",
+            "title": "Introduction et présentation",
+            "speaker": "Julien Fontaine",
+            "duration": "5 min"
+          },
+          {
+            "time": "14:05",
+            "title": "Stratégie e-commerce pour PME",
+            "speaker": "Julien Fontaine",
+            "duration": "20 min"
+          },
+          {
+            "time": "14:25",
+            "title": "Marketing digital et acquisition",
+            "speaker": "Laura Petit",
+            "duration": "20 min"
+          },
+          {
+            "time": "14:45",
+            "title": "Démonstration d'outils",
+            "speaker": "Julien Fontaine, Laura Petit",
+            "duration": "15 min"
+          },
+          {
+            "time": "15:00",
+            "title": "Questions-réponses en direct",
+            "speaker": "Tous les intervenants",
+            "duration": "25 min"
+          },
+          {
+            "time": "15:25",
+            "title": "Conclusion et ressources",
+            "speaker": "Julien Fontaine",
+            "duration": "5 min"
+          }
+        ],
+        "requirements": "Connexion internet stable. Aucune connaissance technique requise.",
+        "benefits": "Stratégie e-commerce, sélection d'outils, techniques marketing, guide pratique, consultation gratuite",
+        "contact_email": "webinaires@digitalcommerce.fr",
+        "website": "https://digitalcommerce-solutions.fr/webinaires",
+        "social_links": {
+          "linkedin": "https://linkedin.com/company/digital-commerce-solutions",
+          "twitter": "https://twitter.com/DigitalCommFR",
+          "facebook": "",
+          "instagram": ""
+        },
+        "tags": "e-commerce, PME, marketing digital, webinaire, vente en ligne"
+      }
+    }
+  ]
+}

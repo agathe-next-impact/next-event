@@ -1,0 +1,1652 @@
+[
+    {
+        "key": "group_event_details",
+        "title": "Détails de l'événement",
+        "fields": [
+            {
+                "key": "field_event_start_date",
+                "label": "Date de début",
+                "name": "startDate",
+                "aria-label": "",
+                "type": "date_time_picker",
+                "instructions": "Date et heure de début de l'événement",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "display_format": "d\/m\/Y H:i",
+                "return_format": "Y-m-d H:i:s",
+                "first_day": 1
+            },
+            {
+                "key": "field_event_end_date",
+                "label": "Date de fin",
+                "name": "endDate",
+                "aria-label": "",
+                "type": "date_time_picker",
+                "instructions": "Date et heure de fin de l'événement",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "display_format": "d\/m\/Y H:i",
+                "return_format": "Y-m-d H:i:s",
+                "first_day": 1
+            },
+            {
+                "key": "field_event_location",
+                "label": "Lieu",
+                "name": "location",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Adresse complète ou nom du lieu de l'événement",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "placeholder": "Ex: 123 Rue de la Tech, 75001 Paris",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_event_city",
+                "label": "Ville",
+                "name": "city",
+                "aria-label": "",
+                "type": "taxonomy",
+                "instructions": "Sélectionnez la ville de l'événement",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "taxonomy": "cities",
+                "field_type": "select",
+                "allow_null": 0,
+                "add_term": 1,
+                "save_terms": 1,
+                "load_terms": 1,
+                "return_format": "object",
+                "multiple": 0,
+                "bidirectional_target": []
+            },
+            {
+                "key": "field_event_category",
+                "label": "Catégorie",
+                "name": "category",
+                "aria-label": "",
+                "type": "taxonomy",
+                "instructions": "Type d'événement",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "taxonomy": "event-categories",
+                "field_type": "select",
+                "allow_null": 0,
+                "add_term": 1,
+                "save_terms": 1,
+                "load_terms": 1,
+                "return_format": "object",
+                "multiple": 0,
+                "bidirectional_target": []
+            },
+            {
+                "key": "field_event_max_attendees",
+                "label": "Participants maximum",
+                "name": "maxAttendees",
+                "aria-label": "",
+                "type": "number",
+                "instructions": "Nombre maximum de participants autorisés",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "33",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": 50,
+                "min": 1,
+                "max": 1000,
+                "step": 1,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_event_current_attendees",
+                "label": "Participants actuels",
+                "name": "currentAttendees",
+                "aria-label": "",
+                "type": "number",
+                "instructions": "Nombre actuel de participants inscrits",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "33",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": 0,
+                "min": 0,
+                "max": "",
+                "step": 1,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_event_registration_deadline",
+                "label": "Date limite d'inscription",
+                "name": "registrationDeadline",
+                "aria-label": "",
+                "type": "date_time_picker",
+                "instructions": "Date limite pour s'inscrire à l'événement",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "34",
+                    "class": "",
+                    "id": ""
+                },
+                "display_format": "d\/m\/Y H:i",
+                "return_format": "Y-m-d H:i:s",
+                "first_day": 1
+            },
+            {
+                "key": "field_event_is_free",
+                "label": "Événement gratuit",
+                "name": "isFree",
+                "aria-label": "",
+                "type": "true_false",
+                "instructions": "Cochez si l'événement est gratuit",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Cet événement est gratuit",
+                "default_value": 1,
+                "ui_on_text": "Gratuit",
+                "ui_off_text": "Payant",
+                "ui": 1
+            },
+            {
+                "key": "field_event_price",
+                "label": "Prix",
+                "name": "price",
+                "aria-label": "",
+                "type": "number",
+                "instructions": "Prix en euros (laisser 0 si gratuit)",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_event_is_free",
+                            "operator": "!=",
+                            "value": "1"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": 0,
+                "min": 0,
+                "max": "",
+                "step": 0.01,
+                "placeholder": "",
+                "prepend": "",
+                "append": "€"
+            },
+            {
+                "key": "field_event_speakers",
+                "label": "Speakers",
+                "name": "speakers",
+                "aria-label": "",
+                "type": "relationship",
+                "instructions": "Sélectionnez les speakers qui interviendront",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "post_type": [
+                    "speakers"
+                ],
+                "taxonomy": "",
+                "filters": [
+                    "search",
+                    "taxonomy"
+                ],
+                "elements": [
+                    "featured_image"
+                ],
+                "min": "",
+                "max": "",
+                "return_format": "object",
+                "bidirectional_target": []
+            },
+            {
+                "key": "field_event_prerequisites",
+                "label": "Prérequis",
+                "name": "prerequisites",
+                "aria-label": "",
+                "type": "textarea",
+                "instructions": "Prérequis techniques ou connaissances nécessaires",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "rows": 4,
+                "placeholder": "Ex: Connaissances de base en JavaScript, ordinateur portable requis",
+                "new_lines": "wpautop"
+            },
+            {
+                "key": "field_event_material_provided",
+                "label": "Matériel fourni",
+                "name": "materialProvided",
+                "aria-label": "",
+                "type": "textarea",
+                "instructions": "Matériel et ressources fournis aux participants",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "rows": 4,
+                "placeholder": "Ex: Support de cours, accès aux outils, certificat de participation",
+                "new_lines": "wpautop"
+            },
+            {
+                "key": "field_event_agenda",
+                "label": "Programme détaillé",
+                "name": "agenda",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Programme heure par heure de l'événement",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_agenda_time",
+                "min": 0,
+                "max": 0,
+                "layout": "table",
+                "button_label": "Ajouter une session",
+                "rows_per_page": 20,
+                "sub_fields": [
+                    {
+                        "key": "field_agenda_time",
+                        "label": "Heure",
+                        "name": "time",
+                        "aria-label": "",
+                        "type": "time_picker",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "20",
+                            "class": "",
+                            "id": ""
+                        },
+                        "display_format": "H:i",
+                        "return_format": "H:i",
+                        "parent_repeater": "field_event_agenda"
+                    },
+                    {
+                        "key": "field_agenda_title",
+                        "label": "Titre",
+                        "name": "title",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "40",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_event_agenda"
+                    },
+                    {
+                        "key": "field_agenda_description",
+                        "label": "Description",
+                        "name": "description",
+                        "aria-label": "",
+                        "type": "textarea",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "40",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": "",
+                        "rows": 2,
+                        "placeholder": "",
+                        "new_lines": "",
+                        "parent_repeater": "field_event_agenda"
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "events"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "Champs personnalisés pour les événements de la plateforme",
+        "show_in_rest": 1,
+        "show_in_graphql": 1,
+        "graphql_field_name": "eventDetails",
+        "map_graphql_types_from_location_rules": 0,
+        "graphql_types": ""
+    },
+    {
+        "key": "group_speaker_details",
+        "title": "Détails du speaker",
+        "fields": [
+            {
+                "key": "field_speaker_bio",
+                "label": "Biographie",
+                "name": "bio",
+                "aria-label": "",
+                "type": "textarea",
+                "instructions": "Biographie courte du speaker (2-3 paragraphes)",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": 1000,
+                "rows": 6,
+                "placeholder": "Présentez le parcours professionnel, les expertises et les réalisations du speaker...",
+                "new_lines": "wpautop"
+            },
+            {
+                "key": "field_speaker_company",
+                "label": "Entreprise",
+                "name": "company",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Entreprise ou organisation actuelle",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "placeholder": "Ex: Google, Stripe, Freelance",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_speaker_job_title",
+                "label": "Poste",
+                "name": "jobTitle",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Poste ou titre professionnel actuel",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "placeholder": "Ex: Senior Frontend Developer, CTO",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_speaker_location",
+                "label": "Localisation",
+                "name": "location",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Ville et pays de résidence",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "33",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "placeholder": "Ex: Paris, France",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_speaker_email",
+                "label": "Email",
+                "name": "email",
+                "aria-label": "",
+                "type": "email",
+                "instructions": "Email de contact professionnel",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "33",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "contact@speaker.com",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_speaker_phone",
+                "label": "Téléphone",
+                "name": "phone",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Numéro de téléphone (optionnel)",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "34",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "placeholder": "+33 1 23 45 67 89",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_speaker_website",
+                "label": "Site web",
+                "name": "website",
+                "aria-label": "",
+                "type": "url",
+                "instructions": "Site web personnel ou professionnel",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "https:\/\/www.speaker.com"
+            },
+            {
+                "key": "field_speaker_experience",
+                "label": "Années d'expérience",
+                "name": "experience",
+                "aria-label": "",
+                "type": "number",
+                "instructions": "Nombre d'années d'expérience professionnelle",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "25",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": 5,
+                "min": 0,
+                "max": 50,
+                "step": 1,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_speaker_rating",
+                "label": "Note moyenne",
+                "name": "rating",
+                "aria-label": "",
+                "type": "number",
+                "instructions": "Note moyenne sur 5 étoiles",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "25",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": 4.5,
+                "min": 0,
+                "max": 5,
+                "step": 0.1,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_speaker_reviews_count",
+                "label": "Nombre d'avis",
+                "name": "reviewsCount",
+                "aria-label": "",
+                "type": "number",
+                "instructions": "Nombre total d'avis reçus",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "25",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": 0,
+                "min": 0,
+                "max": "",
+                "step": 1,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_speaker_talks_given",
+                "label": "Talks donnés",
+                "name": "talksGiven",
+                "aria-label": "",
+                "type": "number",
+                "instructions": "Nombre total de talks\/conférences donnés",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "25",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": 0,
+                "min": 0,
+                "max": "",
+                "step": 1,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_speaker_expertise",
+                "label": "Domaines d'expertise",
+                "name": "expertises",
+                "aria-label": "",
+                "type": "taxonomy",
+                "instructions": "Sélectionnez les domaines d'expertise du speaker",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "taxonomy": "expertise",
+                "add_term": 1,
+                "save_terms": 1,
+                "load_terms": 1,
+                "return_format": "object",
+                "field_type": "checkbox",
+                "allow_in_bindings": 1,
+                "bidirectional": 0,
+                "show_in_graphql": 1,
+                "graphql_description": "",
+                "graphql_field_name": "expertise",
+                "multiple": 0,
+                "allow_null": 0,
+                "bidirectional_target": []
+            },
+            {
+                "key": "field_speaker_availability",
+                "label": "Disponibilité",
+                "name": "availability",
+                "aria-label": "",
+                "type": "select",
+                "instructions": "Statut de disponibilité actuel",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "33",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "disponible": "Disponible",
+                    "occupe": "Occupé",
+                    "indisponible": "Indisponible"
+                },
+                "default_value": "disponible",
+                "return_format": "value",
+                "multiple": 0,
+                "allow_null": 0,
+                "ui": 0,
+                "ajax": 0,
+                "placeholder": "",
+                "create_options": 0,
+                "save_options": 0
+            },
+            {
+                "key": "field_speaker_hourly_rate",
+                "label": "Tarif horaire",
+                "name": "hourlyRate",
+                "aria-label": "",
+                "type": "number",
+                "instructions": "Tarif de consulting en euros par heure (optionnel)",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "33",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "min": 0,
+                "max": "",
+                "step": 5,
+                "placeholder": "",
+                "prepend": "",
+                "append": "€\/h"
+            },
+            {
+                "key": "field_speaker_travel_willingness",
+                "label": "Accepte les déplacements",
+                "name": "travelWillingness",
+                "aria-label": "",
+                "type": "true_false",
+                "instructions": "Le speaker accepte-t-il de se déplacer pour des événements ?",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "34",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "Accepte de se déplacer",
+                "default_value": 1,
+                "ui_on_text": "Oui",
+                "ui_off_text": "Non",
+                "ui": 1
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "speakers"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "Informations personnelles et professionnelles du speaker",
+        "show_in_rest": 1,
+        "show_in_graphql": 1,
+        "graphql_field_name": "speakerDetails",
+        "map_graphql_types_from_location_rules": 0,
+        "graphql_types": ""
+    },
+    {
+        "key": "group_speaker_social_links",
+        "title": "Réseaux sociaux",
+        "fields": [
+            {
+                "key": "field_social_linkedin",
+                "label": "LinkedIn",
+                "name": "linkedin",
+                "aria-label": "",
+                "type": "url",
+                "instructions": "Profil LinkedIn du speaker",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "https:\/\/linkedin.com\/in\/username"
+            },
+            {
+                "key": "field_social_twitter",
+                "label": "Twitter \/ X",
+                "name": "twitter",
+                "aria-label": "",
+                "type": "url",
+                "instructions": "Profil Twitter\/X du speaker",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "https:\/\/twitter.com\/username"
+            },
+            {
+                "key": "field_social_github",
+                "label": "GitHub",
+                "name": "github",
+                "aria-label": "",
+                "type": "url",
+                "instructions": "Profil GitHub du speaker",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "https:\/\/github.com\/username"
+            },
+            {
+                "key": "field_social_website",
+                "label": "Site web personnel",
+                "name": "website",
+                "aria-label": "",
+                "type": "url",
+                "instructions": "Site web ou blog personnel",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "https:\/\/www.speaker.com"
+            },
+            {
+                "key": "field_social_youtube",
+                "label": "YouTube",
+                "name": "youtube",
+                "aria-label": "",
+                "type": "url",
+                "instructions": "Chaîne YouTube du speaker",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "https:\/\/youtube.com\/@username"
+            },
+            {
+                "key": "field_social_mastodon",
+                "label": "Mastodon",
+                "name": "mastodon",
+                "aria-label": "",
+                "type": "url",
+                "instructions": "Profil Mastodon du speaker",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "https:\/\/mastodon.social\/@username"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "speakers"
+                }
+            ]
+        ],
+        "menu_order": 1,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "Liens vers les réseaux sociaux et plateformes du speaker",
+        "show_in_rest": 1,
+        "show_in_graphql": 1,
+        "graphql_field_name": "socialLinks",
+        "map_graphql_types_from_location_rules": 0,
+        "graphql_types": ""
+    },
+    {
+        "key": "group_event_seo",
+        "title": "SEO et métadonnées",
+        "fields": [
+            {
+                "key": "field_event_meta_title",
+                "label": "Titre SEO",
+                "name": "metaTitle",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Titre optimisé pour les moteurs de recherche (50-60 caractères)",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": 60,
+                "placeholder": "Titre optimisé pour Google...",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_event_meta_description",
+                "label": "Description SEO",
+                "name": "metaDescription",
+                "aria-label": "",
+                "type": "textarea",
+                "instructions": "Description optimisée pour les moteurs de recherche (150-160 caractères)",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": 160,
+                "rows": 3,
+                "placeholder": "Description qui apparaîtra dans les résultats Google...",
+                "new_lines": ""
+            },
+            {
+                "key": "field_event_og_image",
+                "label": "Image Open Graph",
+                "name": "ogImage",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Image pour le partage sur les réseaux sociaux (1200x630px recommandé)",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": 1200,
+                "min_height": 630,
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "2MB",
+                "mime_types": "jpg,jpeg,png,webp",
+                "preview_size": "medium"
+            },
+            {
+                "key": "field_event_keywords",
+                "label": "Mots-clés",
+                "name": "keywords",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Mots-clés séparés par des virgules",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "placeholder": "javascript, react, frontend, développement web",
+                "prepend": "",
+                "append": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "events"
+                }
+            ]
+        ],
+        "menu_order": 1,
+        "position": "side",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "Métadonnées pour l'optimisation SEO et le partage social",
+        "show_in_rest": 1,
+        "show_in_graphql": 1,
+        "graphql_field_name": "seoData",
+        "map_graphql_types_from_location_rules": 0,
+        "graphql_types": ""
+    },
+    {
+        "key": "group_speaker_skills_achievements",
+        "title": "Compétences et réalisations",
+        "fields": [
+            {
+                "key": "field_speaker_skills",
+                "label": "Compétences techniques",
+                "name": "skills",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Liste des compétences techniques du speaker",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_skill_name",
+                "min": 0,
+                "max": 0,
+                "layout": "table",
+                "button_label": "Ajouter une compétence",
+                "rows_per_page": 20,
+                "sub_fields": [
+                    {
+                        "key": "field_skill_name",
+                        "label": "Compétence",
+                        "name": "name",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "60",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": "",
+                        "placeholder": "Ex: React, Node.js, Python",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_speaker_skills"
+                    },
+                    {
+                        "key": "field_skill_level",
+                        "label": "Niveau",
+                        "name": "level",
+                        "aria-label": "",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "40",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "debutant": "Débutant",
+                            "intermediaire": "Intermédiaire",
+                            "avance": "Avancé",
+                            "expert": "Expert"
+                        },
+                        "default_value": "intermediaire",
+                        "return_format": "value",
+                        "multiple": 0,
+                        "allow_null": 0,
+                        "ui": 0,
+                        "ajax": 0,
+                        "placeholder": "",
+                        "create_options": 0,
+                        "save_options": 0,
+                        "parent_repeater": "field_speaker_skills"
+                    }
+                ]
+            },
+            {
+                "key": "field_speaker_languages",
+                "label": "Langues parlées",
+                "name": "languages",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Langues parlées par le speaker",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_language_name",
+                "min": 0,
+                "max": 0,
+                "layout": "table",
+                "button_label": "Ajouter une langue",
+                "rows_per_page": 20,
+                "sub_fields": [
+                    {
+                        "key": "field_language_name",
+                        "label": "Langue",
+                        "name": "language",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "60",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": "",
+                        "placeholder": "Ex: Français, Anglais, Espagnol",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_speaker_languages"
+                    },
+                    {
+                        "key": "field_language_level",
+                        "label": "Niveau",
+                        "name": "level",
+                        "aria-label": "",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "40",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "A1": "A1 - Débutant",
+                            "A2": "A2 - Élémentaire",
+                            "B1": "B1 - Intermédiaire",
+                            "B2": "B2 - Intermédiaire avancé",
+                            "C1": "C1 - Avancé",
+                            "C2": "C2 - Maîtrise",
+                            "natif": "Natif"
+                        },
+                        "default_value": "B2",
+                        "return_format": "value",
+                        "multiple": 0,
+                        "allow_null": 0,
+                        "ui": 0,
+                        "ajax": 0,
+                        "placeholder": "",
+                        "create_options": 0,
+                        "save_options": 0,
+                        "parent_repeater": "field_speaker_languages"
+                    }
+                ]
+            },
+            {
+                "key": "field_speaker_certifications",
+                "label": "Certifications",
+                "name": "certifications",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Certifications professionnelles obtenues",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_certification_name",
+                "min": 0,
+                "max": 0,
+                "layout": "row",
+                "button_label": "Ajouter une certification",
+                "rows_per_page": 20,
+                "sub_fields": [
+                    {
+                        "key": "field_certification_name",
+                        "label": "Nom de la certification",
+                        "name": "name",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": "",
+                        "placeholder": "Ex: AWS Solutions Architect",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_speaker_certifications"
+                    },
+                    {
+                        "key": "field_certification_issuer",
+                        "label": "Organisme émetteur",
+                        "name": "issuer",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "25",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": "",
+                        "placeholder": "Ex: Amazon Web Services",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_speaker_certifications"
+                    },
+                    {
+                        "key": "field_certification_year",
+                        "label": "Année",
+                        "name": "year",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "25",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": 4,
+                        "placeholder": 2024,
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_speaker_certifications"
+                    },
+                    {
+                        "key": "field_certification_url",
+                        "label": "Lien de vérification",
+                        "name": "url",
+                        "aria-label": "",
+                        "type": "url",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "https:\/\/verify.certification.com",
+                        "parent_repeater": "field_speaker_certifications"
+                    }
+                ]
+            },
+            {
+                "key": "field_speaker_achievements",
+                "label": "Réalisations notables",
+                "name": "achievements",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Réalisations professionnelles marquantes",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_achievement_title",
+                "min": 0,
+                "max": 0,
+                "layout": "row",
+                "button_label": "Ajouter une réalisation",
+                "rows_per_page": 20,
+                "sub_fields": [
+                    {
+                        "key": "field_achievement_title",
+                        "label": "Titre",
+                        "name": "title",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": "",
+                        "placeholder": "Ex: Création d'une librairie open-source",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_speaker_achievements"
+                    },
+                    {
+                        "key": "field_achievement_year",
+                        "label": "Année",
+                        "name": "year",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "25",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": 4,
+                        "placeholder": 2024,
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_speaker_achievements"
+                    },
+                    {
+                        "key": "field_achievement_url",
+                        "label": "Lien",
+                        "name": "url",
+                        "aria-label": "",
+                        "type": "url",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "25",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "https:\/\/github.com\/project",
+                        "parent_repeater": "field_speaker_achievements"
+                    },
+                    {
+                        "key": "field_achievement_description",
+                        "label": "Description",
+                        "name": "description",
+                        "aria-label": "",
+                        "type": "textarea",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": "",
+                        "rows": 3,
+                        "placeholder": "Description détaillée de la réalisation...",
+                        "new_lines": "",
+                        "parent_repeater": "field_speaker_achievements"
+                    }
+                ]
+            },
+            {
+                "key": "field_speaker_popular_talks",
+                "label": "Talks populaires",
+                "name": "popularTalks",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Talks et conférences les plus populaires du speaker",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_talk_title",
+                "min": 0,
+                "max": 0,
+                "layout": "row",
+                "button_label": "Ajouter un talk",
+                "rows_per_page": 20,
+                "sub_fields": [
+                    {
+                        "key": "field_talk_title",
+                        "label": "Titre du talk",
+                        "name": "title",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": "",
+                        "placeholder": "Ex: Introduction à React Hooks",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_speaker_popular_talks"
+                    },
+                    {
+                        "key": "field_talk_duration",
+                        "label": "Durée",
+                        "name": "duration",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "25",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": "",
+                        "placeholder": "45 min",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_speaker_popular_talks"
+                    },
+                    {
+                        "key": "field_talk_level",
+                        "label": "Niveau",
+                        "name": "level",
+                        "aria-label": "",
+                        "type": "select",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "25",
+                            "class": "",
+                            "id": ""
+                        },
+                        "choices": {
+                            "debutant": "Débutant",
+                            "intermediaire": "Intermédiaire",
+                            "avance": "Avancé",
+                            "tous-niveaux": "Tous niveaux"
+                        },
+                        "default_value": "intermediaire",
+                        "return_format": "value",
+                        "multiple": 0,
+                        "allow_null": 0,
+                        "ui": 0,
+                        "ajax": 0,
+                        "placeholder": "",
+                        "create_options": 0,
+                        "save_options": 0,
+                        "parent_repeater": "field_speaker_popular_talks"
+                    },
+                    {
+                        "key": "field_talk_category",
+                        "label": "Catégorie",
+                        "name": "category",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": "",
+                        "placeholder": "Ex: Frontend, Backend, DevOps",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_speaker_popular_talks"
+                    },
+                    {
+                        "key": "field_talk_video_url",
+                        "label": "Lien vidéo",
+                        "name": "videoUrl",
+                        "aria-label": "",
+                        "type": "url",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "https:\/\/youtube.com\/watch?v=...",
+                        "parent_repeater": "field_speaker_popular_talks"
+                    },
+                    {
+                        "key": "field_talk_description",
+                        "label": "Description",
+                        "name": "description",
+                        "aria-label": "",
+                        "type": "textarea",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": "",
+                        "rows": 4,
+                        "placeholder": "Description du contenu du talk, objectifs d'apprentissage...",
+                        "new_lines": "wpautop",
+                        "parent_repeater": "field_speaker_popular_talks"
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "speakers"
+                }
+            ]
+        ],
+        "menu_order": 2,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "Compétences techniques, certifications et réalisations du speaker",
+        "show_in_rest": 1,
+        "show_in_graphql": 1,
+        "graphql_field_name": "skillsAndAchievements",
+        "map_graphql_types_from_location_rules": 0,
+        "graphql_types": ""
+    },
+    {
+        "key": "group_speaker_seo",
+        "title": "SEO et métadonnées",
+        "fields": [
+            {
+                "key": "field_speaker_meta_title",
+                "label": "Titre SEO",
+                "name": "metaTitle",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Titre optimisé pour les moteurs de recherche (50-60 caractères)",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": 60,
+                "placeholder": "Nom du speaker - Expertise - Event Portal",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_speaker_meta_description",
+                "label": "Description SEO",
+                "name": "metaDescription",
+                "aria-label": "",
+                "type": "textarea",
+                "instructions": "Description optimisée pour les moteurs de recherche (150-160 caractères)",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": 160,
+                "rows": 3,
+                "placeholder": "Découvrez le profil de [Nom], expert en [Domaine] avec [X] années d'expérience...",
+                "new_lines": ""
+            },
+            {
+                "key": "field_speaker_og_image",
+                "label": "Image Open Graph",
+                "name": "ogImage",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Image pour le partage sur les réseaux sociaux (1200x630px recommandé)",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": 1200,
+                "min_height": 630,
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "2MB",
+                "mime_types": "jpg,jpeg,png,webp",
+                "preview_size": "medium"
+            },
+            {
+                "key": "field_speaker_keywords",
+                "label": "Mots-clés",
+                "name": "keywords",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Mots-clés séparés par des virgules",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "placeholder": "speaker, expert, conférencier, [domaines d'expertise]",
+                "prepend": "",
+                "append": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "speakers"
+                }
+            ]
+        ],
+        "menu_order": 3,
+        "position": "side",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "Métadonnées pour l'optimisation SEO et le partage social",
+        "show_in_rest": 1,
+        "show_in_graphql": 1,
+        "graphql_field_name": "seoData",
+        "map_graphql_types_from_location_rules": 0,
+        "graphql_types": ""
+    }
+]
