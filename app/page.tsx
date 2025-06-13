@@ -9,14 +9,25 @@ export default async function HomePage() {
   const eventsData = await getEvents({ first: 50 })
   const events = eventsData.nodes || []
 
-  // Extract unique categories
-  const categories = Array.from(new Set(events.map((event) => event.eventDetails.category).filter(Boolean)))
+  // Extract unique categories (ensure only strings)
+  const categories = Array.from(
+    new Set(
+      events
+        .map((event) => {
+          const cat = event.eventDetails.category
+          if (typeof cat === "string") return cat
+          if (cat && typeof cat.name === "string") return cat.name
+          return undefined
+        })
+        .filter((c): c is string => typeof c === "string")
+    )
+  )
 
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">Découvrez des Événements Exceptionnels</h1>
+        <h1 className="text-4xl md:text-6xl font-bold mb-4">Les événements de l'entrepreneur</h1>
         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
           Rejoignez des milliers de participants à nos événements soigneusement sélectionnés. Des ateliers aux
           conférences, trouvez votre prochaine opportunité d'apprentissage.
@@ -37,15 +48,15 @@ export default async function HomePage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div className="text-center p-6 bg-muted/50 rounded-lg">
+        <div className="text-center p-6 bg-card/10 rounded-lg">
           <div className="text-3xl font-bold text-primary mb-2">{events.length}+</div>
           <div className="text-muted-foreground">Événements à venir</div>
         </div>
-        <div className="text-center p-6 bg-muted/50 rounded-lg">
+        <div className="text-center p-6 bg-card/10 rounded-lg">
           <div className="text-3xl font-bold text-primary mb-2">{categories.length}+</div>
           <div className="text-muted-foreground">Catégories</div>
         </div>
-        <div className="text-center p-6 bg-muted/50 rounded-lg">
+        <div className="text-center p-6 bg-card/10 rounded-lg">
           <div className="text-3xl font-bold text-primary mb-2">10k+</div>
           <div className="text-muted-foreground">Participants satisfaits</div>
         </div>

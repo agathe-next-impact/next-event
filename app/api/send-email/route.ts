@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { Resend } from "resend"
+import nodemailer from "nodemailer"
 import {
   generateConfirmationEmail,
   generateContactConfirmationEmail,
@@ -9,35 +9,21 @@ import {
   generateReminderEmail,
 } from "@/lib/email"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const { to, subject, html, text, type, data } = body
 
-    // Vérifier la configuration
-    if (!process.env.RESEND_API_KEY) {
-      console.log("⚠️ RESEND_API_KEY non configurée - simulation d'envoi")
-
-      // Simuler l'envoi en mode développement
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      return NextResponse.json({
-        success: true,
-        message: "Email simulé envoyé avec succès",
-        id: `sim_${Date.now()}`,
-        simulated: true,
-      })
-    }
-
-    if (!to || !subject) {
-      return NextResponse.json({ error: "Destinataire et sujet requis" }, { status: 400 })
-    }
+    // Utilisation systématique de Nodemailer (local)
+    const transporter = nodemailer.createTransport({
+      host: "localhost",
+      port: 1025,
+      secure: false,
+      tls: { rejectUnauthorized: false },
+    })
 
     let emailContent = { subject, html, text }
 
-    // Générer le contenu selon le type d'email
     if (type && data) {
       switch (type) {
         case "reservation_confirmation":
@@ -61,26 +47,26 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Envoyer l'email via Resend
-    const result = await resend.emails.send({
+    if (!to || !emailContent.subject) {
+      return NextResponse.json({ error: "Destinataire et sujet requis" }, { status: 400 })
+    }
+
+    const info = await transporter.sendMail({
       from: process.env.FROM_EMAIL || "Event Portal <noreply@eventportal.fr>",
-      to: Array.isArray(to) ? to : [to],
+      to: Array.isArray(to) ? to.join(",") : to,
       subject: emailContent.subject,
       html: emailContent.html,
       text: emailContent.text,
       replyTo: data?.replyTo || undefined,
     })
 
-    console.log("📧 Email envoyé avec succès:", {
-      to,
-      subject: emailContent.subject,
-      id: result.data?.id,
-    })
+    console.log("📧 Email envoyé localement:", info)
 
     return NextResponse.json({
       success: true,
-      message: "Email envoyé avec succès",
-      id: result.data?.id,
+      message: "Email envoyé localement (MailHog/Papercut)",
+      id: info.messageId,
+      simulated: true,
     })
   } catch (error) {
     console.error("❌ Erreur lors de l'envoi de l'email:", error)

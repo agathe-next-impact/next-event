@@ -21,12 +21,12 @@ import {
 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Contact - Event Portal",
+  title: "Contact - Next Event",
   description:
-    "Contactez l'équipe Event Portal. Nous sommes là pour répondre à vos questions sur nos événements, partenariats et opportunités de speaking.",
+    "Contactez l'équipe Next Event. Nous sommes là pour répondre à vos questions sur nos événements, partenariats et opportunités de speaking.",
   openGraph: {
-    title: "Contact - Event Portal",
-    description: "Contactez l'équipe Event Portal pour toutes vos questions.",
+    title: "Contact - Next Event",
+    description: "Contactez l'équipe Next Event pour toutes vos questions.",
     type: "website",
   },
 }
@@ -37,8 +37,8 @@ export default function ContactPage() {
       icon: Mail,
       title: "Email",
       description: "Écrivez-nous pour toute question",
-      value: "contact@eventportal.fr",
-      action: "mailto:contact@eventportal.fr",
+      value: "contact@next-event.fr",
+      action: "mailto:contact@next-event.fr",
       color: "text-blue-600",
       bgColor: "bg-blue-50",
     },
@@ -76,28 +76,28 @@ export default function ContactPage() {
       icon: Calendar,
       title: "Événements",
       description: "Questions sur nos événements, inscriptions, programmes",
-      email: "events@eventportal.fr",
+      email: "next-events@next-event.fr",
       team: "Équipe Événements",
     },
     {
       icon: Users,
       title: "Speakers",
       description: "Candidatures speaker, partenariats, collaborations",
-      email: "speakers@eventportal.fr",
+      email: "speakers@next-event.fr",
       team: "Équipe Speakers",
     },
     {
       icon: Building,
       title: "Partenariats",
       description: "Sponsoring, partenariats entreprise, locations",
-      email: "partnerships@eventportal.fr",
+      email: "partnerships@next-event.fr",
       team: "Équipe Business",
     },
     {
       icon: Headphones,
       title: "Support",
       description: "Problèmes techniques, assistance, réclamations",
-      email: "support@eventportal.fr",
+      email: "support@next-event.fr",
       team: "Équipe Support",
     },
   ]
@@ -106,23 +106,16 @@ export default function ContactPage() {
     {
       icon: Twitter,
       name: "Twitter",
-      handle: "@EventPortalFR",
-      url: "https://twitter.com/eventportalfr",
+      handle: "@next-EventFR",
+      url: "https://twitter.com/next-event.fr",
       color: "text-blue-400",
     },
     {
       icon: Linkedin,
       name: "LinkedIn",
-      handle: "Event Portal",
-      url: "https://linkedin.com/company/eventportal",
+      handle: "next-Event",
+      url: "https://linkedin.com/company/next-event",
       color: "text-blue-600",
-    },
-    {
-      icon: Github,
-      name: "GitHub",
-      handle: "event-portal",
-      url: "https://github.com/event-portal",
-      color: "text-gray-800",
     },
   ]
 
@@ -160,7 +153,6 @@ export default function ContactPage() {
       {/* Hero Section */}
       <div className="text-center mb-16">
         <div className="flex items-center justify-center gap-2 mb-6">
-          <MessageSquare className="h-8 w-8 text-primary" />
           <h1 className="text-4xl md:text-6xl font-bold">Contactez-nous</h1>
         </div>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
@@ -303,7 +295,7 @@ export default function ContactPage() {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors group"
+                    className="flex items-center gap-3 p-3 rounded-lg hover:transition-colors group"
                   >
                     <social.icon className={`h-5 w-5 ${social.color} group-hover:scale-110 transition-transform`} />
                     <div>
@@ -327,14 +319,14 @@ export default function ContactPage() {
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <p className="font-medium">Event Portal</p>
+                  <p className="font-medium">Next Event</p>
                   <p className="text-muted-foreground">15 rue de la Paix</p>
                   <p className="text-muted-foreground">75001 Paris, France</p>
                 </div>
                 <div className="relative h-48 bg-muted rounded-lg overflow-hidden">
                   <Image
                     src="/placeholder.svg?height=200&width=400&query=paris office building map"
-                    alt="Localisation du bureau Event Portal"
+                    alt="Localisation du bureau Next Event"
                     fill
                     className="object-cover"
                   />
@@ -400,7 +392,7 @@ export default function ContactPage() {
       </div>
 
       {/* Emergency Contact */}
-      <div className="bg-muted/50 rounded-lg p-8 mb-16">
+      <div className="rounded-lg p-8 mb-16">
         <div className="text-center">
           <h3 className="text-xl font-bold mb-4">Contact d'urgence</h3>
           <p className="text-muted-foreground mb-6">
@@ -414,9 +406,9 @@ export default function ContactPage() {
               </a>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <a href="mailto:urgence@eventportal.fr">
+              <a href="mailto:urgence@next-event.fr">
                 <Mail className="mr-2 h-5 w-5" />
-                urgence@eventportal.fr
+                urgence@next-event.fr
               </a>
             </Button>
           </div>
@@ -425,7 +417,7 @@ export default function ContactPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="text-center bg-primary/5 rounded-lg p-12">
+      <div className="text-center rounded-lg p-12">
         <h2 className="text-3xl font-bold mb-4">Nous avons hâte de vous entendre !</h2>
         <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
           Que vous ayez une question, une idée de collaboration ou que vous souhaitiez simplement dire bonjour, notre

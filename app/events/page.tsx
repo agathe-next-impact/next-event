@@ -49,7 +49,6 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
       {/* Header */}
       <div className="text-center mb-12">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <CalendarDays className="h-8 w-8 text-primary" />
           <h1 className="text-4xl md:text-5xl font-bold">Tous les Événements</h1>
         </div>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -59,7 +58,7 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
       </div>
 
       {/* Stats Bar */}
-      <div className="bg-muted/50 rounded-lg p-6 mb-8">
+      <div className="rounded-lg p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
           <div>
             <div className="text-2xl font-bold text-primary">{events.length}</div>

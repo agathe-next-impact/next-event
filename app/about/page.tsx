@@ -19,12 +19,12 @@ import {
 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "About Us - Event Portal",
+  title: "About Us - Next Event",
   description:
-    "Learn about Event Portal's mission to connect people through amazing events, workshops, and conferences. Discover our story, team, and values.",
+    "Learn about Next Event's mission to connect people through amazing events, workshops, and conferences. Discover our story, team, and values.",
   openGraph: {
-    title: "About Us - Event Portal",
-    description: "Learn about Event Portal's mission to connect people through amazing events and conferences.",
+    title: "About Us - Next Event",
+    description: "Learn about Next Event's mission to connect people through amazing events and conferences.",
     type: "website",
   },
 }
@@ -90,7 +90,7 @@ export default function AboutPage() {
   const milestones = [
     {
       year: "2016",
-      title: "Création d'Event Portal",
+      title: "Création de Next Event",
       description: "Lancement de la plateforme avec notre premier événement tech à Paris.",
     },
     {
@@ -119,7 +119,7 @@ export default function AboutPage() {
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
       <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6">À propos d'Event Portal</h1>
+        <h1 className="text-4xl md:text-6xl font-bold mb-6">À propos de Next Event</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
           Nous connectons les passionnés de technologie à travers des événements exceptionnels. Notre mission est de
           créer des expériences d'apprentissage inoubliables qui inspirent et transforment les carrières.
@@ -159,7 +159,7 @@ export default function AboutPage() {
           <div>
             <h2 className="text-3xl font-bold mb-6">Notre Mission</h2>
             <p className="text-lg text-muted-foreground mb-6">
-              Event Portal a été créé avec une vision simple : démocratiser l'accès à l'apprentissage et au networking
+             Next Event a été créé avec une vision simple : démocratiser l'accès à l'apprentissage et au networking
               dans le domaine de la technologie.
             </p>
             <p className="text-muted-foreground mb-6">
@@ -212,7 +212,7 @@ export default function AboutPage() {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Notre Histoire</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Découvrez les moments clés qui ont façonné Event Portal au fil des années.
+            Découvrez les moments clés qui ont façonné Next Event au fil des années.
           </p>
         </div>
         <div className="relative">
@@ -243,7 +243,7 @@ export default function AboutPage() {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Notre Équipe</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Rencontrez les personnes passionnées qui rendent Event Portal possible.
+            Rencontrez les personnes passionnées qui rendent Next Event possible.
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -281,8 +281,8 @@ export default function AboutPage() {
               <Mail className="h-8 w-8 text-primary mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">Email</h3>
               <p className="text-muted-foreground mb-3">Écrivez-nous directement</p>
-              <a href="mailto:contact@eventportal.fr" className="text-primary hover:underline">
-                contact@eventportal.fr
+              <a href="mailto:contact@next-event.fr" className="text-primary hover:underline">
+                contact@next-event.fr
               </a>
             </CardContent>
           </Card>
@@ -312,7 +312,7 @@ export default function AboutPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="text-center bg-muted/50 rounded-lg p-12">
+      <div className="text-center rounded-lg p-12">
         <h2 className="text-3xl font-bold mb-4">Rejoignez notre communauté</h2>
         <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
           Ne manquez aucun de nos événements ! Inscrivez-vous à notre newsletter pour recevoir les dernières nouvelles

@@ -132,7 +132,6 @@ export default function BecomeaSpeakerPage() {
       {/* Hero Section */}
       <div className="text-center mb-16">
         <div className="flex items-center justify-center gap-2 mb-6">
-          <Mic className="h-8 w-8 text-primary" />
           <h1 className="text-4xl md:text-6xl font-bold">Devenir Speaker</h1>
         </div>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
@@ -157,19 +156,19 @@ export default function BecomeaSpeakerPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-        <div className="text-center p-6 bg-muted/50 rounded-lg">
+        <div className="text-center p-6 rounded-lg">
           <div className="text-3xl font-bold text-primary mb-2">150+</div>
           <div className="text-muted-foreground text-sm">Speakers</div>
         </div>
-        <div className="text-center p-6 bg-muted/50 rounded-lg">
+        <div className="text-center p-6 rounded-lg">
           <div className="text-3xl font-bold text-primary mb-2">25k+</div>
           <div className="text-muted-foreground text-sm">Participants</div>
         </div>
-        <div className="text-center p-6 bg-muted/50 rounded-lg">
+        <div className="text-center p-6 rounded-lg">
           <div className="text-3xl font-bold text-primary mb-2">500+</div>
           <div className="text-muted-foreground text-sm">Talks donnés</div>
         </div>
-        <div className="text-center p-6 bg-muted/50 rounded-lg">
+        <div className="text-center p-6 rounded-lg">
           <div className="text-3xl font-bold text-primary mb-2">95%</div>
           <div className="text-muted-foreground text-sm">Satisfaction</div>
         </div>
@@ -364,7 +363,7 @@ export default function BecomeaSpeakerPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="text-center bg-muted/50 rounded-lg p-12">
+      <div className="text-center rounded-lg p-12">
         <h2 className="text-3xl font-bold mb-4">Prêt à partager votre expertise ?</h2>
         <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
           Rejoignez notre communauté de speakers et contribuez à l'évolution de l'écosystème tech français !
