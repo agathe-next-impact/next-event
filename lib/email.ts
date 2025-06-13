@@ -678,17 +678,17 @@ export async function sendContactNotificationEmail(contactMessage: ContactMessag
     const getDestinationEmail = (category: string): string => {
       switch (category) {
         case "event":
-          return "events@eventportal.fr"
+          return "agathe@next-impact.digital"
         case "speaker":
-          return "speakers@eventportal.fr"
+          return "agathe@next-impact.digital"
         case "partnership":
-          return "partnerships@eventportal.fr"
+          return "agathe@next-impact.digital"
         case "technical":
-          return "support@eventportal.fr"
+          return "agathe@next-impact.digital"
         case "media":
-          return "media@eventportal.fr"
+          return "agathe@next-impact.digital"
         default:
-          return "contact@eventportal.fr"
+          return "agathe@next-impact.digital"
       }
     }
 

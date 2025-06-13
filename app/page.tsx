@@ -27,7 +27,7 @@ export default async function HomePage() {
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">Les événements de l'entrepreneur</h1>
+        <h1 className="text-4xl md:text-6xl font-bold mb-4">Les événements de l'entreprise</h1>
         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
           Rejoignez des milliers de participants à nos événements soigneusement sélectionnés. Des ateliers aux
           conférences, trouvez votre prochaine opportunité d'apprentissage.
