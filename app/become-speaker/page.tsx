@@ -132,7 +132,7 @@ export default function BecomeaSpeakerPage() {
       {/* Hero Section */}
       <div className="text-center mb-16">
         <div className="flex items-center justify-center gap-2 mb-6">
-          <h1 className="text-4xl md:text-6xl font-bold">Devenir Speaker</h1>
+          <h1 className="text-4xl md:text-5xl">Devenir Speaker</h1>
         </div>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
           Partagez votre expertise avec notre communauté de développeurs passionnés ! Que vous soyez expert ou débutant,

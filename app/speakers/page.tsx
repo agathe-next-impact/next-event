@@ -69,7 +69,7 @@ export default async function SpeakersPage({ searchParams }: SpeakersPageProps) 
       {/* Header */}
       <div className="text-center mb-12">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <h1 className="text-4xl md:text-5xl font-bold">Nos Speakers</h1>
+          <h1 className="text-4xl md:text-5xl">Nos Speakers</h1>
         </div>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Découvrez les experts qui partagent leur passion et leur expertise lors de nos événements. Entrepreneurs,

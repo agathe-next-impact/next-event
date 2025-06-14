@@ -66,38 +66,38 @@ export default function RootLayout({
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com"/>
-      <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Manrope:wght@200..800&family=Fredoka:wght@300..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Manrope:wght@200..800&&family=Urbanist:ital,wght@0,100..900;1,100..900" rel="stylesheet" />
       <link rel="icon" href="/favicon.ico" />
       <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     </head>
       <body className={cn(inter.className, "min-h-screen bg-background antialiased")}>
         <header className="border-b">
           <div className="container mx-auto px-4 py-4">
-            <nav className="flex items-center justify-between">
+            <nav className="flex justify-between">
               <Image
-                src="/logo-next-event.png"
+                src="/images/logo-next-event.png"
                 alt="Next Event Portal Logo"
                 width={150}
                 height={50}
-                className="h-12 object-contain"
+                className="h-12 w-max object-contain"
               />
               <div className="flex items-center gap-6">
-                <a href="/" className="hover:text-primary transition-colors">
+                <a href="/" className="hover:text-accent transition-colors">
                   Accueil
                 </a>
-                <a href="/events" className="hover:text-primary transition-colors">
+                <a href="/events" className="hover:text-accent transition-colors">
                   Événements
                 </a>
-                <a href="/speakers" className="hover:text-primary transition-colors">
+                <a href="/speakers" className="hover:text-accent transition-colors">
                   Speakers
                 </a>
-                <a href="/about" className="hover:text-primary transition-colors">
+                <a href="/about" className="hover:text-accent transition-colors">
                   À propos
                 </a>
-                <a href="/become-speaker" className="hover:text-primary transition-colors">
+                <a href="/become-speaker" className="hover:text-accent transition-colors">
                   Devenir Speaker
                 </a>
-                <a href="/contact" className="hover:text-primary transition-colors">
+                <a href="/contact" className="hover:text-accent transition-colors">
                   Contact
                 </a>
               </div>

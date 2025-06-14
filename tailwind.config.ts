@@ -12,7 +12,7 @@ const config: Config = {
   theme: {
   	extend: {
 		fontFamily: {
-			heading: ["Nunito", "sans-serif"],
+			heading: ["Urbanist", "sans-serif"],
 			body: ["Manrope", "sans-serif"]
 		},
 		colors: {

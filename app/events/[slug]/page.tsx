@@ -106,7 +106,7 @@ export default async function EventPage({ params, searchParams }: EventPageProps
 
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
           <div className="flex-1">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">{event.title}</h1>
+            <h1 className="text-3xl md:text-4xl mb-2">{event.title}</h1>
             <p className="text-lg text-muted-foreground">{event.excerpt}</p>
           </div>
         </div>

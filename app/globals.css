@@ -16,9 +16,9 @@
     --secondary-foreground: 0 0% 100%;
     --muted: 185 61% 61%;
     --muted-foreground: 0 0% 30%;
-    --accent: 210 40% 96%;
+    --accent: 55.07 97.18% 58.24%;
     --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 2.81 72.15% 53.53%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
@@ -54,10 +54,10 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
   }
   h1 {
-    @apply font-bold text-2xl md:text-3xl lg:text-4xl font-heading text-secondary; 
+    @apply text-2xl md:text-3xl lg:text-4xl font-heading text-black font-light; 
   }
   h2, h3, h4, h5, h6 {
     @apply font-light font-heading;

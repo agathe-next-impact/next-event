@@ -153,7 +153,7 @@ export default function ContactPage() {
       {/* Hero Section */}
       <div className="text-center mb-16">
         <div className="flex items-center justify-center gap-2 mb-6">
-          <h1 className="text-4xl md:text-6xl font-bold">Contactez-nous</h1>
+          <h1 className="text-4xl md:text-5xl">Contactez-nous</h1>
         </div>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
           Notre équipe est là pour répondre à toutes vos questions. Que vous souhaitiez participer à un événement,
@@ -244,7 +244,7 @@ export default function ContactPage() {
         {/* Contact Form */}
         <div id="contact-form">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold mb-4">Envoyez-nous un message</h2>
+            <h2 className="text-3xl mb-4">Envoyez-nous un message</h2>
             <p className="text-lg text-muted-foreground">
               Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.
             </p>

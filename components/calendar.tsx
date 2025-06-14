@@ -87,7 +87,7 @@ export default function Calendar({ events, categories }: CalendarProps) {
               <div className="space-y-1">
                 {dayEvents.slice(0, 2).map((event) => (
                   <Link key={event.id} href={`/events/${event.slug}`} className="block">
-                    <div className="text-xs p-1 bg-primary/10 text-primary rounded truncate hover:bg-primary/20 transition-colors">
+                    <div className="text-xs p-1 bg-accent/10 text-black rounded truncate hover:bg-accent/20 transition-colors">
                       {event.title}
                     </div>
                   </Link>
@@ -104,9 +104,9 @@ export default function Calendar({ events, categories }: CalendarProps) {
   }
 
   const renderListView = () => (
-    <div className="space-y-4">
+    <div className="space-y-1">
       {filteredEvents.map((event) => (
-        <Card key={event.id} className="hover:shadow-md transition-shadow">
+        <Card key={event.id}>
           <CardContent className="p-6">
             <div className="flex gap-4">
               {event.featuredImage && (
@@ -116,7 +116,7 @@ export default function Calendar({ events, categories }: CalendarProps) {
                     alt={event.featuredImage.node.altText || event.title}
                     width={120}
                     height={80}
-                    className="rounded-lg object-cover"
+                    className="object-cover"
                   />
                 </div>
               )}
@@ -124,7 +124,7 @@ export default function Calendar({ events, categories }: CalendarProps) {
                 <div className="flex items-start justify-between">
                   <div>
                     <Link href={`/events/${event.slug}`}>
-                      <h3 className="text-lg font-semibold hover:text-primary transition-colors">{event.title}</h3>
+                      <h3 className="text-lg font-semibold hover:text-destructive transition-colors">{event.title}</h3>
                     </Link>
                     <p className="text-muted-foreground text-sm mt-1">{event.excerpt}</p>
                   </div>
@@ -149,12 +149,12 @@ export default function Calendar({ events, categories }: CalendarProps) {
     <div className="space-y-6">
       {/* Controls */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <Button
             variant="outline"
             size="sm"
             onClick={() => setViewMode("list")}
-            className={viewMode === "list" ? "bg-primary text-primary-foreground" : ""}
+            className={viewMode === "list" ? "bg-accent text-black" : ""}
           >
             <List className="h-4 w-4 mr-1" />
             Liste
@@ -163,7 +163,7 @@ export default function Calendar({ events, categories }: CalendarProps) {
             variant="outline"
             size="sm"
             onClick={() => setViewMode("grid")}
-            className={viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}
+            className={viewMode === "grid" ? "bg-accent text-black" : ""}
           >
             <Grid className="h-4 w-4 mr-1" />
             Grille

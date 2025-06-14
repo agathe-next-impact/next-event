@@ -3,7 +3,11 @@ import Calendar from "@/components/calendar"
 import DevTools from "@/components/dev-tools"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import Image from "next/image"
 import { CalendarDays, Users, Settings } from "lucide-react"
+import React from "react"
+import { cn } from "@/lib/utils"
+import { DotBackground } from "@/components/ui/dot-background"
 
 export default async function HomePage() {
   const eventsData = await getEvents({ first: 50 })
@@ -24,59 +28,93 @@ export default async function HomePage() {
   )
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Hero Section */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">Les événements de l'entreprise</h1>
-        <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-          Rejoignez des milliers de participants à nos événements soigneusement sélectionnés. Des ateliers aux
-          conférences, trouvez votre prochaine opportunité d'apprentissage.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/events">
-            <Button size="lg">
-              <CalendarDays className="mr-2 h-5 w-5" />
-              Parcourir tous les événements
+    <>
+      <div>
+            <div
+              className={cn(
+                "absolute top-8 inset-2 pointer-events-none",
+                "[background-size:20px_20px] opacity-65",
+                "[background-image:radial-gradient(#d4d4d4_1px,transparent_1px)]",
+                "dark:[background-image:radial-gradient(#404040_1px,transparent_1px)]",
+              )}
+            />
+            
+      <div className="container h-[80vh] grid grid-cols-1 md:grid-cols-2 place-content-center gap-24 mx-auto px-4 py-8 inset-4">
+        {/* Hero Section */}
+        <div className="mb-12">
+          <div>
+          <h1 className="text-4xl md:text-6xl font-ligh text-black mb-4">Evénements<br />
+          Tech & Business</h1>
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl">
+            Rejoignez des milliers de participants à nos événements soigneusement sélectionnés. Des ateliers aux
+            conférences, trouvez votre prochaine opportunité d'apprentissage.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link href="/events">
+              <Button size="lg">
+                <CalendarDays className="mr-2 h-5 w-5" />
+                Parcourir tous les événements
+              </Button>
+            </Link>
+            <Button variant="outline" size="lg">
+              <Users className="mr-2 h-5 w-5" />
+              Devenir Speaker
             </Button>
-          </Link>
-          <Button variant="outline" size="lg">
-            <Users className="mr-2 h-5 w-5" />
-            Devenir Speaker
-          </Button>
-        </div>
-      </div>
+          </div>
+          {/*
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-12 place-items-start">
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div className="text-center p-6 bg-card/10 rounded-lg">
-          <div className="text-3xl font-bold text-primary mb-2">{events.length}+</div>
-          <div className="text-muted-foreground">Événements à venir</div>
+          <div className="text-center p-6 bg-card/10 rounded-lg">
+            <div className="text-3xl font-bold text-primary mb-2">{events.length}+</div>
+            <div className="text-muted-foreground">Événements à venir</div>
+          </div>
+          <div className="text-center p-6 bg-card/10 rounded-lg">
+            <div className="text-3xl font-bold text-primary mb-2">{categories.length}+</div>
+            <div className="text-muted-foreground">Catégories</div>
+          </div>
+          <div className="text-center p-6 bg-card/10 rounded-lg">
+            <div className="text-3xl font-bold text-primary mb-2">10k+</div>
+            <div className="text-muted-foreground">Participants satisfaits</div>
+          </div>
         </div>
-        <div className="text-center p-6 bg-card/10 rounded-lg">
-          <div className="text-3xl font-bold text-primary mb-2">{categories.length}+</div>
-          <div className="text-muted-foreground">Catégories</div>
+          */}
         </div>
-        <div className="text-center p-6 bg-card/10 rounded-lg">
-          <div className="text-3xl font-bold text-primary mb-2">10k+</div>
-          <div className="text-muted-foreground">Participants satisfaits</div>
         </div>
-      </div>
 
-      {/* Calendar Component */}
-      <div className="mb-12">
-        <h2 className="text-3xl font-bold mb-6">Calendrier des événements</h2>
-        <Calendar events={events} categories={categories} />
-      </div>
+        {/* Stats Bar */}
+        
 
-      {/* Dev Tools Section - Only in development */}
-      <div className="mb-12">
-        <div className="flex items-center gap-2 mb-6">
-          <Settings className="h-6 w-6" />
-          <h2 className="text-3xl font-bold">Outils de développement</h2>
+        {/* Stats */}
+        <div>
+          <div className="h-max">
+          <Image
+            src="/images/hero.jpeg"
+            alt="Hero Image"
+            width={500}
+            height={300}
+            className="w-full rounded-lg shadow-lg col-span-1 md:col-span-2"
+          />
+          </div>
         </div>
-        <DevTools />
+        </div>
+
+        {/* Calendar Component */}
+        <div className=" container col-span-2 mb-12 mx-auto px-4 py-8 ">
+          <h2 className="text-3xl font-heading font-semibold mb-6">Calendrier des événements</h2>
+          <Calendar events={events} categories={categories} />
+        </div>
+
+        {/* Dev Tools Section - Only in development 
+        <div className="mb-12">
+          <div className="flex items-center gap-2 mb-6">
+            <Settings className="h-6 w-6" />
+            <h2 className="text-3xl font-bold">Outils de développement</h2>
+          </div>
+          <DevTools />
+        </div>
+        */}
       </div>
-    </div>
+    </>
   )
 }
 

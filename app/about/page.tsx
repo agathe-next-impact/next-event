@@ -119,7 +119,7 @@ export default function AboutPage() {
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
       <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6">À propos de Next Event</h1>
+        <h1 className="text-4xl md:text-5xl mb-6">À propos de Next Event</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
           Nous connectons les passionnés de technologie à travers des événements exceptionnels. Notre mission est de
           créer des expériences d'apprentissage inoubliables qui inspirent et transforment les carrières.
