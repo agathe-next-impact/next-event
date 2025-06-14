@@ -627,6 +627,7 @@ export async function getEvents(variables?: { first?: number; after?: string; ca
   }
 }
 
+
 export async function getEventBySlug(slug: string, preview = false) {
   try {
     try {

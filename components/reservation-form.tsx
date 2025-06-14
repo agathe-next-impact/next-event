@@ -313,9 +313,9 @@ export default function ReservationForm({ event }: ReservationFormProps) {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <div className="font-medium">Price</div>
-                  <div className="text-2xl font-bold text-green-600">Free</div>
+                  <div className="text-2xl font-bold text-accent">Free</div>
                 </div>
-                <Badge variant="secondary" className="text-green-600">
+                <Badge variant="secondary" className="text-white">
                   Free event
                 </Badge>
               </div>

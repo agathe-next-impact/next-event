@@ -146,15 +146,15 @@ export default async function EventPage({ params, searchParams }: EventPageProps
               <Progress value={occupancyRate} className="h-2" />
               <div className="grid grid-cols-3 gap-4 text-center text-sm">
                 <div>
-                  <div className="font-bold text-lg text-green-600">{event.eventDetails.currentAttendees}</div>
+                  <div className="font-bold text-lg text-black">{event.eventDetails.currentAttendees}</div>
                   <div className="text-muted-foreground">Confirmées</div>
                 </div>
                 <div>
-                  <div className="font-bold text-lg text-blue-600">{availableSpots}</div>
+                  <div className="font-bold text-lg text-black">{availableSpots}</div>
                   <div className="text-muted-foreground">Disponibles</div>
                 </div>
                 <div>
-                  <div className="font-bold text-lg text-purple-600">{Math.round(occupancyRate)}%</div>
+                  <div className="font-bold text-lg text-black">{Math.round(occupancyRate)}%</div>
                   <div className="text-muted-foreground">Taux de remplissage</div>
                 </div>
               </div>

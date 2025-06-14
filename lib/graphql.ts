@@ -612,6 +612,30 @@ export async function getEventSlugs() {
   }
 }
 
+
+export async function getCityById(cityId: string) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/wp-json/wp/v2/cities/${cityId}`,
+    )
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`)
+    }
+    const city = await res.json()
+    if (city && city.name && city.id) {
+      return {
+        id: city.id,
+        name: city.name,
+        slug: city.slug,
+      }
+    }
+    return null
+  } catch (error) {
+    console.error("Error fetching city by ID:", error)
+    return null
+  }
+}
+
 export async function getSpeakers(variables?: {
   first?: number
   after?: string

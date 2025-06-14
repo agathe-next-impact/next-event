@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
-import { getEvents } from "@/lib/wordpress-rest"
+import { getEvents  } from "@/lib/wordpress-rest"
 import EventsList from "@/components/events-list"
-import { CalendarDays } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Tous les Événements - Event Portal",
@@ -51,7 +50,7 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
         <div className="flex items-center justify-center gap-2 mb-4">
           <h1 className="text-4xl md:text-5xl">Tous les Événements</h1>
         </div>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Découvrez des événements exceptionnels, ateliers, conférences et meetups. Rejoignez notre communauté et
           élargissez vos connaissances.
         </p>
@@ -61,21 +60,21 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
       <div className="rounded-lg p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
           <div>
-            <div className="text-2xl font-bold text-primary">{events.length}</div>
+            <div className="text-3xl font-bold text-accent">{events.length}</div>
             <div className="text-sm text-muted-foreground">
               {category !== "all" || city !== "all" ? "Événements filtrés" : "Total Événements"}
             </div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-primary">{categories.length}</div>
+            <div className="text-3xl font-bold text-accent">{categories.length}</div>
             <div className="text-sm text-muted-foreground">Catégories</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-primary">{cities.length}</div>
+            <div className="text-3xl font-bold text-accent">{cities.length}</div>
             <div className="text-sm text-muted-foreground">Villes</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-primary">
+            <div className="text-3xl font-bold text-accent">
               {events.filter((e) => new Date(e.eventDetails.startDate) > new Date()).length}
             </div>
             <div className="text-sm text-muted-foreground">À venir</div>
