@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -10,8 +10,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import type { Event } from "@/lib/graphql"
+import { getCityById, type Event } from "@/lib/graphql"
 import { formatDate } from "@/lib/utils"
+import { get } from "http"
 
 interface EventsListProps {
   events: Event[]
@@ -34,7 +35,6 @@ export default function EventsList({
   currentCity,
   currentPage,
   hasNextPage,
-  eventsPerPage,
 }: EventsListProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -47,8 +47,9 @@ export default function EventsList({
       event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.eventDetails.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.eventDetails.city.toLowerCase().includes(searchQuery.toLowerCase()),
+      event.eventDetails.city.toLowerCase().includes(searchQuery.toLowerCase())
   )
+
 
   const handleFilterChange = (filterType: "category" | "city", value: string) => {
     const params = new URLSearchParams(searchParams.toString())
@@ -101,14 +102,56 @@ export default function EventsList({
     return icons[city as keyof typeof icons] || "📍"
   }
 
+// Map to store cityId -> cityName
+const [cityNames, setCityNames] = useState<Record<string, string>>({})
+
+useEffect(() => {
+  async function fetchCities() {
+    // Get unique city IDs from filteredEvents
+    const cityIds = Array.from(
+      new Set(filteredEvents.map(e => e.eventDetails.city).filter(Boolean))
+    )
+    // Fetch city names for IDs not already loaded
+    const missingIds = cityIds.filter(id => !cityNames[id])
+    if (missingIds.length === 0) return
+
+    const entries = await Promise.all(
+      missingIds.map(async (id) => {
+        try {
+          const data = await getCityById(id)
+          return [id, data?.name || id]
+        } catch {
+          return [id, id]
+        }
+      })
+    )
+    setCityNames(prev => ({
+      ...prev,
+      ...Object.fromEntries(entries),
+    }))
+  }
+  fetchCities()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [filteredEvents])
+
+// Ajoute cityName à chaque événement dans filteredEvents
+const filteredEventsWithCityName = filteredEvents.map(event => ({
+  ...event,
+  eventDetails: {
+    ...event.eventDetails,
+    cityName: cityNames[event.eventDetails.city] || event.eventDetails.city,
+  },
+}))
+
+
   const renderGridView = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {filteredEvents.map((event) => {
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
+      {filteredEventsWithCityName.map((event) => {
         const isUpcoming = new Date(event.eventDetails.startDate) > new Date()
         const isRegistrationOpen = new Date() < new Date(event.eventDetails.registrationDeadline)
 
         return (
-          <Card key={event.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+          <Card key={event.id} className="bg-background group hover:shadow-lg transition-all duration-300 overflow-hidden">
             <div className="relative">
               {event.featuredImage && (
                 <div className="relative h-48 overflow-hidden">
@@ -120,10 +163,10 @@ export default function EventsList({
                   />
                 </div>
               )}
-              <div className="absolute top-3 left-3 flex gap-2">
+              <div className="flex p-4 gap-2">
                 <Badge className={getCategoryColor(event.eventDetails.category)}>{event.eventDetails.category}</Badge>
                 <Badge variant="outline" className="bg-white/90 backdrop-blur-sm">
-                  {getCityIcon(event.eventDetails.city)} {event.eventDetails.city}
+                  {getCityIcon(event.eventDetails.cityName)} {event.eventDetails.cityName}
                 </Badge>
               </div>
               {!isUpcoming && (
@@ -154,7 +197,7 @@ export default function EventsList({
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Building className="h-4 w-4" />
-                    <span>{event.eventDetails.city}</span>
+                    <span>{event.eventDetails.cityName}</span>
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Users className="h-4 w-4" />
@@ -190,13 +233,13 @@ export default function EventsList({
   )
 
   const renderListView = () => (
-    <div className="space-y-4">
+    <div className="space-y-1">
       {filteredEvents.map((event) => {
         const isUpcoming = new Date(event.eventDetails.startDate) > new Date()
         const isRegistrationOpen = new Date() < new Date(event.eventDetails.registrationDeadline)
 
         return (
-          <Card key={event.id} className="hover:shadow-md transition-shadow">
+          <Card key={event.id} className="bg-background hover:shadow-md transition-shadow">
             <CardContent className="p-6">
               <div className="flex gap-6">
                 {event.featuredImage && (
@@ -289,7 +332,7 @@ export default function EventsList({
 
           {/* Category Filter */}
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-muted-foreground" />
+            <Filter className="h-4 w-4 text-accent" />
             <Select value={currentCategory} onValueChange={(value) => handleFilterChange("category", value)}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filtrer par catégorie" />
@@ -307,7 +350,7 @@ export default function EventsList({
 
           {/* City Filter */}
           <div className="flex items-center gap-2">
-            <Building className="h-4 w-4 text-muted-foreground" />
+            <Building className="h-4 w-4 text-accent" />
             <Select value={currentCity} onValueChange={(value) => handleFilterChange("city", value)}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filtrer par ville" />
@@ -332,12 +375,12 @@ export default function EventsList({
         </div>
 
         {/* View Mode Toggle */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <Button
             variant="outline"
             size="sm"
             onClick={() => setViewMode("grid")}
-            className={viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}
+            className={viewMode === "grid" ? "bg-accent text-black" : ""}
           >
             <Grid className="h-4 w-4 mr-1" />
             Grille
@@ -346,7 +389,7 @@ export default function EventsList({
             variant="outline"
             size="sm"
             onClick={() => setViewMode("list")}
-            className={viewMode === "list" ? "bg-primary text-primary-foreground" : ""}
+            className={viewMode === "list" ? "bg-accent text-black" : ""}
           >
             <List className="h-4 w-4 mr-1" />
             Liste

@@ -7,7 +7,6 @@ import Image from "next/image"
 import { CalendarDays, Users, Settings } from "lucide-react"
 import React from "react"
 import { cn } from "@/lib/utils"
-import { DotBackground } from "@/components/ui/dot-background"
 
 export default async function HomePage() {
   const eventsData = await getEvents({ first: 50 })
@@ -29,16 +28,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <div>
-            <div
-              className={cn(
-                "absolute top-8 inset-2 pointer-events-none",
-                "[background-size:20px_20px] opacity-65",
-                "[background-image:radial-gradient(#d4d4d4_1px,transparent_1px)]",
-                "dark:[background-image:radial-gradient(#404040_1px,transparent_1px)]",
-              )}
-            />
-            
+         
       <div className="container h-[80vh] grid grid-cols-1 md:grid-cols-2 place-content-center gap-24 mx-auto px-4 py-8 inset-4">
         {/* Hero Section */}
         <div className="mb-12">
@@ -99,8 +89,8 @@ export default async function HomePage() {
         </div>
 
         {/* Calendar Component */}
-        <div className=" container col-span-2 mb-12 mx-auto px-4 py-8 ">
-          <h2 className="text-3xl font-heading font-semibold mb-6">Calendrier des événements</h2>
+        <div className=" container col-span-2 mx-auto px-4 py-8 ">
+          <h2 className="text-4xl font-heading font-light mb-6">Calendrier des événements</h2>
           <Calendar events={events} categories={categories} />
         </div>
 
@@ -113,7 +103,6 @@ export default async function HomePage() {
           <DevTools />
         </div>
         */}
-      </div>
     </>
   )
 }

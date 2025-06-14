@@ -103,6 +103,17 @@ export async function getCategories(): Promise<WPTerm[]> {
   return fetchAPI<WPTerm[]>("/categories", { per_page: "100" })
 }
 
+// Fonction pour récupérer la valeur d'un terme de taxonomie par son ID
+export async function getTermById(termId: number): Promise<WPTerm | null> {
+  try {
+    const terms = await fetchAPI<WPTerm[]>(`/terms/${termId}`)
+    return terms.length > 0 ? terms[0] : null
+  } catch (error) {
+    console.error(`Error fetching term by ID: ${error}`)
+    return null
+  }
+}
+
 // Fonction pour récupérer les tags
 export async function getTags(): Promise<WPTerm[]> {
   return fetchAPI<WPTerm[]>("/tags", { per_page: "100" })

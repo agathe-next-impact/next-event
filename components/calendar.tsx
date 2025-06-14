@@ -107,7 +107,7 @@ export default function Calendar({ events, categories }: CalendarProps) {
     <div className="space-y-1">
       {filteredEvents.map((event) => (
         <Card key={event.id}>
-          <CardContent className="p-6">
+          <CardContent className="p-6 bg-background">
             <div className="flex gap-4">
               {event.featuredImage && (
                 <div className="flex-shrink-0">
@@ -124,7 +124,7 @@ export default function Calendar({ events, categories }: CalendarProps) {
                 <div className="flex items-start justify-between">
                   <div>
                     <Link href={`/events/${event.slug}`}>
-                      <h3 className="text-lg font-semibold hover:text-destructive transition-colors">{event.title}</h3>
+                      <h3 className="text-lg font-semibold hover:text-accent transition-colors">{event.title}</h3>
                     </Link>
                     <p className="text-muted-foreground text-sm mt-1">{event.excerpt}</p>
                   </div>
@@ -171,7 +171,7 @@ export default function Calendar({ events, categories }: CalendarProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4 text-muted-foreground" />
+          <Filter className="h-4 w-4 text-accent" />
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Filtrer par catégorie" />

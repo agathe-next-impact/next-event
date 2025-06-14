@@ -4,6 +4,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
+import AnimatedCursor from "react-animated-cursor"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -60,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning>
     <head>
       <meta charSet="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -71,6 +72,24 @@ export default function RootLayout({
       <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     </head>
       <body className={cn(inter.className, "min-h-screen bg-background antialiased")}>
+        <AnimatedCursor
+          innerSize={8}
+          outerSize={15}
+          color="255, 219, 0"
+          outerAlpha={0.2}
+          innerScale={0.7}
+          outerScale={5}
+          trailingSpeed={5}
+          showSystemCursor={false}
+          clickables={[
+            "a",
+            "button",
+            ".cursor-pointer",
+            ".cursor-default",
+            ".cursor-move",
+            ".cursor-grab",
+          ]}
+        />
         <header className="border-b">
           <div className="container mx-auto px-4 py-4">
             <nav className="flex justify-between">
@@ -105,9 +124,21 @@ export default function RootLayout({
           </div>
         </header>
 
-        <main className="mt-12">{children}</main>
+        <main>
+          <div className="relative py-12">
+            <div
+              className={cn(
+                "absolute top- inset-0 pointer-events-none -z-10",
+                "[background-size:20px_20px] opacity-65",
+                "[background-image:radial-gradient(#d4d4d4_1px,transparent_1px)]",
+                "dark:[background-image:radial-gradient(#404040_1px,transparent_1px)]",
+              )}
+            />
+          {children}          
+          </div>
+          </main>
 
-        <footer className="border-t mt-12">
+        <footer className="border-t">
           <div className="container mx-auto px-4 py-8">
             <div className="text-center text-muted-foreground">
               <p>&copy; {new Date().getFullYear()} Next Event. Tous droits réservés.</p>
