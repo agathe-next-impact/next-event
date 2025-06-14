@@ -871,10 +871,19 @@ export async function getSpeakerSlugs() {
 
 export async function getEventsBySpeaker(speakerId: string) {
   try {
-    // Dans une implémentation réelle, on pourrait utiliser une relation entre posts
-    // ou une requête avec meta_query pour trouver les événements liés à un speaker
-    console.log("Relation événements-speakers non implémentée dans l'API WordPress")
-    return []
+    // On filtre côté client car la plupart des installations WP REST ne filtrent pas correctement sur les champs array/meta
+    const allEvents = await getCustomPosts("events", { per_page: "100" })
+    const convertedEvents = allEvents.map(convertToEvent)
+    const events = convertedEvents.filter(event =>
+      Array.isArray(event.eventDetails?.speakers)
+        ? event.eventDetails.speakers.includes(speakerId)
+        : false
+    )
+    if (events.length > 0) {
+      return events
+    } else {
+      return []
+    }
   } catch (error) {
     console.error("Error fetching events by speaker:", error)
     const speakerEventMap: Record<string, string[]> = {

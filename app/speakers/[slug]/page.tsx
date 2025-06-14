@@ -82,6 +82,7 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
 
   // Get events where this speaker has spoken
   const speakerEvents = await getEventsBySpeaker(speaker.id)
+  console.log("Speaker Events:", speakerEvents)
 
   const getExpertiseColor = (expertise: string) => {
     const colors = {
