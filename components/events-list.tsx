@@ -164,10 +164,10 @@ const filteredEventsWithCityName = filteredEvents.map(event => ({
                 </div>
               )}
               <div className="flex p-4 gap-2">
-                <Badge className={getCategoryColor(event.eventDetails.category)}>{event.eventDetails.category}</Badge>
                 <Badge variant="outline" className="bg-white/90 backdrop-blur-sm">
                   {getCityIcon(event.eventDetails.cityName)} {event.eventDetails.cityName}
                 </Badge>
+                <Badge variant="secondary">{event.eventDetails.category}</Badge>
               </div>
               {!isUpcoming && (
                 <div className="absolute top-3 right-3">
@@ -234,7 +234,7 @@ const filteredEventsWithCityName = filteredEvents.map(event => ({
 
   const renderListView = () => (
     <div className="space-y-1">
-      {filteredEvents.map((event) => {
+      {filteredEventsWithCityName.map((event) => {
         const isUpcoming = new Date(event.eventDetails.startDate) > new Date()
         const isRegistrationOpen = new Date() < new Date(event.eventDetails.registrationDeadline)
 
@@ -249,7 +249,7 @@ const filteredEventsWithCityName = filteredEvents.map(event => ({
                       alt={event.featuredImage.node.altText || event.title}
                       width={160}
                       height={120}
-                      className="rounded-lg object-cover"
+                      className="object-cover"
                     />
                   </div>
                 )}
@@ -257,11 +257,11 @@ const filteredEventsWithCityName = filteredEvents.map(event => ({
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        <Badge className={getCategoryColor(event.eventDetails.category)}>
-                          {event.eventDetails.category}
-                        </Badge>
                         <Badge variant="outline">
-                          {getCityIcon(event.eventDetails.city)} {event.eventDetails.city}
+                          {getCityIcon(event.eventDetails.cityName)} {event.eventDetails.cityName}
+                        </Badge>
+                        <Badge variant="secondary">
+                          {event.eventDetails.category}
                         </Badge>
                         {!isUpcoming && <Badge variant="secondary">Terminé</Badge>}
                         {isUpcoming && isRegistrationOpen && (
@@ -293,7 +293,7 @@ const filteredEventsWithCityName = filteredEvents.map(event => ({
                     </div>
                     <div className="flex items-center gap-2">
                       <Building className="h-4 w-4" />
-                      <span>{event.eventDetails.city}</span>
+                      <span>{event.eventDetails.cityName}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4" />

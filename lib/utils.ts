@@ -9,7 +9,7 @@ export function formatDate(date: string | Date, format: "short" | "long" = "shor
   const dateObj = typeof date === "string" ? new Date(date) : date
 
   if (format === "long") {
-    return dateObj.toLocaleDateString("en-US", {
+    return dateObj.toLocaleDateString("fr-FR", {
       weekday: "long",
       year: "numeric",
       month: "long",
@@ -19,7 +19,7 @@ export function formatDate(date: string | Date, format: "short" | "long" = "shor
     })
   }
 
-  return dateObj.toLocaleDateString("en-US", {
+  return dateObj.toLocaleDateString("fr-FR", {
     month: "short",
     day: "numeric",
     year: "numeric",

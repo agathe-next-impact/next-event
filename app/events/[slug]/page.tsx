@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import ReservationForm from "@/components/reservation-form"
+import { getCityById } from "@/lib/graphql"
 
 interface EventPageProps {
   params: {
@@ -56,6 +57,12 @@ export async function generateMetadata({ params, searchParams }: EventPageProps)
 
 export default async function EventPage({ params, searchParams }: EventPageProps) {
   const event = await getEventBySlug(params.slug, !!searchParams.preview)
+  if (event) {
+    const city = await getCityById(event.eventDetails.city || 0)
+    // Ajoute la propriété name de la ville à l'objet event
+    event.eventDetails.city = city?.name || "Inconnu"
+  }
+
 
   if (!event) {
     notFound()
@@ -203,7 +210,7 @@ export default async function EventPage({ params, searchParams }: EventPageProps
                 <Building className="h-4 w-4 mt-1 text-muted-foreground" />
                 <div>
                   <div className="font-medium">Ville</div>
-                  <div className="text-sm text-muted-foreground">{event.eventDetails.city}</div>
+                  <div className="text-sm text-muted-foreground">{event.eventDetails?.city}</div>
                 </div>
               </div>
 

@@ -177,11 +177,11 @@ export default function ReservationForm({ event }: ReservationFormProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Users className="h-5 w-5" />
-          Free Registration
+          Inscription gratuite
         </CardTitle>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Available Spots</span>
+            <span className="text-sm text-muted-foreground">Places disponibles</span>
             <Badge variant={availableSpots <= 5 ? "destructive" : "secondary"}>
               {availableSpots} / {event.eventDetails.maxAttendees}
             </Badge>
@@ -190,7 +190,7 @@ export default function ReservationForm({ event }: ReservationFormProps) {
             <Alert className="border-orange-200 bg-orange-50">
               <AlertCircle className="h-4 w-4 text-orange-600" />
               <AlertDescription className="text-orange-800">
-                Only {availableSpots} spot{availableSpots > 1 ? "s" : ""} left!
+                {availableSpots} place{availableSpots > 1 ? "s" : ""} restante{availableSpots > 1 ? "s" : ""}!
               </AlertDescription>
             </Alert>
           )}
@@ -200,13 +200,13 @@ export default function ReservationForm({ event }: ReservationFormProps) {
         {eventStarted ? (
           <Alert>
             <AlertCircle className="h-4 w-4" />
-            <AlertDescription>This event has already started. Reservations are no longer possible.</AlertDescription>
+            <AlertDescription>Cet événement a déjà commencé. Les réservations ne sont plus possibles.</AlertDescription>
           </Alert>
         ) : !isRegistrationOpen ? (
           <Alert>
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              Reservations are closed since {formatDate(event.eventDetails.registrationDeadline)}.
+              Les inscriptions sont closes depuis le {formatDate(event.eventDetails.registrationDeadline)}.
             </AlertDescription>
           </Alert>
         ) : isFull ? (
@@ -214,10 +214,10 @@ export default function ReservationForm({ event }: ReservationFormProps) {
             <AlertCircle className="h-4 w-4 text-red-600" />
             <AlertDescription className="text-red-800">
               <div className="space-y-2">
-                <p className="font-medium">Event is full</p>
-                <p>All spots have been reserved. You can sign up for the waiting list.</p>
+                <p className="font-medium">Événement complet</p>
+                <p>Toutes les places ont été réservées. Vous pouvez vous inscrire sur la liste d'attente.</p>
                 <Button variant="outline" size="sm" className="mt-2">
-                  Join the waiting list
+                  Rejoindre la liste d'attente
                 </Button>
               </div>
             </AlertDescription>
@@ -233,7 +233,7 @@ export default function ReservationForm({ event }: ReservationFormProps) {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="firstName">First Name *</Label>
+                <Label htmlFor="firstName">Prénom *</Label>
                 <Input
                   id="firstName"
                   name="firstName"
@@ -244,7 +244,7 @@ export default function ReservationForm({ event }: ReservationFormProps) {
                 />
               </div>
               <div>
-                <Label htmlFor="lastName">Last Name *</Label>
+                <Label htmlFor="lastName">Nom *</Label>
                 <Input
                   id="lastName"
                   name="lastName"
@@ -268,11 +268,11 @@ export default function ReservationForm({ event }: ReservationFormProps) {
                 disabled={isSubmitting}
                 placeholder="votre@email.com"
               />
-              <p className="text-xs text-muted-foreground mt-1">📧 A confirmation email will be sent to this address</p>
+                <p className="text-xs text-muted-foreground mt-1">📧 Un email de confirmation sera envoyé à cette adresse</p>
             </div>
 
             <div>
-              <Label htmlFor="phone">Phone</Label>
+              <Label htmlFor="phone">Téléphone</Label>
               <Input
                 id="phone"
                 name="phone"
@@ -285,7 +285,7 @@ export default function ReservationForm({ event }: ReservationFormProps) {
             </div>
 
             <div>
-              <Label htmlFor="company">Company</Label>
+              <Label htmlFor="company">Entreprise</Label>
               <Input
                 id="company"
                 name="company"
@@ -297,7 +297,7 @@ export default function ReservationForm({ event }: ReservationFormProps) {
             </div>
 
             <div>
-              <Label htmlFor="notes">Notes or Questions</Label>
+              <Label htmlFor="notes">Remarques et questions</Label>
               <Textarea
                 id="notes"
                 name="notes"
@@ -312,32 +312,32 @@ export default function ReservationForm({ event }: ReservationFormProps) {
             <div className="pt-4 border-t">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <div className="font-medium">Price</div>
-                  <div className="text-2xl font-bold text-accent">Free</div>
+                  <div className="font-medium">Tarif</div>
+                  <div className="text-2xl font-bold text-accent">Gratuit</div>
                 </div>
                 <Badge variant="secondary" className="text-white">
-                  Free event
+                  Evénement gratuit
                 </Badge>
               </div>
 
               <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? (
-                  <>
+                    <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Reserving...
-                  </>
+                    Réservation en cours...
+                    </>
                 ) : (
-                  <>
+                    <>
                     <CheckCircle className="mr-2 h-4 w-4" />
-                    Confirm my free reservation
-                  </>
+                    Confirmer mon inscription gratuite
+                    </>
                 )}
               </Button>
 
-              <p className="text-xs text-muted-foreground mt-2 text-center">
-                By booking, you agree to receive information about this event.
-                <br />📧 A confirmation email will be sent to you automatically.
-              </p>
+                <p className="text-xs text-muted-foreground mt-2 text-center">
+                En réservant, vous acceptez de recevoir des informations concernant cet événement.
+                <br />📧 Un email de confirmation vous sera envoyé automatiquement.
+                </p>
             </div>
           </form>
         )}

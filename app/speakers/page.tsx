@@ -81,7 +81,7 @@ export default async function SpeakersPage({ searchParams }: SpeakersPageProps) 
       <div className="rounded-lg p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
           <div>
-            <div className="text-2xl font-bold text-primary">{filteredSpeakers.length}</div>
+            <div className="text-3xl font-bold text-accent">{filteredSpeakers.length}</div>
             <div className="text-sm text-muted-foreground">
               {search ||
               expertise !== "all" ||
@@ -94,15 +94,15 @@ export default async function SpeakersPage({ searchParams }: SpeakersPageProps) 
             </div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-primary">{expertiseAreas.length}</div>
+            <div className="text-3xl font-bold text-accent">{expertiseAreas.length}</div>
             <div className="text-sm text-muted-foreground">Domaines d'expertise</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-primary">{companies.length}</div>
+            <div className="text-3xl font-bold text-accent">{companies.length}</div>
             <div className="text-sm text-muted-foreground">Entreprises représentées</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-primary">
+            <div className="text-3xl font-bold text-accent">
               {allSpeakers.filter((s) => s.speakerDetails.rating && s.speakerDetails.rating >= 4.5).length}
             </div>
             <div className="text-sm text-muted-foreground">Speakers 5 étoiles</div>

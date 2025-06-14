@@ -191,7 +191,7 @@ export default function SpeakersList({
   }
 
   const renderGridView = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
       {speakers.map((speaker) => (
         <Card key={speaker.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
           <div className="relative">
@@ -201,18 +201,14 @@ export default function SpeakersList({
                   src={speaker.featuredImage.node.sourceUrl || "/placeholder.svg"}
                   alt={speaker.featuredImage.node.altText || speaker.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="object-contain object-left group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
             )}
             <div className="absolute top-3 right-3 flex gap-2">
-              <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm">
+              <Badge variant="secondary">
                 <Star className="h-3 w-3 mr-1 text-yellow-400 fill-current" />
                 {speaker.speakerDetails.rating}
-              </Badge>
-              <Badge variant="secondary" className="bg-white/90 backdrop-blur-sm flex items-center gap-1">
-                {getAvailabilityIcon(speaker.speakerDetails.availability)}
-                <span className="text-xs">{getAvailabilityText(speaker.speakerDetails.availability)}</span>
               </Badge>
             </div>
           </div>
@@ -220,25 +216,25 @@ export default function SpeakersList({
           <CardContent className="p-6">
             <div className="space-y-3">
               <Link href={`/speakers/${speaker.slug}`}>
-                <h3 className="text-lg font-semibold line-clamp-1 hover:text-primary transition-colors">
+                <h3 className="text-2xl font-regular line-clamp-1 hover:text-primary transition-colors">
                   {speaker.title}
                 </h3>
               </Link>
 
-              <p className="text-sm text-muted-foreground font-medium">{speaker.speakerDetails.jobTitle}</p>
+              <p className="text-sm font-medium">{speaker.speakerDetails.jobTitle}</p>
 
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Building className="h-4 w-4" />
+              <div className="flex items-center gap-2 text-sm">
+                <Building className="h-4 w-4 text-accent" />
                 <span className="line-clamp-1">{speaker.speakerDetails.company}</span>
               </div>
 
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4" />
+              <div className="flex items-center gap-2 text-sm">
+                <MapPin className="h-4 w-4 text-accent" />
                 <span>{speaker.speakerDetails.location}</span>
               </div>
 
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Calendar className="h-4 w-4" />
+              <div className="flex items-center gap-2 text-sm">
+                <Calendar className="h-4 w-4 text-accent" />
                 <span>{speaker.speakerDetails.experience} ans d'expérience</span>
               </div>
 
@@ -246,7 +242,7 @@ export default function SpeakersList({
 
               <div className="flex flex-wrap gap-1">
                 {speaker.speakerDetails.expertise.slice(0, 3).map((exp, index) => (
-                  <Badge key={index} variant="secondary" className={`text-xs ${getExpertiseColor(exp)}`}>
+                  <Badge key={index}>
                     {exp}
                   </Badge>
                 ))}
@@ -259,38 +255,6 @@ export default function SpeakersList({
 
               <div className="flex items-center justify-between pt-3">
                 <div className="flex items-center gap-1">{renderStars(speaker.speakerDetails.rating)}</div>
-                <div className="flex items-center gap-2">
-                  {speaker.speakerDetails.socialLinks.linkedin && (
-                    <a
-                      href={speaker.speakerDetails.socialLinks.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Linkedin className="h-4 w-4" />
-                    </a>
-                  )}
-                  {speaker.speakerDetails.socialLinks.twitter && (
-                    <a
-                      href={speaker.speakerDetails.socialLinks.twitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Twitter className="h-4 w-4" />
-                    </a>
-                  )}
-                  {speaker.speakerDetails.socialLinks.github && (
-                    <a
-                      href={speaker.speakerDetails.socialLinks.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Github className="h-4 w-4" />
-                    </a>
-                  )}
-                </div>
               </div>
 
               <div className="flex gap-2 pt-2">
@@ -299,9 +263,9 @@ export default function SpeakersList({
                     Voir le profil
                   </Button>
                 </Link>
-                <Button variant="ghost" size="sm" asChild>
+                <Button variant="ghost" size="sm" className="hover:bg-transparent" asChild>
                   <a href={`mailto:${speaker.speakerDetails.email}`}>
-                    <Mail className="h-4 w-4" />
+                    <Mail className="h-4 w-4 text-black" />
                   </a>
                 </Button>
               </div>
@@ -325,7 +289,7 @@ export default function SpeakersList({
                     alt={speaker.featuredImage.node.altText || speaker.title}
                     width={120}
                     height={120}
-                    className="rounded-lg object-cover"
+                    className="object-contain"
                   />
                 </div>
               )}
@@ -333,16 +297,12 @@ export default function SpeakersList({
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <Badge variant="secondary" className="bg-white/90 text-black">
+                      <Badge variant="secondary">
                         <Star className="h-3 w-3 mr-1 text-yellow-400 fill-current" />
                         {speaker.speakerDetails.rating}
                       </Badge>
-                      <Badge variant="secondary" className="flex items-center gap-1">
-                        {getAvailabilityIcon(speaker.speakerDetails.availability)}
-                        <span className="text-xs">{getAvailabilityText(speaker.speakerDetails.availability)}</span>
-                      </Badge>
                       {speaker.speakerDetails.expertise.slice(0, 2).map((exp, index) => (
-                        <Badge key={index} variant="secondary" className={`text-xs ${getExpertiseColor(exp)}`}>
+                        <Badge key={index} variant="default">
                           {exp}
                         </Badge>
                       ))}
@@ -460,7 +420,7 @@ export default function SpeakersList({
       <div className="flex flex-col gap-4">
         {/* Search Bar */}
         <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-accent h-4 w-4" />
           <Input
             placeholder="Rechercher un speaker..."
             value={searchQuery}
@@ -480,7 +440,7 @@ export default function SpeakersList({
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center flex-wrap">
             {/* Expertise Filter */}
             <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-muted-foreground" />
+              <Filter className="h-4 w-4 text-accent" />
               <Select
                 value={currentExpertise}
                 onValueChange={(value) => handleFilterChange("expertise", value)}
@@ -502,7 +462,7 @@ export default function SpeakersList({
 
             {/* Company Filter */}
             <div className="flex items-center gap-2">
-              <Building className="h-4 w-4 text-muted-foreground" />
+              <Building className="h-4 w-4 text-accent" />
               <Select
                 value={currentCompany}
                 onValueChange={(value) => handleFilterChange("company", value)}
@@ -524,7 +484,7 @@ export default function SpeakersList({
 
             {/* Location Filter */}
             <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-muted-foreground" />
+              <MapPin className="h-4 w-4 text-accent" />
               <Select
                 value={currentLocation}
                 onValueChange={(value) => handleFilterChange("location", value)}
@@ -546,7 +506,7 @@ export default function SpeakersList({
 
             {/* Availability Filter */}
             <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-muted-foreground" />
+              <Clock className="h-4 w-4 text-accent" />
               <Select
                 value={currentAvailability}
                 onValueChange={(value) => handleFilterChange("availability", value)}
@@ -566,7 +526,7 @@ export default function SpeakersList({
 
             {/* Experience Filter */}
             <div className="flex items-center gap-2">
-              <Award className="h-4 w-4 text-muted-foreground" />
+              <Award className="h-4 w-4 text-accent" />
               <Select
                 value={currentExperience}
                 onValueChange={(value) => handleFilterChange("experience", value)}
@@ -594,12 +554,12 @@ export default function SpeakersList({
           </div>
 
           {/* View Mode Toggle */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-0">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setViewMode("grid")}
-              className={viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}
+              className={viewMode === "grid" ? "bg-accent text-black" : ""}
               disabled={isFiltering}
             >
               <Grid className="h-4 w-4 mr-1" />
@@ -609,7 +569,7 @@ export default function SpeakersList({
               variant="outline"
               size="sm"
               onClick={() => setViewMode("list")}
-              className={viewMode === "list" ? "bg-primary text-primary-foreground" : ""}
+              className={viewMode === "list" ? "bg-accent text-black" : ""}
               disabled={isFiltering}
             >
               <List className="h-4 w-4 mr-1" />

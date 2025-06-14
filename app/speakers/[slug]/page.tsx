@@ -190,7 +190,7 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
           <Card>
             <CardContent className="p-6">
               {speaker.featuredImage && (
-                <div className="relative h-64 mb-6 rounded-lg overflow-hidden">
+                <div className="relative h-64 mb-6 overflow-hidden">
                   <Image
                     src={speaker.featuredImage.node.sourceUrl || "/placeholder.svg"}
                     alt={speaker.featuredImage.node.altText || speaker.title}
@@ -209,11 +209,6 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
                 {speaker.speakerDetails.company && (
                   <p className="text-md font-medium text-primary mb-4">{speaker.speakerDetails.company}</p>
                 )}
-
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  {getAvailabilityIcon(speaker.speakerDetails.availability)}
-                  <span className="text-sm">{getAvailabilityText(speaker.speakerDetails.availability)}</span>
-                </div>
 
                 {speaker.speakerDetails.rating && (
                   <>
@@ -346,7 +341,7 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
                 <Button variant="outline" className="w-full" asChild>
                   <Link href="/contact">
                     <MessageSquare className="h-4 w-4 mr-2" />
-                    Demande via Event Portal
+                    Demande via Next Event
                   </Link>
                 </Button>
               </div>
@@ -637,7 +632,7 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
             <Button variant="outline" size="lg" asChild>
               <Link href="/contact">
                 <Users className="h-5 w-5 mr-2" />
-                Passer par Event Portal
+                Passer par Next Event
               </Link>
             </Button>
           </div>
