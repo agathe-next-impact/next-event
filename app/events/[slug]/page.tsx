@@ -9,8 +9,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import dynamic from "next/dynamic"
 import ReservationForm from "@/components/reservation-form"
 import { getCityById } from "@/lib/graphql"
+import { getReservedSeats } from "@/lib/wordpress-api"
 
 interface EventPageProps {
   params: {
@@ -55,23 +57,21 @@ export async function generateMetadata({ params, searchParams }: EventPageProps)
   }
 }
 
+const EventReservationSection = dynamic(() => import("./EventReservationSection"), { ssr: false })
+
 export default async function EventPage({ params, searchParams }: EventPageProps) {
   const event = await getEventBySlug(params.slug, !!searchParams.preview)
   if (event) {
     const city = await getCityById(event.eventDetails.city || 0)
-    // Ajoute la propriété name de la ville à l'objet event
     event.eventDetails.city = city?.name || "Inconnu"
   }
-
 
   if (!event) {
     notFound()
   }
 
-  const isRegistrationOpen = new Date() < new Date(event.eventDetails.registrationDeadline)
-  const eventStarted = new Date() > new Date(event.eventDetails.startDate)
-  const availableSpots = event.eventDetails.maxAttendees - event.eventDetails.currentAttendees
-  const occupancyRate = (event.eventDetails.currentAttendees / event.eventDetails.maxAttendees) * 100
+  // récupérer le nombre de place réservées
+  const reservedSeats = await getReservedSeats(event.id)
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -135,38 +135,8 @@ export default async function EventPage({ params, searchParams }: EventPageProps
             </CardContent>
           </Card>
 
-          {/* Attendance Stats */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <UserCheck className="h-5 w-5" />
-                Participation
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between text-sm">
-                <span>Places réservées</span>
-                <span className="font-medium">
-                  {event.eventDetails.currentAttendees} / {event.eventDetails.maxAttendees}
-                </span>
-              </div>
-              <Progress value={occupancyRate} className="h-2" />
-              <div className="grid grid-cols-3 gap-4 text-center text-sm">
-                <div>
-                  <div className="font-bold text-lg text-black">{event.eventDetails.currentAttendees}</div>
-                  <div className="text-muted-foreground">Confirmées</div>
-                </div>
-                <div>
-                  <div className="font-bold text-lg text-black">{availableSpots}</div>
-                  <div className="text-muted-foreground">Disponibles</div>
-                </div>
-                <div>
-                  <div className="font-bold text-lg text-black">{Math.round(occupancyRate)}%</div>
-                  <div className="text-muted-foreground">Taux de remplissage</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Participation Section dynamique */}
+          <EventReservationSection event={event} initialReservedSeats={reservedSeats} />
         </div>
 
         {/* Sidebar */}
@@ -233,9 +203,6 @@ export default async function EventPage({ params, searchParams }: EventPageProps
               </div>
             </CardContent>
           </Card>
-
-          {/* Reservation Form */}
-          <ReservationForm event={event} />
         </div>
       </div>
     </div>

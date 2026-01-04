@@ -12,9 +12,11 @@ import { Badge } from "@/components/ui/badge"
 import { Loader2, CheckCircle, AlertCircle, Users, Calendar, MapPin, Clock, Mail } from "lucide-react"
 import type { Event } from "@/lib/graphql"
 import { formatDate } from "@/lib/utils"
-
+import { createReservationViaApiRoute } from "@/lib/wordpress-api"
 interface ReservationFormProps {
   event: Event
+  reservedSeats: number // Ajouté
+  onReservationSuccess?: () => void
 }
 
 interface FormData {
@@ -33,7 +35,7 @@ interface ReservationResult {
   emailSent?: boolean
 }
 
-export default function ReservationForm({ event }: ReservationFormProps) {
+export default function ReservationForm({ event, reservedSeats, onReservationSuccess }: ReservationFormProps) {
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -47,7 +49,8 @@ export default function ReservationForm({ event }: ReservationFormProps) {
 
   const isRegistrationOpen = new Date() < new Date(event.eventDetails.registrationDeadline)
   const eventStarted = new Date() > new Date(event.eventDetails.startDate)
-  const availableSpots = event.eventDetails.maxAttendees - event.eventDetails.currentAttendees
+  const maxAttendees = event.eventDetails.maxAttendees
+  const availableSpots = maxAttendees - reservedSeats
   const isFull = availableSpots <= 0
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -61,40 +64,32 @@ export default function ReservationForm({ event }: ReservationFormProps) {
     setReservationResult(null)
 
     try {
-      const response = await fetch("/api/reservations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          eventId: event.id,
-          eventTitle: event.title,
-          eventSlug: event.slug,
-        }),
-      })
+      // Utilisation de la fonction API déplacée
+      const result = await createReservationViaApiRoute({
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+      company: formData.company,
+      notes: formData.notes,
+      eventId: event.id,
+    })
 
-      const result = await response.json()
+      setReservationResult(result)
 
-      if (!response.ok) {
-        throw new Error(result.message || "Erreur lors de la réservation")
+      if (result.success) {
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          company: "",
+          notes: "",
+        })
+        if (onReservationSuccess) {
+          onReservationSuccess() // Ajoute cet appel ici
+        }
       }
-
-      setReservationResult({
-        success: true,
-        confirmationCode: result.confirmationCode,
-        message: "Réservation confirmée avec succès !",
-        emailSent: result.emailSent,
-      })
-
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        company: "",
-        notes: "",
-      })
     } catch (error) {
       setReservationResult({
         success: false,

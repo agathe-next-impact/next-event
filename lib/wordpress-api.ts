@@ -183,3 +183,186 @@ export async function getACFFields(): Promise<any> {
     return null
   }
 }
+
+// Nouveau fichier pour la logique API WordPress
+
+export interface WordPressReservationPayload {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  company: string
+  notes: string
+  eventId: string
+}
+
+export interface WordPressReservationResult {
+  success: boolean
+  confirmationCode?: string
+  message: string
+  emailSent?: boolean
+}
+
+export async function createWordPressReservation(
+  payload: WordPressReservationPayload
+): Promise<WordPressReservationResult> {
+  try {
+    const username = process.env.WORDPRESS_API_USER
+    const password = process.env.WORDPRESS_API_PASSWORD
+
+    if (!username || !password) {
+      throw new Error("Identifiants API WordPress manquants (variables d'environnement)")
+    }
+
+    // Chercher un participant existant avec cet email
+    const checkUrl = `${API_BASE_URL}/participant?acf_email=${encodeURIComponent(payload.email)}&_embed=true`
+    const checkResponse = await fetch(checkUrl)
+    if (!checkResponse.ok) {
+      throw new Error("Erreur lors de la vérification des inscriptions existantes")
+    }
+    const existing = await checkResponse.json()
+
+    if (Array.isArray(existing) && existing.length > 0) {
+      const participant = existing[0]
+      let events: string[] = []
+      if (Array.isArray(participant.acf?.event)) {
+        events = participant.acf.event.map((e: any) => String(e))
+      } else if (participant.acf?.event) {
+        events = [String(participant.acf.event)]
+      }
+      if (!events.includes(payload.eventId)) {
+        events.push(payload.eventId)
+        const authHeader = "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
+        const updateResponse = await fetch(`${API_BASE_URL}/participant/${participant.id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: authHeader,
+          },
+          body: JSON.stringify({
+            acf: {
+              ...participant.acf,
+              event: events,
+            },
+          }),
+        })
+        if (!updateResponse.ok) {
+          const error = await updateResponse.json()
+          throw new Error(error.message || "Erreur lors de la mise à jour du participant")
+        }
+        // Créer une réservation liant participant et événement
+        await createReservationCPT(participant.id, payload.eventId, username, password)
+        return {
+          success: true,
+          message: "Votre inscription à ce nouvel événement a été ajoutée à votre profil participant.",
+        }
+      } else {
+        return {
+          success: false,
+          message: "Vous êtes déjà inscrit à cet événement avec cette adresse email.",
+        }
+      }
+    }
+
+    // Création du participant
+    const authHeader = "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
+    const wpResponse = await fetch(`${API_BASE_URL}/participant`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authHeader,
+      },
+      body: JSON.stringify({
+        title: `${payload.firstName} ${payload.lastName}`,
+        status: "publish",
+        acf: {
+          first_name: payload.firstName,
+          last_name: payload.lastName,
+          email: payload.email,
+          phone: payload.phone,
+          company: payload.company,
+          notes: payload.notes,
+          event: [payload.eventId],
+        },
+      }),
+    })
+
+    if (!wpResponse.ok) {
+      const error = await wpResponse.json()
+      throw new Error(error.message || "Erreur lors de l'enregistrement WordPress")
+    }
+
+    const newParticipant = await wpResponse.json()
+
+    // Créer une réservation liant participant et événement
+    await createReservationCPT(newParticipant.id, payload.eventId, username, password)
+
+    return {
+      success: true,
+      message: "Réservation confirmée et enregistrée dans WordPress !",
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Une erreur inattendue s'est produite",
+    }
+  }
+}
+
+// Fonction utilitaire pour créer une entrée CPT réservation
+async function createReservationCPT(
+  participantId: number,
+  eventId: string,
+  username: string,
+  password: string
+) {
+  const authHeader = "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
+  await fetch(`${API_BASE_URL}/reservation`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: authHeader,
+    },
+    body: JSON.stringify({
+      title: `Réservation participant ${participantId} - événement ${eventId}`,
+      status: "publish",
+      acf: {
+        participant: participantId,
+        event: eventId,
+      },
+    }),
+  })
+}
+
+/**
+ * Appelle l'API interne Next.js pour créer une réservation côté client.
+ * À utiliser dans les composants React.
+ */
+export async function createReservationViaApiRoute(payload: WordPressReservationPayload): Promise<WordPressReservationResult> {
+  const response = await fetch("/api/reservation", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  })
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}))
+    throw new Error(error.message || "Erreur lors de la réservation")
+  }
+  return response.json()
+}
+
+
+// calcule le nombre de places réservées pour un événement
+export async function getReservedSeats(eventId: string): Promise<number> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/participant?event=${eventId}`)
+    if (!response.ok) {
+      throw new Error(`Erreur lors de la récupération des réservations : ${response.statusText}`)
+    }
+    const data = await response.json()
+    return data.length
+  } catch (error) {
+    console.error(`Erreur lors de la récupération des réservations : ${error}`)
+    return 0
+  }
+}
