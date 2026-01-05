@@ -636,13 +636,6 @@ export async function sendContactConfirmationEmail(contactMessage: ContactMessag
 
     // En mode développement, simuler l'envoi
     if (process.env.NODE_ENV === "development" || !process.env.SMTP_HOST) {
-      console.log("📧 Simulation d'envoi d'email de confirmation contact:")
-      console.log("To:", contactMessage.email)
-      console.log("Subject:", emailTemplate.subject)
-      console.log("Message ID:", contactMessage.id)
-      console.log("Category:", contactMessage.category)
-      console.log("Priority:", contactMessage.priority)
-
       // Simuler un délai d'envoi
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
@@ -696,13 +689,6 @@ export async function sendContactNotificationEmail(contactMessage: ContactMessag
 
     // En mode développement, simuler l'envoi
     if (process.env.NODE_ENV === "development" || !process.env.SMTP_HOST) {
-      console.log("📧 Simulation d'envoi d'email de notification équipe:")
-      console.log("To:", destinationEmail)
-      console.log("Subject:", emailTemplate.subject)
-      console.log("From:", `${contactMessage.firstName} ${contactMessage.lastName}`)
-      console.log("Category:", contactMessage.category)
-      console.log("Priority:", contactMessage.priority)
-
       // Simuler un délai d'envoi
       await new Promise((resolve) => setTimeout(resolve, 500))
 
@@ -1280,12 +1266,6 @@ export async function sendSpeakerConfirmationEmail(application: SpeakerApplicati
 
     // En mode développement, simuler l'envoi
     if (process.env.NODE_ENV === "development" || !process.env.SMTP_HOST) {
-      console.log("📧 Simulation d'envoi d'email de confirmation speaker:")
-      console.log("To:", application.email)
-      console.log("Subject:", emailTemplate.subject)
-      console.log("Application ID:", application.id)
-      console.log("Talk:", application.talkTitle)
-
       // Simuler un délai d'envoi
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
@@ -1319,12 +1299,6 @@ export async function sendSpeakerNotificationEmail(application: SpeakerApplicati
 
     // En mode développement, simuler l'envoi
     if (process.env.NODE_ENV === "development" || !process.env.SMTP_HOST) {
-      console.log("📧 Simulation d'envoi d'email de notification équipe:")
-      console.log("To: speakers@eventportal.fr")
-      console.log("Subject:", emailTemplate.subject)
-      console.log("Speaker:", `${application.firstName} ${application.lastName}`)
-      console.log("Talk:", application.talkTitle)
-
       // Simuler un délai d'envoi
       await new Promise((resolve) => setTimeout(resolve, 500))
 
@@ -1651,12 +1625,6 @@ export async function sendConfirmationEmail(reservation: Reservation, event: Eve
 
     // En mode développement, simuler l'envoi
     if (process.env.NODE_ENV === "development" || !process.env.SMTP_HOST) {
-      console.log("📧 Simulation d'envoi d'email de confirmation:")
-      console.log("To:", reservation.email)
-      console.log("Subject:", emailTemplate.subject)
-      console.log("Code de confirmation:", reservation.confirmationCode)
-      console.log("Event:", event.title)
-
       // Simuler un délai d'envoi
       await new Promise((resolve) => setTimeout(resolve, 1000))
 

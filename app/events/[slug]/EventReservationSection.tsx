@@ -5,22 +5,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { UserCheck } from "lucide-react"
 import ReservationForm from "@/components/reservation-form"
-import { getReservedSeats } from "@/lib/wordpress-api"
+
 
 export default function EventReservationSection({ event, initialReservedSeats }) {
+
   const [reservedSeats, setReservedSeats] = useState(initialReservedSeats)
 
-  // Fonction pour rafraîchir le nombre de places réservées
-  const refreshReservedSeats = useCallback(async () => {
-    const updated = await getReservedSeats(event.id)
-    setReservedSeats(updated)
-  }, [event.id])
-
-  // Rafraîchir au montage pour garantir la synchro avec WordPress
-  useEffect(() => {
-    refreshReservedSeats()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [event.id])
+  // Mise à jour instantanée locale après réservation
+  const handleLocalReservation = useCallback(() => {
+    setReservedSeats((prev) => prev + 1)
+  }, [])
 
   const maxAttendees = event.eventDetails.maxAttendees
   const availableSpots = maxAttendees - reservedSeats
@@ -64,7 +58,7 @@ export default function EventReservationSection({ event, initialReservedSeats })
       <ReservationForm
         event={event}
         reservedSeats={reservedSeats}
-        onReservationSuccess={refreshReservedSeats}
+        onReservationSuccess={handleLocalReservation}
       />
     </>
   )

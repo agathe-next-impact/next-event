@@ -157,7 +157,6 @@ export async function getEvents(variables?: { first?: number; after?: string; ca
     }
   } catch (error) {
     console.error("Error fetching events:", error)
-    console.log("Utilisation des données simulées pour les événements")
     return {
       nodes: MOCK_EVENTS,
       pageInfo: {
@@ -221,7 +220,6 @@ export async function getSpeakers(variables?: {
         },
       }
     } catch (error) {
-      console.log("Type de post personnalisé 'speakers' non trouvé, utilisation des données simulées")
       let speakers = [...MOCK_SPEAKERS]
 
       // Appliquer les filtres sur les données simulées
@@ -335,7 +333,7 @@ export async function getSpeakerBySlug(slug: string) {
         return convertToSpeaker(speakerPosts[0])
       }
     } catch (error) {
-      console.log("Type de post personnalisé 'speakers' non trouvé, recherche dans les posts standard")
+      // Type de post personnalisé 'speakers' non trouvé
     }
 
     const post = await getPostBySlug(slug)
@@ -358,7 +356,6 @@ export async function getSpeakerSlugs() {
       const speakerPosts = await getCustomPosts("speakers", { per_page: "100" })
       return speakerPosts.map((post) => post.slug)
     } catch (error) {
-      console.log("Type de post personnalisé 'speakers' non trouvé, utilisation des posts avec catégorie 'speaker'")
       const posts = await getPosts({ per_page: "100", categories: "speaker" })
       return posts.map((post) => post.slug)
     }

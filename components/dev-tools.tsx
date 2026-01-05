@@ -63,8 +63,6 @@ export default function DevTools() {
         success: true,
         error: null,
       })
-
-      console.log("📧 Email de test envoyé:", data)
     } catch (error) {
       setEmailStatus({
         loading: false,

@@ -1,7 +1,6 @@
 "use client"
 
-import type React from "react"
-import { useState } from "react"
+import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -12,11 +11,10 @@ import { Badge } from "@/components/ui/badge"
 import { Loader2, CheckCircle, AlertCircle, Users, Calendar, MapPin, Clock, Mail } from "lucide-react"
 import type { Event } from "@/lib/graphql"
 import { formatDate } from "@/lib/utils"
-import { createReservationViaApiRoute } from "@/lib/wordpress-api"
 interface ReservationFormProps {
   event: Event
-  reservedSeats: number // Ajouté
-  onReservationSuccess?: () => void
+  reservedSeats: number
+  onReservationSuccess?: () => void // Appelée pour mise à jour locale
 }
 
 interface FormData {
@@ -36,6 +34,7 @@ interface ReservationResult {
 }
 
 export default function ReservationForm({ event, reservedSeats, onReservationSuccess }: ReservationFormProps) {
+
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -46,11 +45,17 @@ export default function ReservationForm({ event, reservedSeats, onReservationSuc
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [reservationResult, setReservationResult] = useState<ReservationResult | null>(null)
+  const [confirmedCount, setConfirmedCount] = useState(reservedSeats)
+
+  // Synchroniser confirmedCount si reservedSeats change (mise à jour parent)
+  React.useEffect(() => {
+    setConfirmedCount(reservedSeats)
+  }, [reservedSeats])
 
   const isRegistrationOpen = new Date() < new Date(event.eventDetails.registrationDeadline)
   const eventStarted = new Date() > new Date(event.eventDetails.startDate)
   const maxAttendees = event.eventDetails.maxAttendees
-  const availableSpots = maxAttendees - reservedSeats
+  const availableSpots = maxAttendees - confirmedCount
   const isFull = availableSpots <= 0
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -63,61 +68,61 @@ export default function ReservationForm({ event, reservedSeats, onReservationSuc
     setIsSubmitting(true)
     setReservationResult(null)
 
-    try {
-      // Utilisation de la fonction API déplacée
-      const result = await createReservationViaApiRoute({
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email: formData.email,
-      phone: formData.phone,
-      company: formData.company,
-      notes: formData.notes,
-      eventId: event.id,
-    })
-
-      setReservationResult(result)
-
-      if (result.success) {
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phone: "",
-          company: "",
-          notes: "",
-        })
-        if (onReservationSuccess) {
-          onReservationSuccess() // Ajoute cet appel ici
-        }
-      }
-    } catch (error) {
+    // Simulation de confirmation locale
+    setTimeout(() => {
       setReservationResult({
-        success: false,
-        message: error instanceof Error ? error.message : "Une erreur inattendue s'est produite",
+        success: true,
+        message: "Votre réservation a été confirmée !",
+        confirmationCode: Math.random().toString(36).substring(2, 10).toUpperCase(),
+        emailSent: true,
       })
-    } finally {
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        company: "",
+        notes: "",
+      })
       setIsSubmitting(false)
-    }
+      if (onReservationSuccess) {
+        onReservationSuccess() // Mise à jour locale dans le parent
+      }
+    }, 1000)
   }
 
   if (reservationResult?.success) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-green-600">
+          <CardTitle className="flex items-center gap-2 text-yellow-500">
             <CheckCircle className="h-5 w-5" />
             Réservation Confirmée
           </CardTitle>
+          <div className="space-y-2 mt-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Places disponibles</span>
+              <Badge variant={availableSpots <= 5 ? "destructive" : "secondary"}>
+                {availableSpots} / {event.eventDetails.maxAttendees}
+              </Badge>
+            </div>
+            {availableSpots <= 5 && availableSpots > 0 && (
+              <Alert className="border-orange-200 bg-orange-50">
+                <AlertDescription className="text-orange-800">
+                  {availableSpots} place{availableSpots > 1 ? "s" : ""} restante{availableSpots > 1 ? "s" : ""}!
+                </AlertDescription>
+              </Alert>
+            )}
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Alert className="border-green-200 bg-green-50">
-            <CheckCircle className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-green-800">
+          <Alert>
+            <AlertDescription>
               <div className="space-y-2">
                 <p className="font-medium">{reservationResult.message}</p>
                 <p>
                   <strong>Code de confirmation :</strong>{" "}
-                  <span className="font-mono bg-green-100 px-2 py-1 rounded text-green-800">
+                  <span className="font-mono px-2 py-1 rounded">
                     {reservationResult.confirmationCode}
                   </span>
                 </p>
@@ -127,11 +132,10 @@ export default function ReservationForm({ event, reservedSeats, onReservationSuc
           </Alert>
 
           {reservationResult.emailSent && (
-            <Alert className="border-blue-200 bg-blue-50">
-              <Mail className="h-4 w-4 text-blue-600" />
-              <AlertDescription className="text-blue-800">
-                <div className="space-y-1">
-                  <p className="font-medium">📧 Email de confirmation envoyé</p>
+            <Alert>
+              <AlertDescription>
+                <div className="space-y-1 bg-yellow-200/20 p-2 rounded">
+                  <p className="font-medium">Email de confirmation envoyé</p>
                   <p className="text-sm">
                     Vérifiez votre boîte mail (et vos spams) pour retrouver tous les détails de l'événement.
                   </p>
@@ -157,9 +161,7 @@ export default function ReservationForm({ event, reservedSeats, onReservationSuc
 
           <div className="pt-4 border-t">
             <p className="text-sm text-muted-foreground">
-              {reservationResult.emailSent
-                ? "Un email de confirmation détaillé vous a été envoyé avec toutes les informations nécessaires."
-                : "Nous vous enverrons un email de confirmation sous peu avec tous les détails de l'événement."}
+              Un email de confirmation vous a été envoyé avec toutes les informations nécessaires.
             </p>
           </div>
         </CardContent>

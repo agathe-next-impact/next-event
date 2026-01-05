@@ -1,10 +1,13 @@
-import type React from "react"
+import React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import AnimatedCursor from "react-animated-cursor"
+import Link from "next/link"
+import dynamic from "next/dynamic"
+const MobileMenu = dynamic(() => import("@/components/mobile-menu"), { ssr: false });
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -90,35 +93,29 @@ export default function RootLayout({
             ".cursor-grab",
           ]}
         />
-        <header className="border-b">
+        <header className="border-b sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container mx-auto px-4 py-4">
-            <nav className="flex justify-between">
-              <Image
-                src="/images/logo-next-event.png"
-                alt="Next Event Portal Logo"
-                width={150}
-                height={50}
-                className="h-12 w-max object-contain"
-              />
-              <div className="flex items-center gap-6">
-                <a href="/" className="hover:text-accent transition-colors">
-                  Accueil
-                </a>
-                <a href="/events" className="hover:text-accent transition-colors">
-                  Événements
-                </a>
-                <a href="/speakers" className="hover:text-accent transition-colors">
-                  Speakers
-                </a>
-                <a href="/about" className="hover:text-accent transition-colors">
-                  À propos
-                </a>
-                <a href="/become-speaker" className="hover:text-accent transition-colors">
-                  Devenir Speaker
-                </a>
-                <a href="/contact" className="hover:text-accent transition-colors">
-                  Contact
-                </a>
+            <nav className="flex justify-between items-center">
+              <Link href="/">
+                <Image
+                  src="/images/logo-next-event.png"
+                  alt="Next Event Portal Logo"
+                  width={150}
+                  height={50}
+                  className="h-12 w-max object-contain"
+                />
+              </Link>
+              {/* Menu desktop */}
+              <div className="hidden md:flex items-center gap-6">
+                <Link href="/events" className="hover:text-accent transition-colors">Événements</Link>
+                <Link href="/speakers" className="hover:text-accent transition-colors">Speakers</Link>
+                <Link href="/about" className="hover:text-accent transition-colors">À propos</Link>
+                <Link href="/become-speaker" className="hover:text-accent transition-colors">Devenir Speaker</Link>
+                <Link href="/contact" className="hover:text-accent transition-colors">Contact</Link>
+              </div>
+              {/* Menu mobile/tablette */}
+              <div className="md:hidden">
+                <MobileMenu />
               </div>
             </nav>
           </div>

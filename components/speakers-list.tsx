@@ -69,7 +69,7 @@ export default function SpeakersList({
 }: SpeakersListProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [viewMode, setViewMode] = useState<ViewMode>("grid")
+  const [viewMode, setViewMode] = useState<ViewMode>("list")
   const [searchQuery, setSearchQuery] = useState(currentSearch)
   const [isFiltering, setIsFiltering] = useState(false)
 
@@ -200,210 +200,218 @@ export default function SpeakersList({
 
   const renderGridView = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-      {speakers.map((speaker) => (
-        <Card key={speaker.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
-          <div className="relative">
-            {speaker.featuredImage && (
-              <div className="relative h-48 overflow-hidden">
-                <Image
-                  src={speaker.featuredImage.node.sourceUrl || "/placeholder.svg"}
-                  alt={speaker.featuredImage.node.altText || speaker.title}
-                  fill
-                  className="object-cover object-left group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-            )}
-            <div className="absolute top-3 right-3 flex gap-2">
-              <Badge variant="secondary">
-                <Star className="h-3 w-3 mr-1 text-yellow-400 fill-current" />
-                {speaker.speakerDetails.rating}
-              </Badge>
+      {speakers.map((speaker) => {
+        const { speakerDetails = {}, socialLinks = {} } = speaker;
+        return (
+          <Card key={speaker.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+            <div className="relative">
+              {speaker.featuredImage && (
+                <div className="relative h-48 overflow-hidden">
+                  <Image
+                    src={speaker.featuredImage.node.sourceUrl || "/placeholder.svg"}
+                    alt={speaker.featuredImage.node.altText || speaker.title}
+                    fill
+                    className="object-cover object-left group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              )}
             </div>
-          </div>
-
-          <CardContent className="p-6">
-            <div className="space-y-3">
-              <Link href={`/speakers/${speaker.slug}`}>
-                <h3 className="text-2xl font-regular line-clamp-1 hover:text-primary transition-colors">
-                  {speaker.title}
-                </h3>
-              </Link>
-
-              <p className="text-sm font-medium">{speaker.speakerDetails.jobTitle}</p>
-
-              <div className="flex items-center gap-2 text-sm">
-                <Building className="h-4 w-4 text-accent" />
-                <span className="line-clamp-1">{speaker.speakerDetails.company}</span>
-              </div>
-
-              <div className="flex items-center gap-2 text-sm">
-                <MapPin className="h-4 w-4 text-accent" />
-                <span>{speaker.speakerDetails.location}</span>
-              </div>
-
-              <div className="flex items-center gap-2 text-sm">
-                <Calendar className="h-4 w-4 text-accent" />
-                <span>{speaker.speakerDetails.experience} ans d'expérience</span>
-              </div>
-
-              <p className="text-muted-foreground text-sm line-clamp-2">{typeof speaker.speakerDetails.bio === "string" ? decodeHTMLEntities(speaker.speakerDetails.bio.replace(/<[^>]+>/g, '')) : speaker.speakerDetails.bio}</p>
-
-              <div className="flex flex-wrap gap-1">
-                {speaker.speakerDetails.expertise.slice(0, 3).map((exp, index) => (
-                  <Badge key={index}>
-                    {exp}
-                  </Badge>
-                ))}
-                {speaker.speakerDetails.expertise.length > 3 && (
-                  <Badge variant="outline" className="text-xs">
-                    +{speaker.speakerDetails.expertise.length - 3}
-                  </Badge>
-                )}
-              </div>
-
-              <div className="flex items-center justify-between pt-3">
-                <div className="flex items-center gap-1">{renderStars(speaker.speakerDetails.rating)}</div>
-              </div>
-
-              <div className="flex gap-2 pt-2">
-                <Link href={`/speakers/${speaker.slug}`} className="flex-1">
-                  <Button variant="outline" size="sm" className="w-full">
-                    Voir le profil
-                  </Button>
+            <CardContent className="p-6">
+              <div className="space-y-3">
+                <Link href={`/speakers/${speaker.slug}`}>
+                  <h3 className="text-2xl font-regular line-clamp-1 hover:text-primary transition-colors">
+                    {speaker.title}
+                  </h3>
                 </Link>
-                <Button variant="ghost" size="sm" className="hover:bg-transparent" asChild>
-                  <a href={`mailto:${speaker.speakerDetails.email}`}>
-                    <Mail className="h-4 w-4 text-black" />
-                  </a>
-                </Button>
+                {speakerDetails.jobTitle && (
+                  <p className="text-sm font-medium">{speakerDetails.jobTitle}</p>
+                )}
+                {speakerDetails.company && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <Building className="h-4 w-4 text-accent" />
+                    <span className="line-clamp-1">{speakerDetails.company}</span>
+                  </div>
+                )}
+                {speakerDetails.location && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <MapPin className="h-4 w-4 text-accent" />
+                    <span>{speakerDetails.location}</span>
+                  </div>
+                )}
+                {speakerDetails.years_of_experience && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <Calendar className="h-4 w-4 text-accent" />
+                    <span>{speakerDetails.years_of_experience} ans d'expérience</span>
+                  </div>
+                )}
+                {speakerDetails.bio && (
+                  <p className="text-muted-foreground text-sm line-clamp-2">{typeof speakerDetails.bio === "string" ? speakerDetails.bio.replace(/<[^>]+>/g, '') : speakerDetails.bio}</p>
+                )}
+                {speakerDetails.expertises && Array.isArray(speakerDetails.expertises) && (
+                  <div className="flex flex-wrap gap-1">
+                    {speakerDetails.expertises.slice(0, 3).map((exp, index) => (
+                      <Badge key={index}>{exp.name}</Badge>
+                    ))}
+                    {speakerDetails.expertises.length > 3 && (
+                      <Badge variant="outline" className="text-xs">
+                        +{speakerDetails.expertises.length - 3}
+                      </Badge>
+                    )}
+                  </div>
+                )}
+                <div className="flex gap-2 pt-2">
+                  <Link href={`/speakers/${speaker.slug}`} className="flex-1">
+                    <Button variant="outline" size="sm" className="w-full">
+                      Voir le profil
+                    </Button>
+                  </Link>
+                  {speakerDetails.email && (
+                    <Button variant="ghost" size="sm" className="hover:bg-transparent" asChild>
+                      <a href={`mailto:${speakerDetails.email}`}>
+                        <Mail className="h-4 w-4 text-black" />
+                      </a>
+                    </Button>
+                  )}
+                </div>
+                <div className="flex gap-2 pt-2">
+                  {socialLinks.linkedin && (
+                    <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                      <Linkedin className="h-4 w-4" />
+                    </a>
+                  )}
+                  {socialLinks.twitter && (
+                    <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                      <Twitter className="h-4 w-4" />
+                    </a>
+                  )}
+                  {socialLinks.github && (
+                    <a href={socialLinks.github} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                      <Github className="h-4 w-4" />
+                    </a>
+                  )}
+                  {socialLinks.website && (
+                    <a href={socialLinks.website} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                      <Globe className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+            </CardContent>
+          </Card>
+        );
+      })}
     </div>
   )
 
   const renderListView = () => (
     <div className="space-y-4">
-      {speakers.map((speaker) => (
-        <Card key={speaker.id} className="hover:shadow-md transition-shadow">
-          <CardContent className="p-6">
-            <div className="flex gap-6">
-              {speaker.featuredImage && (
-                <div className="flex-shrink-0">
-                  <Image
-                    src={speaker.featuredImage.node.sourceUrl || "/placeholder.svg"}
-                    alt={speaker.featuredImage.node.altText || speaker.title}
-                    width={120}
-                    height={120}
-                    className="object-contain"
-                  />
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <Badge variant="secondary">
-                        <Star className="h-3 w-3 mr-1 text-yellow-400 fill-current" />
-                        {speaker.speakerDetails.rating}
-                      </Badge>
-                      {speaker.speakerDetails.expertise.slice(0, 2).map((exp, index) => (
-                        <Badge key={index} variant="default">
-                          {exp}
-                        </Badge>
-                      ))}
+      {speakers.map((speaker) => {
+        const { speakerDetails = {}, socialLinks = {} } = speaker;
+        return (
+          <Card key={speaker.id} className="hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex gap-6">
+                {speaker.featuredImage && (
+                  <div className="flex-shrink-0">
+                    <Image
+                      src={speaker.featuredImage.node.sourceUrl || "/placeholder.svg"}
+                      alt={speaker.featuredImage.node.altText || speaker.title}
+                      width={120}
+                      height={120}
+                      className="object-contain rounded-lg"
+                    />
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      {speakerDetails.expertises && Array.isArray(speakerDetails.expertises) && (
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
+                          {speakerDetails.expertises.slice(0, 3).map((exp, index) => (
+                            <Badge key={index}>{exp.name}</Badge>
+                          ))}
+                          {speakerDetails.expertises.length > 3 && (
+                            <Badge variant="outline" className="text-xs">
+                              +{speakerDetails.expertises.length - 3}
+                            </Badge>
+                          )}
+                        </div>
+                      )}
+                      <Link href={`/speakers/${speaker.slug}`}>
+                        <h3 className="text-xl font-semibold hover:text-primary transition-colors mb-1">
+                          {speaker.title}
+                        </h3>
+                      </Link>
+                      {speakerDetails.jobTitle && (
+                        <p className="text-sm font-medium text-muted-foreground mb-2">{speakerDetails.jobTitle}</p>
+                      )}
+                      {speakerDetails.bio && (
+                        <p className="text-muted-foreground mb-3 line-clamp-2">{typeof speakerDetails.bio === "string" ? speakerDetails.bio.replace(/<[^>]+>/g, '') : speakerDetails.bio}</p>
+                      )}
                     </div>
-                    <Link href={`/speakers/${speaker.slug}`}>
-                      <h3 className="text-xl font-semibold hover:text-primary transition-colors mb-1">
-                        {speaker.title}
-                      </h3>
-                    </Link>
-                    <p className="text-sm font-medium text-muted-foreground mb-2">{speaker.speakerDetails.jobTitle}</p>
-                    <p className="text-muted-foreground mb-3 line-clamp-2">{speaker.speakerDetails.bio}</p>
+                    <div className="flex gap-2">
+                      <Link href={`/speakers/${speaker.slug}`}>
+                        <Button variant="outline">Voir le profil</Button>
+                      </Link>
+                      {speakerDetails.email && (
+                        <Button variant="ghost" size="sm" asChild>
+                          <a href={`mailto:${speakerDetails.email}`}>
+                            <Mail className="h-4 w-4" />
+                          </a>
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Link href={`/speakers/${speaker.slug}`}>
-                      <Button variant="outline">Voir le profil</Button>
-                    </Link>
-                    <Button variant="ghost" size="sm" asChild>
-                      <a href={`mailto:${speaker.speakerDetails.email}`}>
-                        <Mail className="h-4 w-4" />
-                      </a>
-                    </Button>
-                  </div>
-                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Building className="h-4 w-4" />
-                    <span>{speaker.speakerDetails.company}</span>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-muted-foreground">
+                    {speakerDetails.company && (
+                      <div className="flex items-center gap-2">
+                        <Building className="h-4 w-4 text-accent" />
+                        <span>{speakerDetails.company}</span>
+                      </div>
+                    )}
+                    {speakerDetails.location && (
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-accent" />
+                        <span>{speakerDetails.location}</span>
+                      </div>
+                    )}
+                    {speakerDetails.years_of_experience && (
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 text-accent" />
+                        <span>{speakerDetails.years_of_experience} ans d'exp.</span>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4" />
-                    <span>{speaker.speakerDetails.location}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4" />
-                    <span>{speaker.speakerDetails.experience} ans d'exp.</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Award className="h-4 w-4" />
-                    <span>{speaker.speakerDetails.talksGiven} talks donnés</span>
-                  </div>
-                </div>
 
-                <div className="flex items-center justify-between mt-4">
-                  <div className="flex items-center gap-1">{renderStars(speaker.speakerDetails.rating)}</div>
-                  <div className="flex items-center gap-2">
-                    {speaker.speakerDetails.socialLinks.linkedin && (
-                      <a
-                        href={speaker.speakerDetails.socialLinks.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
+                  <div className="flex items-center gap-2 mt-4">
+                    {socialLinks.linkedin && (
+                      <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                         <Linkedin className="h-4 w-4" />
                       </a>
                     )}
-                    {speaker.speakerDetails.socialLinks.twitter && (
-                      <a
-                        href={speaker.speakerDetails.socialLinks.twitter}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
+                    {socialLinks.twitter && (
+                      <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                         <Twitter className="h-4 w-4" />
                       </a>
                     )}
-                    {speaker.speakerDetails.socialLinks.github && (
-                      <a
-                        href={speaker.speakerDetails.socialLinks.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
+                    {socialLinks.github && (
+                      <a href={socialLinks.github} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                         <Github className="h-4 w-4" />
                       </a>
                     )}
-                    {speaker.speakerDetails.socialLinks.website && (
-                      <a
-                        href={speaker.speakerDetails.socialLinks.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
+                    {socialLinks.website && (
+                      <a href={socialLinks.website} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                         <Globe className="h-4 w-4" />
                       </a>
                     )}
                   </div>
                 </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+            </CardContent>
+          </Card>
+        );
+      })}
     </div>
   )
 
@@ -490,68 +498,6 @@ export default function SpeakersList({
               </Select>
             </div>
 
-            {/* Location Filter */}
-            <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-accent" />
-              <Select
-                value={currentLocation}
-                onValueChange={(value) => handleFilterChange("location", value)}
-                disabled={isFiltering}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Localisation" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Toutes les localisations</SelectItem>
-                  {locations.map((location) => (
-                    <SelectItem key={location} value={location}>
-                      {location}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Availability Filter */}
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-accent" />
-              <Select
-                value={currentAvailability}
-                onValueChange={(value) => handleFilterChange("availability", value)}
-                disabled={isFiltering}
-              >
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue placeholder="Disponibilité" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Toutes</SelectItem>
-                  <SelectItem value="available">Disponible</SelectItem>
-                  <SelectItem value="busy">Occupé</SelectItem>
-                  <SelectItem value="unavailable">Indisponible</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Experience Filter */}
-            <div className="flex items-center gap-2">
-              <Award className="h-4 w-4 text-accent" />
-              <Select
-                value={currentExperience}
-                onValueChange={(value) => handleFilterChange("experience", value)}
-                disabled={isFiltering}
-              >
-                <SelectTrigger className="w-[150px]">
-                  <SelectValue placeholder="Expérience" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Toute expérience</SelectItem>
-                  <SelectItem value="0-5">0-5 ans</SelectItem>
-                  <SelectItem value="5-10">5-10 ans</SelectItem>
-                  <SelectItem value="10-15">10-15 ans</SelectItem>
-                  <SelectItem value="15-100">15+ ans</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
 
             {/* Clear Filters */}
             {activeFiltersCount > 0 && (

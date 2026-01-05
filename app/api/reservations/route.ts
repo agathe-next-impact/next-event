@@ -65,14 +65,6 @@ export async function POST(request: Request) {
     // Envoyer l'email de confirmation
     const emailSent = await sendConfirmationEmail(reservation, event)
 
-    console.log("✅ Réservation créée:", {
-      id: reservation.id,
-      email: reservation.email,
-      event: event.title,
-      confirmationCode: reservation.confirmationCode,
-      emailSent,
-    })
-
     return NextResponse.json({
       success: true,
       message: "Réservation confirmée avec succès",

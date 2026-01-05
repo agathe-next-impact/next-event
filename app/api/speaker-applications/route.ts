@@ -63,16 +63,6 @@ export async function POST(request: Request) {
     // Envoyer la notification à l'équipe
     const notificationSent = await sendSpeakerNotificationEmail(application)
 
-    console.log("🎤 Candidature speaker traitée:", {
-      id: applicationId,
-      speaker: `${validatedData.firstName} ${validatedData.lastName}`,
-      email: validatedData.email,
-      talk: validatedData.talkTitle,
-      category: validatedData.talkCategory,
-      confirmationSent,
-      notificationSent,
-    })
-
     return NextResponse.json({
       success: true,
       message: "Candidature soumise avec succès",

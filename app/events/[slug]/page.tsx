@@ -62,14 +62,46 @@ const EventReservationSection = dynamic(() => import("./EventReservationSection"
 
 export default async function EventPage({ params, searchParams }: EventPageProps) {
   const event = await getEventBySlug(params.slug, !!searchParams.preview)
-  if (event) {
-    const city = await getCityById(event.eventDetails.city || 0)
-    event.eventDetails.city = city?.name || "Inconnu"
-  }
-
-  if (!event) {
+  // Robust fallback for missing event or eventDetails
+  if (!event || !event.eventDetails) {
     notFound()
   }
+
+  // Ville
+  let cityName = ''
+  if (Array.isArray(event.eventDetails.city)) {
+    cityName = ''
+  } else if (event.eventDetails.city && typeof event.eventDetails.city === 'object' && 'name' in event.eventDetails.city) {
+    cityName = event.eventDetails.city.name || ''
+  } else if (typeof event.eventDetails.city === 'string') {
+    cityName = event.eventDetails.city
+  }
+
+  // Catégorie
+  let categoryName = ''
+  if (event.eventDetails.category && typeof event.eventDetails.category === 'object' && 'name' in event.eventDetails.category) {
+    categoryName = event.eventDetails.category.name || ''
+  } else if (typeof event.eventDetails.category === 'string') {
+    categoryName = event.eventDetails.category
+  }
+
+  // Image
+  const imageSrc = event.featuredImage?.node?.sourceUrl || "/placeholder.svg"
+  const imageAlt = event.featuredImage?.node?.altText || (typeof event.title === 'string' ? event.title : '')
+
+  // Dates
+  const startDate = event.eventDetails.startDate ? formatDate(event.eventDetails.startDate, "long") : '—'
+  const endDate = event.eventDetails.endDate ? formatDate(event.eventDetails.endDate, "long") : '—'
+  const registrationDeadline = event.eventDetails.registrationDeadline ? formatDate(event.eventDetails.registrationDeadline, "long") : '—'
+
+  // Capacité
+  const maxAttendees = event.eventDetails.maxAttendees || 0
+
+  // Lieu
+  const location = event.eventDetails.location || ''
+
+  // Gratuit
+  const isFree = !!event.eventDetails.isFree
 
   // récupérer le nombre de place réservées
   const reservedSeats = await getReservedSeats(event.id)
@@ -88,29 +120,27 @@ export default async function EventPage({ params, searchParams }: EventPageProps
 
       {/* Hero Section */}
       <div className="mb-8">
-        {event.featuredImage && (
-          <div className="relative h-64 md:h-96 mb-6 rounded-lg overflow-hidden">
-            <Image
-              src={event.featuredImage.node.sourceUrl || "/placeholder.svg"}
-              alt={event.featuredImage.node.altText || event.title}
-              fill
-              className="object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-black/20" />
-            <div className="absolute bottom-4 left-4 right-4">
-              <div className="flex flex-wrap gap-2 mb-2">
-                <Badge variant="secondary" className="bg-white/90 text-black">
-                  {event.eventDetails.category}
-                </Badge>
-                <Badge variant="secondary" className="bg-white/90 text-black">
-                  📍 {event.eventDetails.city}
-                </Badge>
-                {event.eventDetails.isFree && <Badge className="bg-green-600 text-white">Gratuit</Badge>}
-              </div>
+        <div className="relative h-64 md:h-96 mb-6 rounded-lg overflow-hidden">
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute bottom-4 left-4 right-4">
+            <div className="flex flex-wrap gap-2 mb-2">
+              <Badge variant="secondary" className="bg-white/90 text-black">
+                {categoryName}
+              </Badge>
+              <Badge variant="secondary" className="bg-white/90 text-black">
+                📍 {cityName}
+              </Badge>
+              {isFree && <Badge className="bg-green-600 text-white">Gratuit</Badge>}
             </div>
           </div>
-        )}
+        </div>
 
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
           <div className="flex-1">
@@ -156,9 +186,7 @@ export default async function EventPage({ params, searchParams }: EventPageProps
                 <Clock className="h-4 w-4 mt-1 text-muted-foreground" />
                 <div>
                   <div className="font-medium">Début</div>
-                  <div className="text-sm text-muted-foreground">
-                    {formatDate(event.eventDetails.startDate, "long")}
-                  </div>
+                  <div className="text-sm text-muted-foreground">{startDate}</div>
                 </div>
               </div>
 
@@ -166,7 +194,7 @@ export default async function EventPage({ params, searchParams }: EventPageProps
                 <Clock className="h-4 w-4 mt-1 text-muted-foreground" />
                 <div>
                   <div className="font-medium">Fin</div>
-                  <div className="text-sm text-muted-foreground">{formatDate(event.eventDetails.endDate, "long")}</div>
+                  <div className="text-sm text-muted-foreground">{endDate}</div>
                 </div>
               </div>
 
@@ -174,7 +202,7 @@ export default async function EventPage({ params, searchParams }: EventPageProps
                 <MapPin className="h-4 w-4 mt-1 text-muted-foreground" />
                 <div>
                   <div className="font-medium">Lieu</div>
-                  <div className="text-sm text-muted-foreground">{event.eventDetails.location}</div>
+                  <div className="text-sm text-muted-foreground">{location}</div>
                 </div>
               </div>
 
@@ -182,7 +210,7 @@ export default async function EventPage({ params, searchParams }: EventPageProps
                 <Building className="h-4 w-4 mt-1 text-muted-foreground" />
                 <div>
                   <div className="font-medium">Ville</div>
-                  <div className="text-sm text-muted-foreground">{event.eventDetails?.city}</div>
+                  <div className="text-sm text-muted-foreground">{cityName}</div>
                 </div>
               </div>
 
@@ -190,7 +218,7 @@ export default async function EventPage({ params, searchParams }: EventPageProps
                 <Users className="h-4 w-4 mt-1 text-muted-foreground" />
                 <div>
                   <div className="font-medium">Capacité</div>
-                  <div className="text-sm text-muted-foreground">{event.eventDetails.maxAttendees} participants</div>
+                  <div className="text-sm text-muted-foreground">{maxAttendees} participants</div>
                 </div>
               </div>
 
@@ -198,9 +226,7 @@ export default async function EventPage({ params, searchParams }: EventPageProps
                 <Calendar className="h-4 w-4 mt-1 text-muted-foreground" />
                 <div>
                   <div className="font-medium">Limite d'inscription</div>
-                  <div className="text-sm text-muted-foreground">
-                    {formatDate(event.eventDetails.registrationDeadline, "long")}
-                  </div>
+                  <div className="text-sm text-muted-foreground">{registrationDeadline}</div>
                 </div>
               </div>
             </CardContent>

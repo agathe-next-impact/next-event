@@ -163,7 +163,6 @@ export function checkEnvironmentVariables() {
     return false
   }
 
-  console.log("✅ Toutes les variables d'environnement requises sont configurées")
   return true
 }
 
@@ -544,7 +543,6 @@ export async function getEvents(variables?: { first?: number; after?: string; ca
       }
     }
     // Fallback only if eventPosts is not a non-empty array
-    console.log("Type de post personnalisé 'events' non trouvé ou vide, utilisation des posts standard")
     const posts = await getPosts(params)
     const events = posts.map(convertToEvent)
     return {
@@ -556,7 +554,6 @@ export async function getEvents(variables?: { first?: number; after?: string; ca
     }
   } catch (error) {
     console.error("Error fetching events:", error)
-    console.log("Utilisation des données simulées pour les événements")
     return {
       nodes: MOCK_EVENTS,
       pageInfo: {
@@ -577,7 +574,7 @@ export async function getEventBySlug(slug: string, preview = false) {
         return convertToEvent(eventPosts[0])
       }
     } catch (error) {
-      console.log("Type de post personnalisé 'events' non trouvé, recherche dans les posts standard")
+      // Type de post personnalisé 'events' non trouvé
     }
 
     const post = await getPostBySlug(slug)
@@ -600,7 +597,6 @@ export async function getEventSlugs() {
       const eventPosts = await getCustomPosts("events", { per_page: "100" })
       return eventPosts.map((post) => post.slug)
     } catch (error) {
-      console.log("Type de post personnalisé 'events' non trouvé, utilisation des posts standard")
       const posts = await getPosts({ per_page: "100" })
       return posts.map((post) => post.slug)
     }
@@ -658,7 +654,6 @@ export async function getSpeakers(variables?: {
         },
       }
     } catch (error) {
-      console.log("Type de post personnalisé 'speakers' non trouvé, recherche de posts avec catégorie 'speaker'")
       const posts = await getPosts({ ...params, categories: "speaker" })
       const speakers = posts.map(convertToSpeaker)
 
@@ -672,7 +667,6 @@ export async function getSpeakers(variables?: {
     }
   } catch (error) {
     console.error("Error fetching speakers:", error)
-    console.log("Utilisation des données simulées pour les speakers")
     return {
       nodes: MOCK_SPEAKERS,
       pageInfo: {
@@ -693,7 +687,7 @@ export async function getSpeakerBySlug(slug: string) {
         return convertToSpeaker(speakerPosts[0])
       }
     } catch (error) {
-      console.log("Type de post personnalisé 'speakers' non trouvé, recherche dans les posts standard")
+      // Type de post personnalisé 'speakers' non trouvé
     }
 
     const post = await getPostBySlug(slug)
@@ -716,7 +710,6 @@ export async function getSpeakerSlugs() {
       const speakerPosts = await getCustomPosts("speakers", { per_page: "100" })
       return speakerPosts.map((post) => post.slug)
     } catch (error) {
-      console.log("Type de post personnalisé 'speakers' non trouvé, utilisation des posts avec catégorie 'speaker'")
       const posts = await getPosts({ per_page: "100", categories: "speaker" })
       return posts.map((post) => post.slug)
     }
@@ -728,7 +721,6 @@ export async function getSpeakerSlugs() {
 
 export async function getEventsBySpeaker(speakerId: string) {
   try {
-    console.log("Relation événements-speakers non implémentée dans l'API WordPress")
     return []
   } catch (error) {
     console.error("Error fetching events by speaker:", error)

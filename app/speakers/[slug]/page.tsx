@@ -83,6 +83,10 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
   if (!speaker) {
     notFound();
   }
+
+  // Récupération des champs ACF selon le schéma fourni
+  const { speakerDetails = {}, socialLinks = {}, skillsAndAchievements = {}, seoData = {} } = speaker;
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       {/* Back Navigation */}
@@ -115,89 +119,69 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
 
               <div className="text-center mb-6">
                 <h1 className="text-2xl font-bold mb-2">{typeof speaker.title === 'string' ? decodeHTMLEntities(speaker.title.replace(/<[^>]+>/g, '')) : speaker.title}</h1>
-                {speaker.speakerDetails.jobTitle && (
-                  <p className="text-lg text-muted-foreground mb-2">{typeof speaker.speakerDetails.jobTitle === 'string' ? decodeHTMLEntities(speaker.speakerDetails.jobTitle.replace(/<[^>]+>/g, '')) : speaker.speakerDetails.jobTitle}</p>
+                {speakerDetails.jobTitle && (
+                  <p className="text-lg text-muted-foreground mb-2">{decodeHTMLEntities(speakerDetails.jobTitle.replace(/<[^>]+>/g, ''))}</p>
                 )}
-                {speaker.speakerDetails.company && (
-                  <p className="text-md font-medium text-primary mb-4">{typeof speaker.speakerDetails.company === 'string' ? decodeHTMLEntities(speaker.speakerDetails.company.replace(/<[^>]+>/g, '')) : speaker.speakerDetails.company}</p>
+                {speakerDetails.company && (
+                  <p className="text-md font-medium text-primary mb-4">{decodeHTMLEntities(speakerDetails.company.replace(/<[^>]+>/g, ''))}</p>
+                )}
+                {speakerDetails.years_of_experience && (
+                  <p className="text-sm text-muted-foreground">{speakerDetails.years_of_experience} ans d'expérience</p>
                 )}
               </div>
 
               <div className="space-y-3 mb-6">
-                {speaker.speakerDetails.company && (
+                {speakerDetails.company && (
                   <div className="flex items-center gap-2 text-sm">
                     <Building className="h-4 w-4 text-muted-foreground" />
-                    <span>{speaker.speakerDetails.company}</span>
+                    <span>{speakerDetails.company}</span>
                   </div>
                 )}
-                {speaker.speakerDetails.location && (
+                {speakerDetails.location && (
                   <div className="flex items-center gap-2 text-sm">
                     <MapPin className="h-4 w-4 text-muted-foreground" />
-                    <span>{speaker.speakerDetails.location}</span>
+                    <span>{speakerDetails.location}</span>
                   </div>
                 )}
               </div>
 
               {/* Social Links */}
-              {speaker.speakerDetails.socialLinks && (
-                <div className="flex justify-center gap-4 mb-6">
-                  {speaker.speakerDetails.socialLinks.linkedin && (
-                    <a
-                      href={speaker.speakerDetails.socialLinks.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Linkedin className="h-5 w-5" />
-                    </a>
-                  )}
-                  {speaker.speakerDetails.socialLinks.twitter && (
-                    <a
-                      href={speaker.speakerDetails.socialLinks.twitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Twitter className="h-5 w-5" />
-                    </a>
-                  )}
-                  {speaker.speakerDetails.socialLinks.github && (
-                    <a
-                      href={speaker.speakerDetails.socialLinks.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Github className="h-5 w-5" />
-                    </a>
-                  )}
-                  {speaker.speakerDetails.socialLinks.website && (
-                    <a
-                      href={speaker.speakerDetails.socialLinks.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <Globe className="h-5 w-5" />
-                    </a>
-                  )}
-                </div>
-              )}
- 
+              <div className="flex justify-center gap-4 mb-6">
+                {socialLinks.linkedin && (
+                  <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                    <Linkedin className="h-5 w-5" />
+                  </a>
+                )}
+                {socialLinks.twitter && (
+                  <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                    <Twitter className="h-5 w-5" />
+                  </a>
+                )}
+                {socialLinks.github && (
+                  <a href={socialLinks.github} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                    <Github className="h-5 w-5" />
+                  </a>
+                )}
+                {socialLinks.website && (
+                  <a href={socialLinks.website} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                    <Globe className="h-5 w-5" />
+                  </a>
+                )}
+              </div>
 
               {/* Contact Buttons */}
               <div className="space-y-2">
-                {speaker.speakerDetails.email && (
+                {speakerDetails.email && (
                   <Button className="w-full" asChild>
-                    <a href={`mailto:${speaker.speakerDetails.email}`}>
+                    <a href={`mailto:${speakerDetails.email}`}>
                       <Mail className="h-4 w-4 mr-2" />
                       Contacter par email
                     </a>
                   </Button>
                 )}
-                {speaker.speakerDetails.phone && (
+                {speakerDetails.phone && (
                   <Button variant="outline" className="w-full" asChild>
-                    <a href={`tel:${speaker.speakerDetails.phone}`}>
+                    <a href={`tel:${speakerDetails.phone}`}>
                       <Phone className="h-4 w-4 mr-2" />
                       Appeler
                     </a>
@@ -230,132 +214,33 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
                   <CardTitle>Biographie</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="prose prose-gray dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: speaker.speakerDetails.bio || '' }} />
+                  <div
+                    className="prose prose-gray dark:prose-invert max-w-none"
+                    dangerouslySetInnerHTML={{
+                      __html: speakerDetails.bio && typeof speakerDetails.bio === 'string' ? sanitizeHtml(speakerDetails.bio) : ''
+                    }}
+                  />
                 </CardContent>
               </Card>
-
-              {speaker.skillsAndAchievements?.achievements && speaker.skillsAndAchievements.achievements.length > 0 && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Award className="h-5 w-5" />
-                      Réalisations notables
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {speaker.skillsAndAchievements.achievements.map((achievement, index) => (
-                        <div key={index} className="border-l-4 border-primary pl-4">
-                          <div className="flex items-start justify-between mb-2">
-                            <h4 className="font-semibold">{achievement.title}</h4>
-                            {achievement.year && (
-                              <Badge variant="outline" className="text-xs">
-                                {achievement.year}
-                              </Badge>
-                            )}
-                          </div>
-                          {achievement.description && (
-                            <div
-                              className="text-sm text-muted-foreground mb-2 prose prose-sm max-w-none"
-                              dangerouslySetInnerHTML={{ __html: sanitizeHtml(achievement.description || '') }}
-                            />
-                          )}
-                          {achievement.url && (
-                            <a
-                              href={achievement.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-primary hover:underline text-sm flex items-center gap-1"
-                            >
-                              <ExternalLink className="h-3 w-3" />
-                              Voir plus
-                            </a>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
             </TabsContent>
 
             <TabsContent value="expertise" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Domaines d'expertise</CardTitle>
+                  <CardTitle>Expertise</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {speaker.speakerDetails.expertises?.map((expertise, index) => (
-                      <Badge key={index}>
-                        {expertise.name}
-                      </Badge>
-                    ))}
-                  </div>
+                  <div className="prose prose-gray dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: skillsAndAchievements.skills && skillsAndAchievements.skills[0]?.name ? skillsAndAchievements.skills[0].name : '' }} />
                 </CardContent>
               </Card>
-
-              {speaker.skillsAndAchievements?.skills && speaker.skillsAndAchievements.skills.length > 0 && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Briefcase className="h-5 w-5" />
-                      Compétences techniques
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {speaker.skillsAndAchievements.skills.map((skill, index) => (
-                        <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                          <span className="font-medium">{skill.name}</span>
-                          <Badge variant="secondary">
-                            {skill.level}
-                          </Badge>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {speaker.skillsAndAchievements?.certifications &&
-                speaker.skillsAndAchievements.certifications.length > 0 && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <GraduationCap className="h-5 w-5" />
-                        Certifications
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        {speaker.skillsAndAchievements.certifications.map((cert, index) => (
-                          <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                            <div>
-                              <div className="font-medium prose prose-gray dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: cert.name || '' }} />
-                              <div className="text-sm text-muted-foreground">{cert.issuer}</div>
-                            </div>
-                            <div className="text-right">
-                              {cert.year && <div className="text-sm text-muted-foreground">{cert.year}</div>}
-                              {cert.url && (
-                                <a
-                                  href={cert.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-primary hover:underline text-xs flex items-center gap-1"
-                                >
-                                  <ExternalLink className="h-3 w-3" />
-                                  Vérifier
-                                </a>
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Certifications</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="prose prose-gray dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: skillsAndAchievements.certifications && skillsAndAchievements.certifications[0]?.name ? skillsAndAchievements.certifications[0].name : '' }} />
+                </CardContent>
+              </Card>
             </TabsContent>
 
             <TabsContent value="achievements" className="space-y-6">
@@ -364,41 +249,7 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
                   <CardTitle>Réalisations</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {speaker.skillsAndAchievements?.achievements &&
-                  speaker.skillsAndAchievements.achievements.length > 0 ? (
-                    <div className="space-y-4">
-                      {speaker.skillsAndAchievements.achievements.map((achievement, index) => (
-                        <div key={index} className="border rounded-lg p-4">
-                          <div className="flex items-start justify-between mb-2">
-                            <h4 className="font-semibold">{achievement.title}</h4>
-                            {achievement.year && (
-                              <Badge variant="outline">{achievement.year}</Badge>
-                            )}
-                          </div>
-                          {achievement.description && (
-                            <div className="text-muted-foreground text-sm mb-3 prose prose-sm max-w-none whitespace-pre-line">
-                              {achievement.description && typeof achievement.description === 'string'
-                                ? decodeHTMLEntities(achievement.description.replace(/<[^>]+>/g, ''))
-                                : ''}
-                            </div>
-                          )}
-                          {achievement.url && (
-                            <a
-                              href={achievement.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-primary hover:underline flex items-center gap-1"
-                            >
-                              <ExternalLink className="h-3 w-3" />
-                              Voir plus
-                            </a>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-muted-foreground">Aucune réalisation répertoriée pour le moment.</p>
-                  )}
+                  <div className="prose prose-gray dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: skillsAndAchievements.achievements && skillsAndAchievements.achievements[0]?.title ? skillsAndAchievements.achievements[0].title : '' }} />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -417,22 +268,49 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
                             <Link href={`/events/${event.slug}`}>
                               <h4 className="font-semibold hover:text-primary transition-colors">{typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title}</h4>
                             </Link>
-                            <Badge variant="outline">
-                              {typeof event.eventDetails.category === "object"
-                                ? event.eventDetails.category.name
-                                : event.eventDetails.category}
-                            </Badge>
+                            {event.eventDetails && event.eventDetails.category && (
+                              <Badge variant="outline">
+                                {typeof event.eventDetails.category === "object"
+                                  ? event.eventDetails.category.name
+                                  : event.eventDetails.category}
+                              </Badge>
+                            )}
                           </div>
-                          <p className="text-muted-foreground text-sm mb-3">{typeof event.excerpt === 'string' ? decodeHTMLEntities(event.excerpt.replace(/<[^>]+>/g, '')) : event.excerpt}</p>
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <span>{formatDate(event.eventDetails.startDate)}</span>
-                            <span>{event.eventDetails.location}</span>
-                            <span>
-                              {typeof event.eventDetails.city === "object"
-                                ? event.eventDetails.city.name
-                                : event.eventDetails.city}
-                            </span>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
+                            <div className="flex items-center gap-2 text-sm">
+                              <Calendar className="h-4 w-4 text-muted-foreground" />
+                              <span>
+                                {event.eventDetails && event.eventDetails.startDate ? formatDate(event.eventDetails.startDate) : ''}
+                                {event.eventDetails && event.eventDetails.endDate ? ` - ${formatDate(event.eventDetails.endDate)}` : ''}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <MapPin className="h-4 w-4 text-muted-foreground" />
+                              <span>{event.eventDetails && event.eventDetails.location}</span>
+                              {event.eventDetails && event.eventDetails.city && (
+                                <span>({typeof event.eventDetails.city === 'object' ? event.eventDetails.city.name : event.eventDetails.city})</span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <Users className="h-4 w-4 text-muted-foreground" />
+                              <span>Places : {event.eventDetails && event.eventDetails.currentAttendees} / {event.eventDetails && event.eventDetails.maxAttendees}</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <Clock className="h-4 w-4 text-muted-foreground" />
+                              <span>Clôture inscription : {event.eventDetails && event.eventDetails.registrationDeadline ? formatDate(event.eventDetails.registrationDeadline) : '—'}</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm">
+                              <Euro className="h-4 w-4 text-muted-foreground" />
+                              <span>{event.eventDetails && event.eventDetails.isFree ? 'Gratuit' : `${event.eventDetails && event.eventDetails.price} €`}</span>
+                            </div>
                           </div>
+                          {event.eventDetails && event.eventDetails.prerequisites && (
+                            <div className="text-xs text-muted-foreground mb-1">Pré-requis : {event.eventDetails.prerequisites}</div>
+                          )}
+                          {event.eventDetails && event.eventDetails.materialProvided && (
+                            <div className="text-xs text-muted-foreground mb-1">Matériel fourni : {event.eventDetails.materialProvided}</div>
+                          )}
+                          <p className="text-muted-foreground text-sm mb-1">{typeof event.excerpt === 'string' ? decodeHTMLEntities(event.excerpt.replace(/<[^>]+>/g, '')) : event.excerpt}</p>
                         </div>
                       ))}
                     </div>
@@ -456,9 +334,9 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
                   Contactez-nous pour discuter des modalités et disponibilités.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  {speaker.speakerDetails.email && (
+                  {speakerDetails.email && (
                     <Button size="lg" asChild>
-                      <a href={`mailto:${speaker.speakerDetails.email}`}>
+                      <a href={`mailto:${speakerDetails.email}`}>
                         <Mail className="h-5 w-5 mr-2" />
                         Contacter directement
                       </a>

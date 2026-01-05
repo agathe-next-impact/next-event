@@ -22,13 +22,6 @@ export async function POST(request: NextRequest) {
 
     // En mode développement dans v0, simuler la réponse
     if (process.env.NODE_ENV === "development" || !process.env.MAILCHIMP_API_KEY) {
-      console.log("🎯 Simulation d'inscription:", {
-        participant: `${data.firstName} ${data.lastName}`,
-        email: data.email,
-        eventId: data.eventId,
-        eventTitle: data.eventTitle,
-      })
-
       // Simuler un délai d'API
       await new Promise((resolve) => setTimeout(resolve, 1000))
 

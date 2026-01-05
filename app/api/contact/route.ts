@@ -38,16 +38,6 @@ export async function POST(req: Request) {
     // Envoyer la notification à l'équipe
     const notificationSent = await sendContactNotificationEmail(contactMessage)
 
-    console.log("📧 Message de contact traité:", {
-      id: messageId,
-      from: `${validatedData.firstName} ${validatedData.lastName}`,
-      email: validatedData.email,
-      category: validatedData.category,
-      priority: validatedData.priority,
-      confirmationSent,
-      notificationSent,
-    })
-
     return NextResponse.json({
       success: true,
       message: "Message envoyé avec succès",

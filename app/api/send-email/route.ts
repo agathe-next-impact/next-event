@@ -60,8 +60,6 @@ export async function POST(req: NextRequest) {
       replyTo: data?.replyTo || undefined,
     })
 
-    console.log("📧 Email envoyé localement:", info)
-
     return NextResponse.json({
       success: true,
       message: "Email envoyé localement (MailHog/Papercut)",
