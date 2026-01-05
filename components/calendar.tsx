@@ -31,7 +31,11 @@ export default function Calendar({ events, categories }: CalendarProps) {
 
     // Filter by category
     if (selectedCategory !== "all") {
-      filtered = filtered.filter((event) => event.eventDetails.category === selectedCategory)
+      filtered = filtered.filter((event) =>
+        (typeof event.eventDetails.category === 'object'
+          ? event.eventDetails.category.name
+          : event.eventDetails.category) === selectedCategory
+      )
     }
 
     // Filter by current month in grid view
@@ -129,7 +133,7 @@ export default function Calendar({ events, categories }: CalendarProps) {
                     </Link>
                     <p className="text-muted-foreground text-sm mt-1">{typeof event.excerpt === 'string' ? decodeHTMLEntities(event.excerpt.replace(/<[^>]+>/g, '')) : event.excerpt}</p>
                   </div>
-                  <Badge variant="secondary">{event.eventDetails.category}</Badge>
+                  <Badge variant="secondary">{typeof event.eventDetails.category === 'object' ? event.eventDetails.category.name : event.eventDetails.category}</Badge>
                 </div>
                 <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
                   <div className="flex items-center gap-1">

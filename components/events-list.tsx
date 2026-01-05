@@ -39,17 +39,37 @@ export default function EventsList({
   const router = useRouter()
   const searchParams = useSearchParams()
   const [viewMode, setViewMode] = useState<ViewMode>("grid")
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState<string>("")
 
-  // Filter events by search query
-  const filteredEvents = events.filter(
-    (event) =>
-      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.eventDetails.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.eventDetails.city.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  // Filter events by search query (include both upcoming and past events)
+  const filteredEvents = events.filter((event) => {
+    const cityName = typeof event.eventDetails.city === 'object'
+      ? event.eventDetails.city.name
+      : typeof event.eventDetails.city === 'string'
+        ? event.eventDetails.city
+        : ''
+    return (
+      (typeof event.title === 'string' ? event.title : '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (typeof event.excerpt === 'string' ? event.excerpt : '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (typeof event.eventDetails.location === 'string' ? event.eventDetails.location : '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      cityName.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  })
 
+  // Sort events: upcoming first, then past (descending by date)
+  const sortedEvents = [...filteredEvents].sort((a, b) => {
+    const aDate = new Date(a.eventDetails.startDate).getTime();
+    const bDate = new Date(b.eventDetails.startDate).getTime();
+    const now = Date.now();
+    const aIsPast = aDate < now;
+    const bIsPast = bDate < now;
+    if (aIsPast === bIsPast) {
+      // Both upcoming or both past: sort by date ascending for upcoming, descending for past
+      return aIsPast ? bDate - aDate : aDate - bDate;
+    }
+    // Upcoming events first
+    return aIsPast ? 1 : -1;
+  });
 
   const handleFilterChange = (filterType: "category" | "city", value: string) => {
     const params = new URLSearchParams(searchParams.toString())
@@ -107,10 +127,13 @@ const [cityNames, setCityNames] = useState<Record<string, string>>({})
 
 useEffect(() => {
   async function fetchCities() {
-    // Get unique city IDs from filteredEvents
+    // Get unique city IDs from filteredEvents (only if city is a string)
     const cityIds = Array.from(
-      new Set(filteredEvents.map(e => e.eventDetails.city).filter(Boolean))
-    )
+      new Set(
+        filteredEvents
+          .map(e => (typeof e.eventDetails.city === 'string' ? e.eventDetails.city : undefined))
+      )
+    ).filter(Boolean).map(String);
     // Fetch city names for IDs not already loaded
     const missingIds = cityIds.filter(id => !cityNames[id])
     if (missingIds.length === 0) return
@@ -134,19 +157,31 @@ useEffect(() => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [filteredEvents])
 
-// Ajoute cityName à chaque événement dans filteredEvents
-const filteredEventsWithCityName = filteredEvents.map(event => ({
-  ...event,
-  eventDetails: {
-    ...event.eventDetails,
-    cityName: cityNames[event.eventDetails.city] || event.eventDetails.city,
-  },
-}))
+// Helper to get city name from event
+function getEventCityName(event: Event): string {
+  if (typeof event.eventDetails.city === 'object' && event.eventDetails.city?.name) {
+    return event.eventDetails.city.name;
+  }
+  if (typeof event.eventDetails.city === 'string') {
+    return cityNames[event.eventDetails.city] || event.eventDetails.city;
+  }
+  return '';
+}
 
+// Helper to get category name from event
+function getEventCategoryName(event: Event): string {
+  if (typeof event.eventDetails.category === 'object' && event.eventDetails.category?.name) {
+    return event.eventDetails.category.name;
+  }
+  if (typeof event.eventDetails.category === 'string') {
+    return event.eventDetails.category;
+  }
+  return '';
+}
 function decodeHTMLEntities(text: string) {
   if (!text) return '';
   const entities: Record<string, string> = {
-    amp: '&', apos: "'", lt: '<', gt: '>', quot: '"', nbsp: ' ', hellip: '…', eacute: 'é', egrave: 'è', ecirc: 'ê', agrave: 'à', ugrave: 'ù', ccedil: 'ç', rsquo: '’', lsquo: '‘', ldquo: '“', rdquo: '”', mdash: '—', ndash: '–', oelig: 'œ', aelig: 'æ', euro: '€', copy: '©', reg: '®', deg: '°', plusmn: '±', sup2: '²', sup3: '³', frac12: '½', frac14: '¼', frac34: '¾', para: '¶', sect: '§', bull: '•', middot: '·', laquo: '«', raquo: '»', rsquor: '’', lsquor: '‘', ldquor: '“', rdquor: '”', ndash: '–', mdash: '—', nbsp: ' ', thinsp: ' ', ensp: ' ', emsp: ' ', zwnj: '', zwj: '', lrm: '', rlm: '', shy: '', times: '×', divide: '÷', trade: '™', yen: '¥', pound: '£', cent: '¢', dollar: '$', micro: 'µ', pi: 'π', mu: 'μ', alpha: 'α', beta: 'β', gamma: 'γ', delta: 'δ', lambda: 'λ', omega: 'ω', sigma: 'σ', phi: 'φ', theta: 'θ', plusmn: '±', sup1: '¹', sup2: '²', sup3: '³', frac14: '¼', frac12: '½', frac34: '¾', para: '¶', sect: '§', bull: '•', middot: '·', laquo: '«', raquo: '»', rsquor: '’', lsquor: '‘', ldquor: '“', rdquor: '”', ndash: '–', mdash: '—', nbsp: ' ', thinsp: ' ', ensp: ' ', emsp: ' ', zwnj: '', zwj: '', lrm: '', rlm: '', shy: '', times: '×', divide: '÷', trade: '™', yen: '¥', pound: '£', cent: '¢', dollar: '$', micro: 'µ', pi: 'π', mu: 'μ', alpha: 'α', beta: 'β', gamma: 'γ', delta: 'δ', lambda: 'λ', omega: 'ω', sigma: 'σ', phi: 'φ', theta: 'θ'
+    amp: '&', apos: "'", lt: '<', gt: '>', quot: '"', nbsp: ' ', hellip: '…', eacute: 'é', egrave: 'è', ecirc: 'ê', agrave: 'à', ugrave: 'ù', ccedil: 'ç', rsquo: '’', lsquo: '‘', ldquo: '“', rdquo: '”', mdash: '—', ndash: '–', oelig: 'œ', aelig: 'æ', euro: '€', copy: '©', reg: '®', deg: '°', plusmn: '±', sup2: '²', sup3: '³', frac12: '½', frac14: '¼', frac34: '¾', para: '¶', sect: '§', bull: '•', middot: '·', laquo: '«', raquo: '»', thinsp: ' ', ensp: ' ', emsp: ' ', zwnj: '', zwj: '', lrm: '', rlm: '', shy: '', times: '×', divide: '÷', trade: '™', yen: '¥', pound: '£', cent: '¢', dollar: '$', micro: 'µ', pi: 'π', mu: 'μ', alpha: 'α', beta: 'β', gamma: 'γ', delta: 'δ', lambda: 'λ', omega: 'ω', sigma: 'σ', phi: 'φ', theta: 'θ', sup1: '¹'
   };
   return text.replace(/&([a-zA-Z0-9#]+);/g, (match, entity) => {
     if (entity[0] === '#') {
@@ -162,10 +197,11 @@ function decodeHTMLEntities(text: string) {
 
   const renderGridView = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-      {filteredEventsWithCityName.map((event) => {
-        const isUpcoming = new Date(event.eventDetails.startDate) > new Date()
-        const isRegistrationOpen = new Date() < new Date(event.eventDetails.registrationDeadline)
-
+      {sortedEvents.map(event => {
+        const isUpcoming = new Date(event.eventDetails.startDate) > new Date();
+        const isRegistrationOpen = event.eventDetails.registrationDeadline ? (new Date() < new Date(event.eventDetails.registrationDeadline)) : false;
+        const cityName = getEventCityName(event);
+        const categoryName = getEventCategoryName(event);
         return (
           <Card key={event.id} className="bg-background group hover:shadow-lg transition-all duration-300 overflow-hidden">
             <div className="relative">
@@ -181,9 +217,9 @@ function decodeHTMLEntities(text: string) {
               )}
               <div className="flex p-4 gap-2">
                 <Badge variant="outline" className="bg-white/90 backdrop-blur-sm">
-                  {getCityIcon(event.eventDetails.cityName)} {event.eventDetails.cityName}
+                  {getCityIcon(cityName)} {cityName}
                 </Badge>
-                <Badge variant="secondary">{event.eventDetails.category}</Badge>
+                <Badge variant="secondary">{categoryName}</Badge>
               </div>
               {!isUpcoming && (
                 <div className="absolute top-3 right-3">
@@ -216,7 +252,7 @@ function decodeHTMLEntities(text: string) {
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Building className="h-4 w-4" />
-                    <span>{event.eventDetails.cityName}</span>
+                    <span>{cityName}</span>
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Users className="h-4 w-4" />
@@ -246,17 +282,18 @@ function decodeHTMLEntities(text: string) {
               </div>
             </CardContent>
           </Card>
-        )
+        );
       })}
     </div>
   )
 
   const renderListView = () => (
     <div className="space-y-1">
-      {filteredEventsWithCityName.map((event) => {
-        const isUpcoming = new Date(event.eventDetails.startDate) > new Date()
-        const isRegistrationOpen = new Date() < new Date(event.eventDetails.registrationDeadline)
-
+      {sortedEvents.map(event => {
+        const isUpcoming = new Date(event.eventDetails.startDate) > new Date();
+        const isRegistrationOpen = event.eventDetails.registrationDeadline ? (new Date() < new Date(event.eventDetails.registrationDeadline)) : false;
+        const cityName = getEventCityName(event);
+        const categoryName = getEventCategoryName(event);
         return (
           <Card key={event.id} className="bg-background hover:shadow-md transition-shadow">
             <CardContent className="p-6">
@@ -277,10 +314,10 @@ function decodeHTMLEntities(text: string) {
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
                         <Badge variant="outline">
-                          {getCityIcon(event.eventDetails.cityName)} {event.eventDetails.cityName}
+                          {getCityIcon(cityName)} {cityName}
                         </Badge>
                         <Badge variant="secondary">
-                          {event.eventDetails.category}
+                          {categoryName}
                         </Badge>
                         {!isUpcoming && <Badge variant="secondary">Terminé</Badge>}
                         {isUpcoming && isRegistrationOpen && (
@@ -314,7 +351,7 @@ function decodeHTMLEntities(text: string) {
                     </div>
                     <div className="flex items-center gap-2">
                       <Building className="h-4 w-4" />
-                      <span>{event.eventDetails.cityName}</span>
+                      <span>{cityName}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4" />
@@ -325,7 +362,7 @@ function decodeHTMLEntities(text: string) {
               </div>
             </CardContent>
           </Card>
-        )
+        );
       })}
     </div>
   )
@@ -460,15 +497,14 @@ function decodeHTMLEntities(text: string) {
 
       {/* Results Count */}
       <div className="text-sm text-muted-foreground">
-        {filteredEvents.length} événement{filteredEvents.length > 1 ? "s" : ""} trouvé
-        {filteredEvents.length > 1 ? "s" : ""}
+        {sortedEvents.length} événement{sortedEvents.length > 1 ? "s" : ""} trouvé{sortedEvents.length > 1 ? "s" : ""}
         {searchQuery && ` pour "${searchQuery}"`}
         {currentCategory !== "all" && ` dans la catégorie "${currentCategory}"`}
         {currentCity !== "all" && ` à ${currentCity}`}
       </div>
 
       {/* Events Display */}
-      {filteredEvents.length === 0 ? (
+      {sortedEvents.length === 0 ? (
         <div className="text-center py-12">
           <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
           <h3 className="text-lg font-semibold mb-2">Aucun événement trouvé</h3>

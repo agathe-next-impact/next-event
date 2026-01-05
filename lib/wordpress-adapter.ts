@@ -28,9 +28,15 @@ export function convertToEvent(post: WPPost): Event {
   // Récupérer l'URL de l'image mise en avant
   const featuredImage = post._embedded?.["wp:featuredmedia"]?.[0]
 
-  // Récupérer les catégories
-  const categories = post._embedded?.["wp:term"]?.[0] || []
-  const category = categories.length > 0 ? categories[0].name : "Non catégorisé"
+  // Récupérer les catégories (catégorie principale)
+  let categoryObj = { name: "Non catégorisé", slug: "non-categorise" };
+  const categories = post._embedded?.["wp:term"]?.[0] || [];
+  if (categories.length > 0) {
+    categoryObj = {
+      name: categories[0].name || "Non catégorisé",
+      slug: categories[0].slug || "non-categorise",
+    };
+  }
 
   // Récupérer les champs ACF
   const acfData = extractACFData(post)
@@ -41,8 +47,14 @@ export function convertToEvent(post: WPPost): Event {
   const registrationDeadline = acfData.registration_deadline || acfData.registrationDeadline || post.date
 
   // Autres détails
+  let cityObj = { name: "Paris", slug: "paris" };
+  if (acfData.city && typeof acfData.city === 'object' && acfData.city.name && acfData.city.slug) {
+    cityObj = { name: acfData.city.name, slug: acfData.city.slug };
+  } else if (typeof acfData.city === 'string') {
+    cityObj = { name: acfData.city, slug: acfData.city.toLowerCase().replace(/\s+/g, '-') };
+  }
+
   const location = acfData.location || "À déterminer"
-  const city = acfData.city || "Paris"
   const maxAttendees = Number.parseInt(acfData.max_attendees || acfData.maxAttendees || "100", 10)
   const currentAttendees = Number.parseInt(acfData.current_attendees || acfData.currentAttendees || "0", 10)
   const price = Number.parseFloat(acfData.price || "0")
@@ -59,17 +71,17 @@ export function convertToEvent(post: WPPost): Event {
   }
 
   return {
-    id: post.id.toString(),
-    title: post.title.rendered,
-    slug: post.slug,
-    content: post.content.rendered,
-    excerpt: post.excerpt.rendered,
-    date: post.date,
+    id: post.id?.toString() ?? "",
+    title: post.title?.rendered ?? "",
+    slug: post.slug ?? "",
+    content: post.content?.rendered ?? "",
+    excerpt: post.excerpt?.rendered ?? "",
+    date: post.date ?? "",
     featuredImage: featuredImage
       ? {
           node: {
             sourceUrl: featuredImage.source_url,
-            altText: featuredImage.alt_text || post.title.rendered,
+            altText: featuredImage.alt_text || post.title?.rendered || "",
           },
         }
       : undefined,
@@ -77,8 +89,8 @@ export function convertToEvent(post: WPPost): Event {
       startDate,
       endDate,
       location,
-      city,
-      category,
+      city: cityObj,
+      category: categoryObj,
       maxAttendees,
       currentAttendees,
       registrationDeadline,
@@ -89,8 +101,8 @@ export function convertToEvent(post: WPPost): Event {
       agenda,
     },
     seo: {
-      title: post.title.rendered,
-      metaDesc: post.excerpt.rendered,
+      title: post.title?.rendered ?? "",
+      metaDesc: post.excerpt?.rendered ?? "",
       opengraphImage: featuredImage
         ? {
             sourceUrl: featuredImage.source_url,
@@ -108,150 +120,61 @@ export function convertToSpeaker(post: WPPost): Speaker {
   // Récupérer les champs ACF
   const acfData = extractACFData(post)
 
-  // Expertise (à adapter selon votre structure)
-  let expertise = []
-  if (Array.isArray(acfData.expertise)) {
-    expertise = acfData.expertise
-  } else if (acfData.expertise) {
-    expertise = [acfData.expertise]
-  } else {
-    // Essayer de récupérer depuis les taxonomies
-    expertise = processTaxonomies(post, "expertise")
-  }
-
-  // Skills
-  let skills = []
-  if (Array.isArray(acfData.skills)) {
-    skills = acfData.skills
-  } else if (acfData.skills) {
-    skills = [acfData.skills]
-  }
-
-  // Languages
-  let languages = []
-  if (Array.isArray(acfData.languages)) {
-    languages = acfData.languages.map((lang: any) => {
-      if (typeof lang === "object" && lang !== null) {
-        return lang.language || String(lang)
-      }
-      return String(lang)
-    })
-  } else if (acfData.languages) {
-    languages = [acfData.languages]
-  }
-
-  // Achievements
-  let achievements = []
-  if (Array.isArray(acfData.achievements)) {
-    achievements = acfData.achievements.map((achievement: any) => {
-      if (typeof achievement === "object" && achievement !== null) {
-        return achievement.title || String(achievement)
-      }
-      return String(achievement)
-    })
-  } else if (acfData.achievements) {
-    achievements = [acfData.achievements]
-  }
-
-  // Social links
-  const socialLinks = {
-    linkedin: acfData.linkedin || acfData.social_linkedin,
-    twitter: acfData.twitter || acfData.social_twitter,
-    github: acfData.github || acfData.social_github,
-    website: acfData.website || acfData.social_website,
-    youtube: acfData.youtube || acfData.social_youtube,
-  }
-
-  // Certifications - s'assurer que c'est un tableau d'objets valides
-  let certifications = []
-  if (Array.isArray(acfData.certifications)) {
-    certifications = acfData.certifications.map((cert: any) => {
-      if (typeof cert === "object" && cert !== null) {
-        return {
-          name: cert.name || cert.certification_name || "",
-          issuer: cert.issuer || cert.certification_issuer || "",
-          year: cert.year || cert.certification_year || "",
-        }
-      }
-      return {
-        name: String(cert || ""),
-        issuer: "",
-        year: "",
-      }
-    })
-  }
-
-  // Popular talks - s'assurer que c'est un tableau d'objets valides
-  let popularTalks = []
-  if (Array.isArray(acfData.popular_talks)) {
-    popularTalks = acfData.popular_talks.map((talk: any) => {
-      if (typeof talk === "object" && talk !== null) {
-        return {
-          title: talk.title || talk.talk_title || "",
-          description: talk.description || talk.talk_description || "",
-          duration: talk.duration || talk.talk_duration || "30 min",
-          level: talk.level || talk.talk_level || "Intermédiaire",
-          category: talk.category || talk.talk_category || "Général",
-          videoUrl: talk.video_url || talk.talk_video_url || undefined,
-        }
-      }
-      return {
-        title: String(talk || ""),
-        description: "",
-        duration: "30 min",
-        level: "Intermédiaire",
-        category: "Général",
-        videoUrl: undefined,
-      }
-    })
+  // Expertises (wysiwyg ou texte séparé par virgule)
+  let expertises: string[] = [];
+  if (Array.isArray(acfData.expertises)) {
+    expertises = acfData.expertises;
+  } else if (typeof acfData.expertises === 'string') {
+    // Si wysiwyg, on extrait les mots clés séparés par virgule ou saut de ligne
+    expertises = acfData.expertises.split(/,|\n/).map((e: string) => e.trim()).filter(Boolean);
   }
 
   return {
-    id: post.id.toString(),
-    title: post.title.rendered,
-    slug: post.slug,
-    content: post.content.rendered,
-    excerpt: post.excerpt.rendered,
-    date: post.date,
+    id: post.id?.toString() ?? "",
+    title: post.title?.rendered ?? "",
+    slug: post.slug ?? "",
+    content: post.content?.rendered ?? "",
+    excerpt: post.excerpt?.rendered ?? "",
+    date: post.date ?? "",
     featuredImage: featuredImage
       ? {
           node: {
             sourceUrl: featuredImage.source_url,
-            altText: featuredImage.alt_text || post.title.rendered,
+            altText: featuredImage.alt_text || post.title?.rendered || "",
           },
         }
       : undefined,
     speakerDetails: {
-      bio: post.excerpt.rendered,
+      bio: acfData.bio || "",
       company: acfData.company || "",
       jobTitle: acfData.job_title || acfData.jobTitle || "",
-      location: acfData.location || "Paris, France",
-      email: acfData.email || "contact@example.com",
-      phone: acfData.phone,
-      website: acfData.website,
-      experience: Number.parseInt(acfData.experience || "5", 10),
-      rating: Number.parseFloat(acfData.rating || "4.5"),
-      reviewsCount: Number.parseInt(acfData.reviews_count || acfData.reviewsCount || "10", 10),
-      talksGiven: Number.parseInt(acfData.talks_given || acfData.talksGiven || "5", 10),
-      expertise,
-      skills,
-      languages,
-      availability: (acfData.availability || "available") as "available" | "busy" | "unavailable",
-      hourlyRate: Number.parseInt(acfData.hourly_rate || acfData.hourlyRate || "0", 10),
-      travelWillingness: Boolean(acfData.travel_willingness || acfData.travelWillingness || true),
-      socialLinks,
-      achievements,
-      certifications,
-      popularTalks,
+      // Pas de location, experience, rating, reviewsCount, talksGiven dans ce schéma
+      expertises: expertises.map((name) => ({ name, slug: name.toLowerCase().replace(/\s+/g, "-") })),
+      expertise: expertises,
     },
-    seo: {
-      title: post.title.rendered,
-      metaDesc: post.excerpt.rendered,
-      opengraphImage: featuredImage
+    socialLinks: {
+      linkedin: acfData.linkedin || "",
+      twitter: acfData.twitter || "",
+      github: acfData.github || "",
+      website: acfData.website || "",
+      youtube: acfData.youtube || "",
+      mastodon: acfData.mastodon || "",
+    },
+    skillsAndAchievements: {
+      // Les champs skills, certifications, achievements sont des wysiwyg (texte riche)
+      skills: acfData.skills ? [{ name: acfData.skills, level: "" }] : [],
+      certifications: acfData.certifications ? [{ name: acfData.certifications, issuer: "", year: "", url: "" }] : [],
+      achievements: acfData.achievements ? [{ title: acfData.achievements, year: "", url: "", description: "" }] : [],
+    },
+    seoData: {
+      metaTitle: acfData.meta_title || acfData.metaTitle || post.title?.rendered || "",
+      metaDescription: acfData.meta_description || acfData.metaDescription || post.excerpt?.rendered || "",
+      ogImage: featuredImage
         ? {
             sourceUrl: featuredImage.source_url,
           }
         : undefined,
+      keywords: acfData.keywords || "",
     },
   }
 }

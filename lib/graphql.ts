@@ -532,10 +532,9 @@ export async function getEvents(variables?: { first?: number; after?: string; ca
       params.category = variables.category
     }
 
-    try {
-      const eventPosts = await getCustomPosts("events", params)
+    const eventPosts = await getCustomPosts("events", params)
+    if (Array.isArray(eventPosts) && eventPosts.length > 0) {
       const events = eventPosts.map(convertToEvent)
-
       return {
         nodes: events,
         pageInfo: {
@@ -543,18 +542,17 @@ export async function getEvents(variables?: { first?: number; after?: string; ca
           endCursor: eventPosts.length > 0 ? eventPosts[eventPosts.length - 1].id.toString() : null,
         },
       }
-    } catch (error) {
-      console.log("Type de post personnalisé 'events' non trouvé, utilisation des posts standard")
-      const posts = await getPosts(params)
-      const events = posts.map(convertToEvent)
-
-      return {
-        nodes: events,
-        pageInfo: {
-          hasNextPage: posts.length >= Number.parseInt(params.per_page, 10),
-          endCursor: posts.length > 0 ? posts[posts.length - 1].id.toString() : null,
-        },
-      }
+    }
+    // Fallback only if eventPosts is not a non-empty array
+    console.log("Type de post personnalisé 'events' non trouvé ou vide, utilisation des posts standard")
+    const posts = await getPosts(params)
+    const events = posts.map(convertToEvent)
+    return {
+      nodes: events,
+      pageInfo: {
+        hasNextPage: posts.length >= Number.parseInt(params.per_page, 10),
+        endCursor: posts.length > 0 ? posts[posts.length - 1].id.toString() : null,
+      },
     }
   } catch (error) {
     console.error("Error fetching events:", error)

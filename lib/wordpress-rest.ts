@@ -3,6 +3,7 @@ export type Speaker = typeof demoSpeakers[number];
 import { getPosts, getPostBySlug, getCustomPosts, testAPIConnection } from "./wordpress-api"
 import { convertToEvent, convertToSpeaker } from "./wordpress-adapter"
 
+
 // Interfaces pour les événements et speakers
 
 import { demoSpeakers } from "./demo-speakers";
@@ -126,21 +127,16 @@ export async function getEvents(variables?: { first?: number; after?: string; ca
     const params: Record<string, string> = {
       per_page: variables?.first?.toString() || "20",
     }
-
     if (variables?.category && variables.category !== "all") {
       params.category = variables.category
     }
-
     if (variables?.city && variables.city !== "all") {
-      // Pour le filtrage par ville, on pourrait utiliser un champ ACF ou une taxonomie
       params.meta_key = "city"
       params.meta_value = variables.city
     }
-
-    try {
-      const eventPosts = await getCustomPosts("events", params)
+    const eventPosts = await getCustomPosts("events", params)
+    if (Array.isArray(eventPosts) && eventPosts.length > 0) {
       const events = eventPosts.map(convertToEvent)
-
       return {
         nodes: events,
         pageInfo: {
@@ -148,11 +144,9 @@ export async function getEvents(variables?: { first?: number; after?: string; ca
           endCursor: eventPosts.length > 0 ? eventPosts[eventPosts.length - 1].id.toString() : null,
         },
       }
-    } catch (error) {
-      console.log("Type de post personnalisé 'events' non trouvé, utilisation des posts standard")
+    } else {
       const posts = await getPosts(params)
       const events = posts.map(convertToEvent)
-
       return {
         nodes: events,
         pageInfo: {
@@ -173,51 +167,6 @@ export async function getEvents(variables?: { first?: number; after?: string; ca
     }
   }
 }
-
-
-export async function getEventBySlug(slug: string, preview = false) {
-  try {
-    try {
-      const params = { slug }
-      const eventPosts = await getCustomPosts("events", params)
-
-      if (eventPosts.length > 0) {
-        return convertToEvent(eventPosts[0])
-      }
-    } catch (error) {
-      console.log("Type de post personnalisé 'events' non trouvé, recherche dans les posts standard")
-    }
-
-    const post = await getPostBySlug(slug)
-
-    if (post) {
-      return convertToEvent(post)
-    }
-
-    return null
-  } catch (error) {
-    console.error("Error fetching event by slug:", error)
-    const mockEvent = MOCK_EVENTS.find((event) => event.slug === slug)
-    return mockEvent || null
-  }
-}
-
-export async function getEventSlugs() {
-  try {
-    try {
-      const eventPosts = await getCustomPosts("events", { per_page: "100" })
-      return eventPosts.map((post) => post.slug)
-    } catch (error) {
-      console.log("Type de post personnalisé 'events' non trouvé, utilisation des posts standard")
-      const posts = await getPosts({ per_page: "100" })
-      return posts.map((post) => post.slug)
-    }
-  } catch (error) {
-    console.error("Error fetching event slugs:", error)
-    return MOCK_EVENTS.map((event) => event.slug)
-  }
-}
-
 // Fonctions pour récupérer les speakers
 export async function getSpeakers(variables?: {
   first?: number
@@ -443,6 +392,37 @@ export async function getEventsBySpeaker(speakerId: string) {
 
     const eventIds = speakerEventMap[speakerId] || []
     return MOCK_EVENTS.filter((event) => eventIds.includes(event.id))
+  }
+}
+
+export async function getEventsBySpeakerSlug(slug: string) {
+  try {
+    // 1. Récupère le speaker pour obtenir son ID
+    const speakerRes = await getCustomPosts("speakers", { slug });
+    const speaker = speakerRes[0];
+    if (!speaker) return [];
+
+    // 2. Récupère tous les events (comme les autres fonctions)
+    const allEvents = await getCustomPosts("events", { per_page: "100" });
+    const convertedEvents = allEvents.map(convertToEvent);
+    // 3. Filtre côté JS sur le champ speakers (array d'ID)
+    const events = convertedEvents.filter(event =>
+      Array.isArray(event.eventDetails?.speakers)
+        ? event.eventDetails.speakers.includes(speaker.id)
+        : false
+    );
+    return events;
+  } catch (error) {
+    console.error("Error fetching events by speaker slug:", error);
+    // Fallback sur les données mockées
+    const mockSpeaker = MOCK_SPEAKERS.find((s) => s.slug === slug);
+    if (!mockSpeaker) return [];
+    const speakerEventMap: Record<string, string[]> = {
+      "1": ["1"],
+      "2": ["1"],
+    };
+    const eventIds = speakerEventMap[mockSpeaker.id] || [];
+    return MOCK_EVENTS.filter((event) => eventIds.includes(event.id));
   }
 }
 

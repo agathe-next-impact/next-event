@@ -51,6 +51,7 @@ async function fetchAPI<T>(endpoint: string, params: Record<string, string> = {}
   // Construire l'URL avec les paramètres
   const queryParams = new URLSearchParams(params).toString()
   const url = `${API_BASE_URL}${endpoint}${queryParams ? `?${queryParams}` : ""}`
+  console.log("[fetchAPI] URL appelée:", url)
 
   try {
     const response = await fetch(url)
@@ -171,7 +172,21 @@ export async function getCustomPostTypes(): Promise<string[]> {
 // Fonction pour récupérer les posts d'un type personnalisé
 export async function getCustomPosts(postType: string, params: Record<string, string> = {}): Promise<WPPost[]> {
   const defaultParams = { _embed: "true", per_page: "20", ...params }
-  return fetchAPI<WPPost[]>(`/${postType}`, defaultParams)
+  const result = await fetchAPI<WPPost[]>(`/${postType}`, defaultParams)
+  console.log(`[getCustomPosts] Réponse brute pour ${postType}:`, JSON.stringify(result))
+  console.log(`[getCustomPosts] Type de la réponse pour ${postType}:`, Array.isArray(result) ? 'array' : typeof result)
+  if (Array.isArray(result)) {
+    console.log(`[getCustomPosts] Longueur du tableau pour ${postType}:`, result.length)
+    if (result.length > 0) {
+      console.log(`[getCustomPosts] Premier élément pour ${postType}:`, JSON.stringify(result[0]))
+    }
+    return result
+  } else if (result && Array.isArray(result.data)) {
+    return result.data
+  } else {
+    console.error(`[getCustomPosts] Format inattendu pour ${postType}:`, result)
+    return []
+  }
 }
 
 // Fonction pour récupérer les champs ACF disponibles (si l'API ACF est exposée)
