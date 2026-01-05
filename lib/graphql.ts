@@ -151,7 +151,7 @@ export interface Reservation {
 export function checkEnvironmentVariables() {
   const requiredVars = {
     RESEND_API_KEY: process.env.RESEND_API_KEY,
-    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    PUBLIC_SITE_URL: process.env.PUBLIC_SITE_URL,
   }
 
   const missingVars = Object.entries(requiredVars)
@@ -616,7 +616,7 @@ export async function getEventSlugs() {
 export async function getCityById(cityId: string) {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL}/wp-json/wp/v2/cities/${cityId}`,
+      `${process.env.PUBLIC_SITE_URL}/wp-json/wp/v2/cities/${cityId}`,
     )
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`)

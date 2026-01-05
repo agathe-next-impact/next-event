@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     }
 
     // Envoyer l'email de test
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/api/send-email`, {
+    const response = await fetch(`${process.env.PUBLIC_SITE_URL || "http://localhost:3000"}/api/send-email`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

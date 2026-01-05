@@ -285,7 +285,7 @@ export function generateContactConfirmationEmail(contactMessage: ContactMessage)
         </div>
 
         <div style="text-align: center; margin: 32px 0;">
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/contact" class="button">
+            <a href="${process.env.PUBLIC_SITE_URL || "http://localhost:3000"}/contact" class="button">
                 Envoyer un autre message
             </a>
         </div>
@@ -576,7 +576,7 @@ export function generateContactNotificationEmail(contactMessage: ContactMessage)
             <a href="mailto:${contactMessage.email}" class="button button-primary">
                 Répondre par email
             </a>
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/admin/messages" class="button button-secondary">
+            <a href="${process.env.PUBLIC_SITE_URL || "http://localhost:3000"}/admin/messages" class="button button-secondary">
                 Voir dans l'admin
             </a>
         </div>
@@ -932,12 +932,12 @@ export function generateSpeakerConfirmationEmail(application: SpeakerApplication
             <ul style="margin: 0; padding-left: 20px;">
                 <li>Préparez une version courte de votre présentation (pitch de 2-3 minutes)</li>
                 <li>Réfléchissez aux questions que pourrait poser l'audience</li>
-                <li>Consultez nos <a href="${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/events" style="color: #d97706;">événements précédents</a> pour vous inspirer</li>
+                <li>Consultez nos <a href="${process.env.PUBLIC_SITE_URL || "http://localhost:3000"}/events" style="color: #d97706;">événements précédents</a> pour vous inspirer</li>
             </ul>
         </div>
 
         <div style="text-align: center; margin: 32px 0;">
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/become-speaker" class="button">
+            <a href="${process.env.PUBLIC_SITE_URL || "http://localhost:3000"}/become-speaker" class="button">
                 Voir le processus complet
             </a>
         </div>
@@ -993,7 +993,7 @@ Event Portal
 Email: speakers@eventportal.fr
 Téléphone: +33 1 23 45 67 89
 
-Voir le processus: ${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/become-speaker
+Voir le processus: ${process.env.PUBLIC_SITE_URL || "http://localhost:3000"}/become-speaker
   `
 
   return { subject, html, text }
@@ -1216,7 +1216,7 @@ export function generateSpeakerNotificationEmail(application: SpeakerApplication
             <a href="mailto:${application.email}" class="button button-primary">
                 Contacter le speaker
             </a>
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/admin/speakers" class="button button-secondary">
+            <a href="${process.env.PUBLIC_SITE_URL || "http://localhost:3000"}/admin/speakers" class="button button-secondary">
                 Voir dans l'admin
             </a>
         </div>
@@ -1578,7 +1578,7 @@ export function generateConfirmationEmail(reservation: Reservation, event: Event
         </div>
 
         <div style="text-align: center; margin: 32px 0;">
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/events/${event.slug}" class="button">
+            <a href="${process.env.PUBLIC_SITE_URL || "http://localhost:3000"}/events/${event.slug}" class="button">
                 Voir les détails de l'événement
             </a>
         </div>
@@ -1591,7 +1591,7 @@ export function generateConfirmationEmail(reservation: Reservation, event: Event
                 Téléphone: +33 1 23 45 67 89
             </p>
             <p style="margin-top: 16px;">
-                <a href="${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/events" style="color: #3b82f6;">Découvrir d'autres événements</a>
+                <a href="${process.env.PUBLIC_SITE_URL || "http://localhost:3000"}/events" style="color: #3b82f6;">Découvrir d'autres événements</a>
             </p>
         </div>
     </div>
@@ -1639,7 +1639,7 @@ Event Portal
 Email: contact@eventportal.fr
 Téléphone: +33 1 23 45 67 89
 
-Voir l'événement: ${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/events/${event.slug}
+Voir l'événement: ${process.env.PUBLIC_SITE_URL || "http://localhost:3000"}/events/${event.slug}
   `
 
   return { subject, html, text }
@@ -1831,7 +1831,7 @@ export function generateReminderEmail(reservation: Reservation, event: Event): E
         </div>
 
         <div style="text-align: center; margin: 32px 0;">
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/events/${event.slug}" class="button">
+            <a href="${process.env.PUBLIC_SITE_URL || "http://localhost:3000"}/events/${event.slug}" class="button">
                 Voir les détails de l'événement
             </a>
         </div>

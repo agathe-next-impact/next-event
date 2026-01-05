@@ -195,9 +195,9 @@ export default function DevTools() {
 
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label>NEXT_PUBLIC_SITE_URL</Label>
-                    <Badge variant={process.env.NEXT_PUBLIC_SITE_URL ? "success" : "outline"}>
-                      {process.env.NEXT_PUBLIC_SITE_URL ? "Configuré" : "Non configuré"}
+                    <Label>PUBLIC_SITE_URL</Label>
+                    <Badge variant={process.env.PUBLIC_SITE_URL ? "success" : "outline"}>
+                      {process.env.PUBLIC_SITE_URL ? "Configuré" : "Non configuré"}
                     </Badge>
                   </div>
                   <div className="text-xs text-muted-foreground">URL publique du site pour les liens absolus</div>

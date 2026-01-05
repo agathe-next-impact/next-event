@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: process.env.NEXT_PUBLIC_SITE_URL,
+    url: process.env.PUBLIC_SITE_URL,
     siteName: "Event Portal",
     title: "Event Portal - Découvrez des Événements Exceptionnels",
     description: "Rejoignez des milliers de participants à nos événements soigneusement sélectionnés.",
