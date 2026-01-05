@@ -39,8 +39,8 @@ export default function ContactPage() {
       description: "Écrivez-nous pour toute question",
       value: "contact@next-event.fr",
       action: "mailto:contact@next-event.fr",
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
+      color: "text-yellow-500",
+      bgColor: "bg-yellow-50",
     },
     {
       icon: Phone,
@@ -48,8 +48,8 @@ export default function ContactPage() {
       description: "Appelez-nous aux heures ouvrables",
       value: "+33 1 23 45 67 89",
       action: "tel:+33123456789",
-      color: "text-green-600",
-      bgColor: "bg-green-50",
+      color: "text-yellow-500",
+      bgColor: "bg-yellow-50",
     },
     {
       icon: MessageSquare,
@@ -57,8 +57,8 @@ export default function ContactPage() {
       description: "Discutez avec notre équipe",
       value: "Disponible 9h-18h",
       action: "#chat",
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
+      color: "text-yellow-500",
+      bgColor: "bg-yellow-50",
     },
     {
       icon: MapPin,
@@ -66,8 +66,8 @@ export default function ContactPage() {
       description: "Venez nous rendre visite",
       value: "15 rue de la Paix, 75001 Paris",
       action: "https://maps.google.com/?q=15+rue+de+la+Paix+Paris",
-      color: "text-red-600",
-      bgColor: "bg-red-50",
+      color: "text-yellow-500",
+      bgColor: "bg-yellow-50",
     },
   ]
 

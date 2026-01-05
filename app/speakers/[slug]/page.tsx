@@ -1,3 +1,4 @@
+import { decodeHTMLEntities } from "@/lib/decodeHTMLEntities"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Image from "next/image"
@@ -203,12 +204,12 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
               )}
 
               <div className="text-center mb-6">
-                <h1 className="text-2xl font-bold mb-2">{speaker.title}</h1>
+                <h1 className="text-2xl font-bold mb-2">{typeof speaker.title === 'string' ? decodeHTMLEntities(speaker.title.replace(/<[^>]+>/g, '')) : speaker.title}</h1>
                 {speaker.speakerDetails.jobTitle && (
-                  <p className="text-lg text-muted-foreground mb-2">{speaker.speakerDetails.jobTitle}</p>
+                  <p className="text-lg text-muted-foreground mb-2">{typeof speaker.speakerDetails.jobTitle === 'string' ? decodeHTMLEntities(speaker.speakerDetails.jobTitle.replace(/<[^>]+>/g, '')) : speaker.speakerDetails.jobTitle}</p>
                 )}
                 {speaker.speakerDetails.company && (
-                  <p className="text-md font-medium text-primary mb-4">{speaker.speakerDetails.company}</p>
+                  <p className="text-md font-medium text-primary mb-4">{typeof speaker.speakerDetails.company === 'string' ? decodeHTMLEntities(speaker.speakerDetails.company.replace(/<[^>]+>/g, '')) : speaker.speakerDetails.company}</p>
                 )}
 
                 {speaker.speakerDetails.rating && (
@@ -366,10 +367,11 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
                   <CardTitle>Biographie</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div
-                    className="prose prose-gray dark:prose-invert max-w-none"
-                    dangerouslySetInnerHTML={{ __html: speaker.content }}
-                  />
+                  <div className="prose prose-gray dark:prose-invert max-w-none whitespace-pre-line">
+                    {speaker.content && typeof speaker.content === 'string'
+                      ? decodeHTMLEntities(speaker.content.replace(/<[^>]+>/g, ''))
+                      : ''}
+                  </div>
                 </CardContent>
               </Card>
 
@@ -394,7 +396,7 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
                             )}
                           </div>
                           {achievement.description && (
-                            <p className="text-sm text-muted-foreground mb-2">{achievement.description}</p>
+                            <p className="text-sm text-muted-foreground mb-2">{typeof achievement.description === 'string' ? decodeHTMLEntities(achievement.description.replace(/<[^>]+>/g, '')) : achievement.description}</p>
                           )}
                           {achievement.url && (
                             <a
@@ -538,12 +540,13 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
                               )}
                             </div>
                           </div>
-                          {talk.description && (
-                            <div
-                              className="text-muted-foreground text-sm mb-3 prose prose-sm max-w-none"
-                              dangerouslySetInnerHTML={{ __html: talk.description }}
-                            />
-                          )}
+                              {talk.description && (
+                                <div className="text-muted-foreground text-sm mb-3 prose prose-sm max-w-none whitespace-pre-line">
+                                  {talk.description && typeof talk.description === 'string'
+                                    ? decodeHTMLEntities(talk.description.replace(/<[^>]+>/g, ''))
+                                    : ''}
+                                </div>
+                              )}
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             {talk.duration && <span>Durée: {talk.duration}</span>}
                             {talk.videoUrl && (
@@ -580,7 +583,7 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
                         <div key={event.id} className="border rounded-lg p-4">
                           <div className="flex items-start justify-between mb-2">
                             <Link href={`/events/${event.slug}`}>
-                              <h4 className="font-semibold hover:text-primary transition-colors">{event.title}</h4>
+                              <h4 className="font-semibold hover:text-primary transition-colors">{typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title}</h4>
                             </Link>
                             <Badge variant="outline">
                               {typeof event.eventDetails.category === "object"
@@ -588,7 +591,7 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
                                 : event.eventDetails.category}
                             </Badge>
                           </div>
-                          <p className="text-muted-foreground text-sm mb-3">{event.excerpt}</p>
+                          <p className="text-muted-foreground text-sm mb-3">{typeof event.excerpt === 'string' ? decodeHTMLEntities(event.excerpt.replace(/<[^>]+>/g, '')) : event.excerpt}</p>
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <span>{formatDate(event.eventDetails.startDate)}</span>
                             <span>{event.eventDetails.location}</span>

@@ -871,14 +871,6 @@ export function generateSpeakerConfirmationEmail(application: SpeakerApplication
         
         <p>Merci d'avoir soumis votre candidature pour devenir speaker à Event Portal ! Nous avons bien reçu votre proposition de talk et nous sommes ravis de l'étudier.</p>
 
-        <div class="application-id">
-            <div style="margin-bottom: 8px; font-weight: 600; color: #374151;">ID de candidature</div>
-            <div class="id-code">${application.id}</div>
-            <div style="margin-top: 8px; font-size: 14px; color: #6b7280;">
-                Conservez cet ID pour vos références
-            </div>
-        </div>
-
         <div class="talk-details">
             <h3 style="margin-top: 0; color: #1f2937;">📋 Récapitulatif de votre candidature</h3>
             

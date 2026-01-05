@@ -44,7 +44,7 @@ export interface WPTerm {
 }
 
 // Configuration de l'API
-const API_BASE_URL = "https://mediumseagreen-gazelle-452030.hostingersite.com/wp-json/wp/v2"
+const API_BASE_URL = process.env.WP_GRAPHQL_ENDPOINT || "https://next-event.fr/wp-json/wp/v2"
 
 // Fonction utilitaire pour les requêtes API
 async function fetchAPI<T>(endpoint: string, params: Record<string, string> = {}): Promise<T> {

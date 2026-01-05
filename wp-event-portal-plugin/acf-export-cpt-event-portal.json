@@ -1,0 +1,14 @@
+[
+  {
+    "key": "group_event_portal_cpt",
+    "title": "Event Portal - Custom Post Types",
+    "fields": [],
+    "location": [
+      [ { "param": "post_type", "operator": "==", "value": "events" } ],
+      [ { "param": "post_type", "operator": "==", "value": "speakers" } ],
+      [ { "param": "post_type", "operator": "==", "value": "reservation" } ]
+    ],
+    "active": true,
+    "description": "Déclaration des Custom Post Types pour Event Portal (events, speakers, reservation) via ACF. Les champs sont à ajouter dans les groupes dédiés."
+  }
+]

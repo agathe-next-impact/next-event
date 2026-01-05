@@ -78,11 +78,11 @@ export default async function HomePage() {
         <div>
           <div className="h-max">
           <Image
-            src="/images/hero.jpeg"
+            src="/images/hero.jpg"
             alt="Hero Image"
             width={500}
             height={300}
-            className="w-full rounded-lg shadow-lg col-span-1 md:col-span-2"
+            className="w-128 max-h-82 object-cover rounded-lg shadow-lg col-span-1 md:col-span-2"
           />
           </div>
         </div>

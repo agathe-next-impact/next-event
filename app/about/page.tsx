@@ -64,25 +64,25 @@ export default function AboutPage() {
     {
       name: "Marie Dubois",
       role: "Fondatrice & CEO",
-      image: "/placeholder.svg?height=300&width=300&query=professional woman ceo",
+      image: "/images/team-1.jpg?height=300&width=300&query=professional woman ceo",
       bio: "Experte en événementiel avec 10 ans d'expérience dans l'organisation de conférences tech.",
     },
     {
       name: "Thomas Martin",
       role: "Directeur Technique",
-      image: "/placeholder.svg?height=300&width=300&query=professional man cto developer",
+      image: "/images/team-2.jpg?height=300&width=300&query=professional man cto developer",
       bio: "Développeur full-stack passionné par les technologies modernes et l'innovation.",
     },
     {
       name: "Sophie Laurent",
       role: "Responsable Communauté",
-      image: "/placeholder.svg?height=300&width=300&query=professional woman community manager",
+      image: "/images/team-3.jpg?height=300&width=300&query=professional woman community manager",
       bio: "Spécialiste en engagement communautaire et marketing digital.",
     },
     {
       name: "Alexandre Chen",
       role: "Designer UX/UI",
-      image: "/placeholder.svg?height=300&width=300&query=professional man designer creative",
+      image: "/images/team-4.jpg?height=300&width=300&query=professional man designer creative",
       bio: "Designer créatif focalisé sur l'expérience utilisateur et l'accessibilité.",
     },
   ]
@@ -176,7 +176,7 @@ export default function AboutPage() {
           </div>
           <div className="relative">
             <Image
-              src="/placeholder.svg?height=400&width=600&query=team collaboration tech conference"
+              src="/images/mission.jpg?height=400&width=600&query=team collaboration tech conference"
               alt="Notre mission"
               width={600}
               height={400}
@@ -325,10 +325,6 @@ export default function AboutPage() {
               Voir les événements
             </Button>
           </Link>
-          <Button variant="outline" size="lg">
-            <Mail className="mr-2 h-5 w-5" />
-            Newsletter
-          </Button>
         </div>
       </div>
     </div>

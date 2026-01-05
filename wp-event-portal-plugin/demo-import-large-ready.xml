@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+  xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:wp="http://wordpress.org/export/1.2/"
+>
+<channel>
+  <title>Event Portal Demo</title>
+  <wp:wxr_version>1.2</wp:wxr_version>
+  <wp:author>
+    <wp:author_id>1</wp:author_id>
+    <wp:author_login>admin</wp:author_login>
+    <wp:author_email>admin@example.com</wp:author_email>
+    <wp:author_display_name>Admin</wp:author_display_name>
+  </wp:author>
+
+  <!-- Speaker 1 -->
+  <item>
+    <title>Jean Dupont</title>
+    <wp:post_type>speakers</wp:post_type>
+    <wp:status>publish</wp:status>
+    <wp:post_name>jean-dupont</wp:post_name>
+    <content:encoded><![CDATA[Entrepreneur passionné, Jean accompagne les startups dans leur croissance.]]></content:encoded>
+    <excerpt:encoded><![CDATA[CEO & Fondateur chez StartupX, expert en innovation.]]></excerpt:encoded>
+    <wp:postmeta><wp:meta_key>job_title</wp:meta_key><wp:meta_value>CEO & Fondateur</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>company</wp:meta_key><wp:meta_value>StartupX</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>location</wp:meta_key><wp:meta_value>Paris</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>experience</wp:meta_key><wp:meta_value>12</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>rating</wp:meta_key><wp:meta_value>4.8</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>reviews_count</wp:meta_key><wp:meta_value>32</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>talks_given</wp:meta_key><wp:meta_value>18</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>hourly_rate</wp:meta_key><wp:meta_value>350</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>travel_willingness</wp:meta_key><wp:meta_value>1</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>email</wp:meta_key><wp:meta_value>jean.dupont@startupx.com</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>phone</wp:meta_key><wp:meta_value>+33 1 23 45 67 89</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>expertises</wp:meta_key><wp:meta_value><![CDATA["Entrepreneuriat","Innovation","Stratégie"]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>linkedin</wp:meta_key><wp:meta_value>https://linkedin.com/in/jeandupont</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>website</wp:meta_key><wp:meta_value>https://jeandupont.com</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>skills</wp:meta_key><wp:meta_value><![CDATA[[{"name":"Leadership","level":"expert"},{"name":"Lean Startup","level":"avance"}]]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>certifications</wp:meta_key><wp:meta_value><![CDATA[[{"name":"Certification Lean Startup","issuer":"Startup Institute","year":2021,"url":"https://startupinstitute.com/certif"}]]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>achievements</wp:meta_key><wp:meta_value><![CDATA[[{"title":"Prix de l'Innovation 2022","description":"Lauréat du prix national de l'innovation.","year":2022,"url":"https://prix-innovation.fr"}]]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>talks</wp:meta_key><wp:meta_value><![CDATA[[{"title":"Innover en 2024","description":"Comment innover dans un monde incertain.","category":"Innovation","level":"avance","duration":"45min","videoUrl":"https://youtube.com/jeandupont-innovation"}]]]></wp:meta_value></wp:postmeta>
+  </item>
+
+  <!-- Speaker 2 -->
+  <item>
+    <title>Marie Curie</title>
+    <wp:post_type>speakers</wp:post_type>
+    <wp:status>publish</wp:status>
+    <wp:post_name>marie-curie</wp:post_name>
+    <content:encoded><![CDATA[Experte en data science, Marie accompagne les entreprises dans la valorisation de leurs données.]]></content:encoded>
+    <excerpt:encoded><![CDATA[Consultante Data Science chez DataLab, conférencière TEDx.]]></excerpt:encoded>
+    <wp:postmeta><wp:meta_key>job_title</wp:meta_key><wp:meta_value>Consultante Data Science</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>company</wp:meta_key><wp:meta_value>DataLab</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>location</wp:meta_key><wp:meta_value>Lyon</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>experience</wp:meta_key><wp:meta_value>8</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>rating</wp:meta_key><wp:meta_value>4.9</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>reviews_count</wp:meta_key><wp:meta_value>41</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>talks_given</wp:meta_key><wp:meta_value>25</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>hourly_rate</wp:meta_key><wp:meta_value>400</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>travel_willingness</wp:meta_key><wp:meta_value>0</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>email</wp:meta_key><wp:meta_value>marie.curie@datalab.com</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>phone</wp:meta_key><wp:meta_value>+33 4 56 78 90 12</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>expertises</wp:meta_key><wp:meta_value><![CDATA["Data Science","IA","Formation"]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>linkedin</wp:meta_key><wp:meta_value>https://linkedin.com/in/mariecurie</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>website</wp:meta_key><wp:meta_value>https://mariecurie.com</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>skills</wp:meta_key><wp:meta_value><![CDATA[[{"name":"Python","level":"expert"},{"name":"Machine Learning","level":"avance"}]]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>certifications</wp:meta_key><wp:meta_value><![CDATA[[{"name":"Data Scientist","issuer":"OpenClassrooms","year":2020,"url":"https://openclassrooms.com/certif"}]]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>achievements</wp:meta_key><wp:meta_value><![CDATA[[{"title":"Conférencière TEDx","description":"Intervention sur l'IA éthique.","year":2023,"url":"https://tedx.com/mariecurie"}]]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>talks</wp:meta_key><wp:meta_value><![CDATA[[{"title":"L'IA pour tous","description":"Démystifier l'intelligence artificielle.","category":"IA","level":"tous-niveaux","duration":"30min","videoUrl":"https://youtube.com/mariecurie-ia"}]]]></wp:meta_value></wp:postmeta>
+  </item>
+
+  <!-- Event 1 -->
+  <item>
+    <title>Conférence Entrepreneuriat PME 2026</title>
+    <wp:post_type>events</wp:post_type>
+    <wp:status>publish</wp:status>
+    <wp:post_name>conference-entrepreneuriat-pme-2026</wp:post_name>
+    <content:encoded><![CDATA[La plus grande conférence dédiée à l'entrepreneuriat et au développement des PME en France.]]></content:encoded>
+    <excerpt:encoded><![CDATA[Conférence majeure pour entrepreneurs et dirigeants de PME.]]></excerpt:encoded>
+    <wp:postmeta><wp:meta_key>start_date</wp:meta_key><wp:meta_value>2026-02-15T09:00:00</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>end_date</wp:meta_key><wp:meta_value>2026-02-15T18:00:00</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>location</wp:meta_key><wp:meta_value>Palais des Congrès, Lyon</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>city</wp:meta_key><wp:meta_value>Lyon</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>category</wp:meta_key><wp:meta_value>Conférence</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>max_attendees</wp:meta_key><wp:meta_value>500</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>price</wp:meta_key><wp:meta_value>0</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>is_free</wp:meta_key><wp:meta_value>1</wp:meta_value></wp:postmeta>
+  </item>
+
+  <!-- Event 2 -->
+  <item>
+    <title>Atelier Data Science pour PME</title>
+    <wp:post_type>events</wp:post_type>
+    <wp:status>publish</wp:status>
+    <wp:post_name>atelier-data-science-pme</wp:post_name>
+    <content:encoded><![CDATA[Atelier pratique pour découvrir les usages de la data science en PME.]]></content:encoded>
+    <excerpt:encoded><![CDATA[Atelier interactif animé par Marie Curie.]]></excerpt:encoded>
+    <wp:postmeta><wp:meta_key>start_date</wp:meta_key><wp:meta_value>2026-03-10T14:00:00</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>end_date</wp:meta_key><wp:meta_value>2026-03-10T17:00:00</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>location</wp:meta_key><wp:meta_value>Campus DataLab, Lyon</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>city</wp:meta_key><wp:meta_value>Lyon</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>category</wp:meta_key><wp:meta_value>Atelier</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>max_attendees</wp:meta_key><wp:meta_value>50</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>price</wp:meta_key><wp:meta_value>100</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>is_free</wp:meta_key><wp:meta_value>0</wp:meta_value></wp:postmeta>
+  </item>
+
+</channel>
+</rss>

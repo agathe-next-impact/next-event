@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Calendar, MapPin, Users, Clock, ArrowLeft, Building, UserCheck } from "lucide-react"
 import { getEventBySlug, getEventSlugs } from "@/lib/wordpress-rest"
 import { formatDate, generateOGImageUrl } from "@/lib/utils"
+import { decodeHTMLEntities } from "@/lib/decodeHTMLEntities"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -113,8 +114,8 @@ export default async function EventPage({ params, searchParams }: EventPageProps
 
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
           <div className="flex-1">
-            <h1 className="text-3xl md:text-4xl mb-2">{event.title}</h1>
-            <p className="text-lg text-muted-foreground">{event.excerpt}</p>
+            <h1 className="text-3xl md:text-4xl mb-2">{typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title}</h1>
+            <p className="text-lg text-muted-foreground">{typeof event.excerpt === 'string' ? decodeHTMLEntities(event.excerpt.replace(/<[^>]+>/g, '')) : event.excerpt}</p>
           </div>
         </div>
       </div>
@@ -128,10 +129,11 @@ export default async function EventPage({ params, searchParams }: EventPageProps
               <CardTitle>Description</CardTitle>
             </CardHeader>
             <CardContent>
-              <div
-                className="prose prose-gray dark:prose-invert max-w-none"
-                dangerouslySetInnerHTML={{ __html: event.content }}
-              />
+              <div className="prose prose-gray dark:prose-invert max-w-none whitespace-pre-line">
+                {event.content && typeof event.content === 'string'
+                  ? decodeHTMLEntities(event.content.replace(/<[^>]+>/g, ''))
+                  : ''}
+              </div>
             </CardContent>
           </Card>
 

@@ -71,7 +71,7 @@ export default function BecomeaSpeakerPage() {
     {
       name: "Sarah Chen",
       role: "Senior Developer chez Stripe",
-      avatar: "/placeholder.svg?height=60&width=60&query=professional woman developer asian",
+      avatar: "/images/testimonials-1.jpg?height=60&width=60&query=professional woman developer asian",
       quote:
         "Parler à Event Portal a été une expérience incroyable. L'audience était très engagée et les questions pertinentes !",
       event: "React Advanced Patterns",
@@ -79,7 +79,7 @@ export default function BecomeaSpeakerPage() {
     {
       name: "Thomas Dubois",
       role: "CTO chez Scaleway",
-      avatar: "/placeholder.svg?height=60&width=60&query=professional man cto french",
+      avatar: "/images/testimonials-2.jpg?height=60&width=60&query=professional man cto french",
       quote:
         "L'organisation était parfaite et l'équipe très professionnelle. Je recommande vivement de proposer un talk !",
       event: "Kubernetes in Production",
@@ -87,7 +87,7 @@ export default function BecomeaSpeakerPage() {
     {
       name: "Marie Laurent",
       role: "Lead UX chez Deezer",
-      avatar: "/placeholder.svg?height=60&width=60&query=professional woman ux designer",
+      avatar: "/images/testimonials-3.jpg?height=60&width=60&query=professional woman ux designer",
       quote:
         "Une plateforme idéale pour partager ses connaissances. J'ai reçu de nombreux retours positifs après mon talk.",
       event: "Design Systems at Scale",
@@ -234,7 +234,7 @@ export default function BecomeaSpeakerPage() {
             {process.map((item, index) => (
               <div key={index} className="relative flex items-center">
                 <div className="hidden md:block absolute left-1/2 w-12 h-12 bg-primary rounded-full border-4 border-background transform -translate-x-1/2 flex items-center justify-center">
-                  <item.icon className="h-5 w-5 text-white" />
+                  <item.icon className="h-5 w-5 text-white mx-auto mt-2" />
                 </div>
                 <div className={`w-full md:w-1/2 ${index % 2 === 0 ? "md:pr-8" : "md:pl-8 md:ml-auto"}`}>
                   <Card className="p-6">

@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { getCityById, type Event } from "@/lib/graphql"
 import { formatDate } from "@/lib/utils"
-import { get } from "http"
+import { decodeHTMLEntities } from "@/lib/decodeHTMLEntities"
 
 interface EventsListProps {
   events: Event[]
@@ -143,6 +143,22 @@ const filteredEventsWithCityName = filteredEvents.map(event => ({
   },
 }))
 
+function decodeHTMLEntities(text: string) {
+  if (!text) return '';
+  const entities: Record<string, string> = {
+    amp: '&', apos: "'", lt: '<', gt: '>', quot: '"', nbsp: ' ', hellip: '…', eacute: 'é', egrave: 'è', ecirc: 'ê', agrave: 'à', ugrave: 'ù', ccedil: 'ç', rsquo: '’', lsquo: '‘', ldquo: '“', rdquo: '”', mdash: '—', ndash: '–', oelig: 'œ', aelig: 'æ', euro: '€', copy: '©', reg: '®', deg: '°', plusmn: '±', sup2: '²', sup3: '³', frac12: '½', frac14: '¼', frac34: '¾', para: '¶', sect: '§', bull: '•', middot: '·', laquo: '«', raquo: '»', rsquor: '’', lsquor: '‘', ldquor: '“', rdquor: '”', ndash: '–', mdash: '—', nbsp: ' ', thinsp: ' ', ensp: ' ', emsp: ' ', zwnj: '', zwj: '', lrm: '', rlm: '', shy: '', times: '×', divide: '÷', trade: '™', yen: '¥', pound: '£', cent: '¢', dollar: '$', micro: 'µ', pi: 'π', mu: 'μ', alpha: 'α', beta: 'β', gamma: 'γ', delta: 'δ', lambda: 'λ', omega: 'ω', sigma: 'σ', phi: 'φ', theta: 'θ', plusmn: '±', sup1: '¹', sup2: '²', sup3: '³', frac14: '¼', frac12: '½', frac34: '¾', para: '¶', sect: '§', bull: '•', middot: '·', laquo: '«', raquo: '»', rsquor: '’', lsquor: '‘', ldquor: '“', rdquor: '”', ndash: '–', mdash: '—', nbsp: ' ', thinsp: ' ', ensp: ' ', emsp: ' ', zwnj: '', zwj: '', lrm: '', rlm: '', shy: '', times: '×', divide: '÷', trade: '™', yen: '¥', pound: '£', cent: '¢', dollar: '$', micro: 'µ', pi: 'π', mu: 'μ', alpha: 'α', beta: 'β', gamma: 'γ', delta: 'δ', lambda: 'λ', omega: 'ω', sigma: 'σ', phi: 'φ', theta: 'θ'
+  };
+  return text.replace(/&([a-zA-Z0-9#]+);/g, (match, entity) => {
+    if (entity[0] === '#') {
+      // Code point
+      const code = entity[1] === 'x' || entity[1] === 'X'
+        ? parseInt(entity.substr(2), 16)
+        : parseInt(entity.substr(1), 10);
+      if (!isNaN(code)) return String.fromCharCode(code);
+    }
+    return entities[entity] || match;
+  });
+}
 
   const renderGridView = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
@@ -156,8 +172,8 @@ const filteredEventsWithCityName = filteredEvents.map(event => ({
               {event.featuredImage && (
                 <div className="relative h-48 overflow-hidden">
                   <Image
-                    src={event.featuredImage.node.sourceUrl || "/placeholder.svg"}
-                    alt={event.featuredImage.node.altText || event.title}
+                    src={event.featuredImage.node.sourceUrl || "/images/event-1.jpg"}
+                    alt={event.featuredImage.node.altText || (typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title)}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
@@ -178,13 +194,16 @@ const filteredEventsWithCityName = filteredEvents.map(event => ({
 
             <CardContent className="p-6">
               <div className="space-y-3">
+
                 <Link href={`/events/${event.slug}`}>
                   <h3 className="text-lg font-semibold line-clamp-2 hover:text-primary transition-colors">
-                    {event.title}
+                    {typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title}
                   </h3>
                 </Link>
 
-                <p className="text-muted-foreground text-sm line-clamp-2">{event.excerpt}</p>
+                <p className="text-muted-foreground text-sm line-clamp-2">
+                  {typeof event.excerpt === 'string' ? decodeHTMLEntities(event.excerpt.replace(/<[^>]+>/g, '')) : event.excerpt}
+                </p>
 
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center gap-2 text-muted-foreground">
@@ -246,7 +265,7 @@ const filteredEventsWithCityName = filteredEvents.map(event => ({
                   <div className="flex-shrink-0">
                     <Image
                       src={event.featuredImage.node.sourceUrl || "/placeholder.svg"}
-                      alt={event.featuredImage.node.altText || event.title}
+                      alt={event.featuredImage.node.altText || (typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title)}
                       width={160}
                       height={120}
                       className="object-cover"
@@ -272,10 +291,12 @@ const filteredEventsWithCityName = filteredEvents.map(event => ({
                       </div>
                       <Link href={`/events/${event.slug}`}>
                         <h3 className="text-xl font-semibold hover:text-primary transition-colors mb-2">
-                          {event.title}
+                          {typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title}
                         </h3>
                       </Link>
-                      <p className="text-muted-foreground mb-3">{event.excerpt}</p>
+                      <p className="text-muted-foreground mb-3">
+                        {typeof event.excerpt === 'string' ? decodeHTMLEntities(event.excerpt.replace(/<[^>]+>/g, '')) : event.excerpt}
+                      </p>
                     </div>
                     <Link href={`/events/${event.slug}`}>
                       <Button variant="outline">Voir détails</Button>

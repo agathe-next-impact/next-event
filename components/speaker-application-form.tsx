@@ -117,7 +117,16 @@ export default function SpeakerApplicationForm() {
         body: JSON.stringify(formData),
       })
 
-      const result = await response.json()
+      const contentType = response.headers.get("content-type")
+      let result: any = null
+      if (contentType && contentType.includes("application/json")) {
+        result = await response.json()
+      } else {
+        const text = await response.text()
+        throw new Error(
+          "Erreur inattendue du serveur (réponse non JSON) : " + text.slice(0, 200)
+        )
+      }
 
       if (!response.ok) {
         throw new Error(result.message || "Erreur lors de la soumission")
@@ -172,23 +181,14 @@ export default function SpeakerApplicationForm() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-green-600">
-            <CheckCircle className="h-5 w-5" />
-            Candidature Soumise
+          <CardTitle className="flex items-center gap-2">
+            Candidature Soumise avec Succès !
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Alert className="border-green-200 bg-green-50">
-            <CheckCircle className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-green-800">
+          <Alert>
+            <AlertDescription>
               <div className="space-y-2">
-                <p className="font-medium">{applicationResult.message}</p>
-                <p>
-                  <strong>ID de candidature :</strong>{" "}
-                  <span className="font-mono bg-green-100 px-2 py-1 rounded text-green-800">
-                    {applicationResult.applicationId}
-                  </span>
-                </p>
                 <p className="text-sm">
                   Nous étudierons votre candidature et vous répondrons sous 48h. Conservez cet ID pour vos références.
                 </p>
@@ -197,11 +197,10 @@ export default function SpeakerApplicationForm() {
           </Alert>
 
           {applicationResult.emailSent && (
-            <Alert className="border-blue-200 bg-blue-50">
-              <Mail className="h-4 w-4 text-blue-600" />
-              <AlertDescription className="text-blue-800">
+            <Alert>
+              <AlertDescription>
                 <div className="space-y-1">
-                  <p className="font-medium">📧 Email de confirmation envoyé</p>
+                  <p className="font-medium">Email de confirmation envoyé</p>
                   <p className="text-sm">
                     Vérifiez votre boîte mail pour retrouver le récapitulatif de votre candidature.
                   </p>
@@ -649,7 +648,20 @@ export default function SpeakerApplicationForm() {
           </div>
 
           <div className="pt-6 border-t">
-            <Button type="submit" className="w-full" disabled={isSubmitting || !formData.agreeTerms}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={
+                isSubmitting ||
+                !formData.agreeTerms ||
+                formData.bio.trim().length < 20 ||
+                formData.talkTitle.trim().length === 0 ||
+                formData.talkDescription.trim().length < 30 ||
+                formData.talkDuration.trim().length === 0 ||
+                formData.talkLevel.trim().length === 0 ||
+                formData.talkCategory.trim().length === 0
+              }
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -662,6 +674,79 @@ export default function SpeakerApplicationForm() {
                 </>
               )}
             </Button>
+
+
+
+            {/* Une seule alerte de validation à la fois, critères strictement identiques au schéma Zod */}
+            <div className="flex flex-col gap-2 mt-4">
+              {!formData.agreeTerms ? (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    Vous devez accepter les conditions d'utilisation pour soumettre votre candidature.
+                  </AlertDescription>
+                </Alert>
+              ) : formData.firstName.trim().length < 2 ? (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    Prénom requis (minimum 2 caractères).
+                  </AlertDescription>
+                </Alert>
+              ) : formData.lastName.trim().length < 2 ? (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    Nom requis (minimum 2 caractères).
+                  </AlertDescription>
+                </Alert>
+              ) : formData.email.trim().length === 0 ? (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    L'email est obligatoire.
+                  </AlertDescription>
+                </Alert>
+              ) : !/^\S+@\S+\.\S+$/.test(formData.email) ? (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    Email invalide.
+                  </AlertDescription>
+                </Alert>
+              ) : formData.bio.trim().length < 50 ? (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    Bio trop courte (minimum 50 caractères).
+                  </AlertDescription>
+                </Alert>
+              ) : formData.talkTitle.trim().length < 5 ? (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    Titre du talk requis (minimum 5 caractères).
+                  </AlertDescription>
+                </Alert>
+              ) : formData.talkDescription.trim().length < 100 ? (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    Description trop courte (minimum 100 caractères).
+                  </AlertDescription>
+                </Alert>
+              ) : formData.talkDuration.trim().length < 1 ? (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    Durée requise.
+                  </AlertDescription>
+                </Alert>
+              ) : formData.talkLevel.trim().length < 1 ? (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    Niveau requis.
+                  </AlertDescription>
+                </Alert>
+              ) : formData.talkCategory.trim().length < 1 ? (
+                <Alert variant="destructive">
+                  <AlertDescription>
+                    Catégorie requise.
+                  </AlertDescription>
+                </Alert>
+              ) : null}
+            </div>
 
             <p className="text-xs text-muted-foreground mt-3 text-center">
               📧 Vous recevrez un email de confirmation après soumission.

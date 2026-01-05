@@ -1,0 +1,174 @@
+{
+  "key": "group_event_portal",
+  "title": "Event Portal Fields",
+  "fields": [
+    {
+      "key": "field_event_start_date",
+      "label": "Start Date",
+      "name": "start_date",
+      "type": "date_time_picker",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_end_date",
+      "label": "End Date",
+      "name": "end_date",
+      "type": "date_time_picker",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_location",
+      "label": "Location",
+      "name": "location",
+      "type": "text",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_city",
+      "label": "City",
+      "name": "city",
+      "type": "text",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_max_attendees",
+      "label": "Max Attendees",
+      "name": "max_attendees",
+      "type": "number",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_current_attendees",
+      "label": "Current Attendees",
+      "name": "current_attendees",
+      "type": "number",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_registration_deadline",
+      "label": "Registration Deadline",
+      "name": "registration_deadline",
+      "type": "date_time_picker",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_price",
+      "label": "Price",
+      "name": "price",
+      "type": "number",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_is_free",
+      "label": "Is Free",
+      "name": "is_free",
+      "type": "true_false",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_prerequisites",
+      "label": "Prerequisites",
+      "name": "prerequisites",
+      "type": "text",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_material_provided",
+      "label": "Material Provided",
+      "name": "material_provided",
+      "type": "text",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_agenda",
+      "label": "Agenda",
+      "name": "agenda",
+      "type": "repeater",
+      "sub_fields": [
+        { "key": "field_agenda_title", "label": "Title", "name": "title", "type": "text" },
+        { "key": "field_agenda_time", "label": "Time", "name": "time", "type": "text" },
+        { "key": "field_agenda_desc", "label": "Description", "name": "description", "type": "textarea" }
+      ],
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_speakers",
+      "label": "Speakers",
+      "name": "speakers",
+      "type": "relationship",
+      "post_type": ["speakers"],
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_meta_title",
+      "label": "Meta Title",
+      "name": "meta_title",
+      "type": "text",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_meta_description",
+      "label": "Meta Description",
+      "name": "meta_description",
+      "type": "textarea",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_og_image",
+      "label": "OG Image",
+      "name": "og_image",
+      "type": "image",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+    {
+      "key": "field_event_keywords",
+      "label": "Keywords",
+      "name": "keywords",
+      "type": "text",
+      "parent": "group_event_portal",
+      "post_type": ["events"]
+    },
+
+    // Speakers fields
+    { "key": "field_speaker_bio", "label": "Bio", "name": "bio", "type": "textarea", "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_company", "label": "Company", "name": "company", "type": "text", "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_job_title", "label": "Job Title", "name": "job_title", "type": "text", "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_linkedin", "label": "LinkedIn", "name": "linkedin", "type": "url", "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_twitter", "label": "Twitter", "name": "twitter", "type": "url", "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_github", "label": "GitHub", "name": "github", "type": "url", "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_website", "label": "Website", "name": "website", "type": "url", "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_expertises", "label": "Expertises", "name": "expertises", "type": "taxonomy", "taxonomy": "expertises", "field_type": "multi_select", "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_skills", "label": "Skills", "name": "skills", "type": "repeater", "sub_fields": [ { "key": "field_skill_name", "label": "Name", "name": "name", "type": "text" }, { "key": "field_skill_level", "label": "Level", "name": "level", "type": "text" } ], "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_certifications", "label": "Certifications", "name": "certifications", "type": "repeater", "sub_fields": [ { "key": "field_cert_name", "label": "Name", "name": "name", "type": "text" }, { "key": "field_cert_issuer", "label": "Issuer", "name": "issuer", "type": "text" }, { "key": "field_cert_year", "label": "Year", "name": "year", "type": "number" }, { "key": "field_cert_url", "label": "URL", "name": "url", "type": "url" } ], "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_achievements", "label": "Achievements", "name": "achievements", "type": "repeater", "sub_fields": [ { "key": "field_ach_title", "label": "Title", "name": "title", "type": "text" }, { "key": "field_ach_desc", "label": "Description", "name": "description", "type": "textarea" }, { "key": "field_ach_year", "label": "Year", "name": "year", "type": "number" }, { "key": "field_ach_url", "label": "URL", "name": "url", "type": "url" } ], "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_talks", "label": "Talks", "name": "talks", "type": "repeater", "sub_fields": [ { "key": "field_talk_title", "label": "Title", "name": "title", "type": "text" }, { "key": "field_talk_desc", "label": "Description", "name": "description", "type": "textarea" }, { "key": "field_talk_category", "label": "Category", "name": "category", "type": "text" }, { "key": "field_talk_level", "label": "Level", "name": "level", "type": "text" }, { "key": "field_talk_duration", "label": "Duration", "name": "duration", "type": "text" }, { "key": "field_talk_video", "label": "Video URL", "name": "videoUrl", "type": "url" } ], "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_meta_title", "label": "Meta Title", "name": "meta_title", "type": "text", "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_meta_description", "label": "Meta Description", "name": "meta_description", "type": "textarea", "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_og_image", "label": "OG Image", "name": "og_image", "type": "image", "parent": "group_event_portal", "post_type": ["speakers"] },
+    { "key": "field_speaker_keywords", "label": "Keywords", "name": "keywords", "type": "text", "parent": "group_event_portal", "post_type": ["speakers"] }
+  ],
+  "location": "acf_after_title",
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Champs personnalisés pour Event Portal (events, speakers)"
+}

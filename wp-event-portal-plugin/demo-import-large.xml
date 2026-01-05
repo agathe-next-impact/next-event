@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"
+    xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:wp="http://wordpress.org/export/1.2/"
+>
+<channel>
+  <title>Event Portal Demo Large</title>
+  <link>https://next-event.fr</link>
+  <description>Import de nombreuses données fictives pour le plugin Event Portal</description>
+  <language>fr</language>
+  <wp:wxr_version>1.2</wp:wxr_version>
+  <wp:base_site_url>https://next-event.fr</wp:base_site_url>
+  <wp:base_blog_url>https://next-event.fr</wp:base_blog_url>
+
+  <!-- Speakers -->
+  <item>
+    <title>Sophie Martineau</title>
+    <link>https://next-event.fr/speakers/sophie-martineau</link>
+    <pubDate>Mon, 01 Jan 2024 10:00:00 +0000</pubDate>
+    <dc:creator>admin</dc:creator>
+    <guid isPermaLink="false">sophie-martineau</guid>
+    <description>Experte en développement web et conférencière internationale.</description>
+    <content:encoded><![CDATA[Biographie de Sophie Martineau.]]></content:encoded>
+    <wp:post_type>speakers</wp:post_type>
+    <wp:post_name>sophie-martineau</wp:post_name>
+    <wp:status>publish</wp:status>
+    <wp:postmeta><wp:meta_key>company</wp:meta_key><wp:meta_value>Freelance</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>job_title</wp:meta_key><wp:meta_value>Développeuse senior</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>linkedin</wp:meta_key><wp:meta_value>https://linkedin.com/in/sophie-martineau</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>expertises</wp:meta_key><wp:meta_value><![CDATA[["JavaScript","React"]]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>og_image</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-speaker.jpg</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>featuredImage</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-speaker.jpg</wp:meta_value></wp:postmeta>
+  </item>
+  <item>
+    <title>Jean Dupont</title>
+    <link>https://next-event.fr/speakers/jean-dupont</link>
+    <pubDate>Tue, 02 Jan 2024 11:00:00 +0000</pubDate>
+    <dc:creator>admin</dc:creator>
+    <guid isPermaLink="false">jean-dupont</guid>
+    <description>Spécialiste DevOps et cloud, formateur et speaker.</description>
+    <content:encoded><![CDATA[Biographie de Jean Dupont.]]></content:encoded>
+    <wp:post_type>speakers</wp:post_type>
+    <wp:post_name>jean-dupont</wp:post_name>
+    <wp:status>publish</wp:status>
+    <wp:postmeta><wp:meta_key>company</wp:meta_key><wp:meta_value>CloudXpert</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>job_title</wp:meta_key><wp:meta_value>Architecte Cloud</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>linkedin</wp:meta_key><wp:meta_value>https://linkedin.com/in/jean-dupont</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>expertises</wp:meta_key><wp:meta_value><![CDATA[["DevOps","AWS"]]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>og_image</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-speaker.jpg</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>featuredImage</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-speaker.jpg</wp:meta_value></wp:postmeta>
+  </item>
+  <item>
+    <title>Fatou Ndiaye</title>
+    <link>https://next-event.fr/speakers/fatou-ndiaye</link>
+    <pubDate>Wed, 03 Jan 2024 12:00:00 +0000</pubDate>
+    <dc:creator>admin</dc:creator>
+    <guid isPermaLink="false">fatou-ndiaye</guid>
+    <description>Experte IA et data science, passionnée d'éthique numérique.</description>
+    <content:encoded><![CDATA[Biographie de Fatou Ndiaye.]]></content:encoded>
+    <wp:post_type>speakers</wp:post_type>
+    <wp:post_name>fatou-ndiaye</wp:post_name>
+    <wp:status>publish</wp:status>
+    <wp:postmeta><wp:meta_key>company</wp:meta_key><wp:meta_value>DataEthic</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>job_title</wp:meta_key><wp:meta_value>Data Scientist</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>linkedin</wp:meta_key><wp:meta_value>https://linkedin.com/in/fatou-ndiaye</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>expertises</wp:meta_key><wp:meta_value><![CDATA[["IA","Data Science"]]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>og_image</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-speaker.jpg</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>featuredImage</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-speaker.jpg</wp:meta_value></wp:postmeta>
+  </item>
+
+  <!-- Events -->
+  <item>
+    <title>Conférence Next.js 2024</title>
+    <link>https://next-event.fr/events/conference-nextjs-2024</link>
+    <pubDate>Tue, 15 Jan 2024 09:00:00 +0000</pubDate>
+    <dc:creator>admin</dc:creator>
+    <guid isPermaLink="false">conference-nextjs-2024</guid>
+    <description>Conférence sur Next.js et l'écosystème React.</description>
+    <content:encoded><![CDATA[Description complète de la conférence Next.js 2024.]]></content:encoded>
+    <wp:post_type>events</wp:post_type>
+    <wp:post_name>conference-nextjs-2024</wp:post_name>
+    <wp:status>publish</wp:status>
+    <wp:postmeta><wp:meta_key>start_date</wp:meta_key><wp:meta_value>2024-01-15T09:00:00</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>end_date</wp:meta_key><wp:meta_value>2024-01-15T17:00:00</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>location</wp:meta_key><wp:meta_value>Paris Expo</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>city</wp:meta_key><wp:meta_value>Paris</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>max_attendees</wp:meta_key><wp:meta_value>200</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>is_free</wp:meta_key><wp:meta_value>1</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>speakers</wp:meta_key><wp:meta_value><![CDATA[["sophie-martineau","jean-dupont"]]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>og_image</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-event.jpg</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>featuredImage</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-event.jpg</wp:meta_value></wp:postmeta>
+  </item>
+  <item>
+    <title>Atelier DevOps & Cloud</title>
+    <link>https://next-event.fr/events/atelier-devops-cloud</link>
+    <pubDate>Wed, 17 Jan 2024 10:00:00 +0000</pubDate>
+    <dc:creator>admin</dc:creator>
+    <guid isPermaLink="false">atelier-devops-cloud</guid>
+    <description>Atelier pratique sur les outils DevOps et le cloud computing.</description>
+    <content:encoded><![CDATA[Description complète de l'atelier DevOps & Cloud.]]></content:encoded>
+    <wp:post_type>events</wp:post_type>
+    <wp:post_name>atelier-devops-cloud</wp:post_name>
+    <wp:status>publish</wp:status>
+    <wp:postmeta><wp:meta_key>start_date</wp:meta_key><wp:meta_value>2024-01-17T10:00:00</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>end_date</wp:meta_key><wp:meta_value>2024-01-17T16:00:00</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>location</wp:meta_key><wp:meta_value>Lyon Tech Center</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>city</wp:meta_key><wp:meta_value>Lyon</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>max_attendees</wp:meta_key><wp:meta_value>50</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>is_free</wp:meta_key><wp:meta_value>0</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>price</wp:meta_key><wp:meta_value>99</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>speakers</wp:meta_key><wp:meta_value><![CDATA[["jean-dupont"]]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>og_image</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-event.jpg</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>featuredImage</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-event.jpg</wp:meta_value></wp:postmeta>
+  </item>
+  <item>
+    <title>Conférence IA & Éthique</title>
+    <link>https://next-event.fr/events/conference-ia-ethique</link>
+    <pubDate>Fri, 19 Jan 2024 09:00:00 +0000</pubDate>
+    <dc:creator>admin</dc:creator>
+    <guid isPermaLink="false">conference-ia-ethique</guid>
+    <description>Conférence sur l'intelligence artificielle et l'éthique numérique.</description>
+    <content:encoded><![CDATA[Description complète de la conférence IA & Éthique.]]></content:encoded>
+    <wp:post_type>events</wp:post_type>
+    <wp:post_name>conference-ia-ethique</wp:post_name>
+    <wp:status>publish</wp:status>
+    <wp:postmeta><wp:meta_key>start_date</wp:meta_key><wp:meta_value>2024-01-19T09:00:00</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>end_date</wp:meta_key><wp:meta_value>2024-01-19T18:00:00</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>location</wp:meta_key><wp:meta_value>Bordeaux Digital Campus</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>city</wp:meta_key><wp:meta_value>Bordeaux</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>max_attendees</wp:meta_key><wp:meta_value>120</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>is_free</wp:meta_key><wp:meta_value>1</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>speakers</wp:meta_key><wp:meta_value><![CDATA[["fatou-ndiaye"]]]></wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>og_image</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-event.jpg</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>featuredImage</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-event.jpg</wp:meta_value></wp:postmeta>
+  </item>
+
+  <!-- Reservations -->
+  <item>
+    <title>Réservation Sophie Martineau - Conférence Next.js 2024</title>
+    <link>https://next-event.fr/reservation/resa-1</link>
+    <pubDate>Wed, 10 Jan 2024 12:00:00 +0000</pubDate>
+    <dc:creator>admin</dc:creator>
+    <guid isPermaLink="false">resa-1</guid>
+    <description>Réservation pour la conférence Next.js 2024.</description>
+    <content:encoded><![CDATA[Réservation de Sophie Martineau pour la conférence Next.js 2024.]]></content:encoded>
+    <wp:post_type>reservation</wp:post_type>
+    <wp:post_name>resa-1</wp:post_name>
+    <wp:status>publish</wp:status>
+    <wp:postmeta><wp:meta_key>participant</wp:meta_key><wp:meta_value>1</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>event</wp:meta_key><wp:meta_value>conference-nextjs-2024</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>status</wp:meta_key><wp:meta_value>confirmée</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>confirmation_code</wp:meta_key><wp:meta_value>ABC123</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>og_image</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-reservation.jpg</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>featuredImage</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-reservation.jpg</wp:meta_value></wp:postmeta>
+  </item>
+  <item>
+    <title>Réservation Jean Dupont - Atelier DevOps & Cloud</title>
+    <link>https://next-event.fr/reservation/resa-2</link>
+    <pubDate>Thu, 11 Jan 2024 13:00:00 +0000</pubDate>
+    <dc:creator>admin</dc:creator>
+    <guid isPermaLink="false">resa-2</guid>
+    <description>Réservation pour l'atelier DevOps & Cloud.</description>
+    <content:encoded><![CDATA[Réservation de Jean Dupont pour l'atelier DevOps & Cloud.]]></content:encoded>
+    <wp:post_type>reservation</wp:post_type>
+    <wp:post_name>resa-2</wp:post_name>
+    <wp:status>publish</wp:status>
+    <wp:postmeta><wp:meta_key>participant</wp:meta_key><wp:meta_value>2</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>event</wp:meta_key><wp:meta_value>atelier-devops-cloud</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>status</wp:meta_key><wp:meta_value>en attente</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>confirmation_code</wp:meta_key><wp:meta_value>DEF456</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>og_image</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-reservation.jpg</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>featuredImage</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-reservation.jpg</wp:meta_value></wp:postmeta>
+  </item>
+  <item>
+    <title>Réservation Fatou Ndiaye - Conférence IA & Éthique</title>
+    <link>https://next-event.fr/reservation/resa-3</link>
+    <pubDate>Fri, 12 Jan 2024 14:00:00 +0000</pubDate>
+    <dc:creator>admin</dc:creator>
+    <guid isPermaLink="false">resa-3</guid>
+    <description>Réservation pour la conférence IA & Éthique.</description>
+    <content:encoded><![CDATA[Réservation de Fatou Ndiaye pour la conférence IA & Éthique.]]></content:encoded>
+    <wp:post_type>reservation</wp:post_type>
+    <wp:post_name>resa-3</wp:post_name>
+    <wp:status>publish</wp:status>
+    <wp:postmeta><wp:meta_key>participant</wp:meta_key><wp:meta_value>3</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>event</wp:meta_key><wp:meta_value>conference-ia-ethique</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>status</wp:meta_key><wp:meta_value>confirmée</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>confirmation_code</wp:meta_key><wp:meta_value>GHI789</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>og_image</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-reservation.jpg</wp:meta_value></wp:postmeta>
+    <wp:postmeta><wp:meta_key>featuredImage</wp:meta_key><wp:meta_value>https://next-event.fr/images/demo-reservation.jpg</wp:meta_value></wp:postmeta>
+  </item>
+
+</channel>
+</rss>

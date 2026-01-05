@@ -1,7 +1,6 @@
 "use client"
 
-import type React from "react"
-import { useState } from "react"
+import React, { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -48,8 +47,19 @@ export default function ContactForm() {
     agreeTerms: false,
   })
 
+  const titleRef = React.useRef<HTMLHeadingElement>(null)
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [contactResult, setContactResult] = useState<ContactResult | null>(null)
+    // Scroll au titre après affichage d'une alerte ou d'un message
+    React.useEffect(() => {
+      if (contactResult) {
+        const formEl = document.getElementById("contact-form")
+        if (formEl) {
+          formEl.scrollIntoView({ behavior: "smooth", block: "start" })
+        }
+      }
+    }, [contactResult])
 
   const categories = [
     { value: "general", label: "Question générale" },
@@ -85,6 +95,7 @@ export default function ContactForm() {
     e.preventDefault()
     setIsSubmitting(true)
     setContactResult(null)
+
 
     try {
       const response = await fetch("/api/contact", {
@@ -136,23 +147,15 @@ export default function ContactForm() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-green-600">
-            <CheckCircle className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2">
             Message Envoyé
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Alert className="border-green-200 bg-green-50">
-            <CheckCircle className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-green-800">
+          <Alert>
+             <AlertDescription>
               <div className="space-y-2">
                 <p className="font-medium">{contactResult.message}</p>
-                <p>
-                  <strong>ID du message :</strong>{" "}
-                  <span className="font-mono bg-green-100 px-2 py-1 rounded text-green-800">
-                    {contactResult.messageId}
-                  </span>
-                </p>
                 <p className="text-sm">
                   Nous avons bien reçu votre message et nous vous répondrons dans les plus brefs délais.
                 </p>
@@ -161,11 +164,10 @@ export default function ContactForm() {
           </Alert>
 
           {contactResult.emailSent && (
-            <Alert className="border-blue-200 bg-blue-50">
-              <Mail className="h-4 w-4 text-blue-600" />
-              <AlertDescription className="text-blue-800">
+            <Alert>
+              <AlertDescription>
                 <div className="space-y-1">
-                  <p className="font-medium">📧 Email de confirmation envoyé</p>
+                  <p className="font-medium">Email de confirmation envoyé</p>
                   <p className="text-sm">Vérifiez votre boîte mail pour retrouver la confirmation de votre message.</p>
                 </div>
               </AlertDescription>
@@ -198,9 +200,13 @@ export default function ContactForm() {
   }
 
   return (
-    <Card>
+    <Card id="contact-form">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle
+          id="contact-form-title"
+          ref={titleRef}
+          className="flex items-center gap-2"
+        >
           <MessageSquare className="h-5 w-5" />
           Formulaire de Contact
         </CardTitle>
@@ -426,6 +432,36 @@ export default function ContactForm() {
                 </>
               )}
             </Button>
+
+
+            {/* Une seule alerte de validation à la fois, infos personnelles incluses */}
+            <div className="flex flex-col gap-2 mt-4">
+              {!formData.agreeTerms ? (
+                <p className="text-sm text-red-600 text-center">
+                  Vous devez accepter les conditions d'utilisation pour envoyer le message.
+                </p>
+              ) : formData.firstName.trim().length === 0 ? (
+                <p className="text-sm text-red-600 text-center">
+                  Le prénom est obligatoire.
+                </p>
+              ) : formData.lastName.trim().length === 0 ? (
+                <p className="text-sm text-red-600 text-center">
+                  Le nom est obligatoire.
+                </p>
+              ) : formData.email.trim().length === 0 ? (
+                <p className="text-sm text-red-600 text-center">
+                  L'email est obligatoire.
+                </p>
+              ) : !/^\S+@\S+\.\S+$/.test(formData.email) ? (
+                <p className="text-sm text-red-600 text-center">
+                  L'email n'est pas valide.
+                </p>
+              ) : formData.message.length > 0 && formData.message.length < 20 ? (
+                <p className="text-sm text-red-600 text-center">
+                  Le message doit contenir au moins 20 caractères.
+                </p>
+              ) : null}
+            </div>
 
             <p className="text-xs text-muted-foreground mt-3 text-center">
               📧 Vous recevrez une confirmation par email après envoi.

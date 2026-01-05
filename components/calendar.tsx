@@ -1,5 +1,6 @@
 "use client"
 
+import { decodeHTMLEntities } from "@/lib/decodeHTMLEntities"
 import { useState, useEffect } from "react"
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, parseISO } from "date-fns"
 import { CalendarIcon, Grid, List, ChevronLeft, ChevronRight, Filter } from "lucide-react"
@@ -88,7 +89,7 @@ export default function Calendar({ events, categories }: CalendarProps) {
                 {dayEvents.slice(0, 2).map((event) => (
                   <Link key={event.id} href={`/events/${event.slug}`} className="block">
                     <div className="text-xs p-1 bg-accent/10 text-black rounded truncate hover:bg-accent/20 transition-colors">
-                      {event.title}
+                      {typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title}
                     </div>
                   </Link>
                 ))}
@@ -113,7 +114,7 @@ export default function Calendar({ events, categories }: CalendarProps) {
                 <div className="flex-shrink-0">
                   <Image
                     src={event.featuredImage.node.sourceUrl || "/placeholder.svg"}
-                    alt={event.featuredImage.node.altText || event.title}
+                    alt={event.featuredImage.node.altText || (typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title)}
                     width={120}
                     height={80}
                     className="object-cover"
@@ -124,9 +125,9 @@ export default function Calendar({ events, categories }: CalendarProps) {
                 <div className="flex items-start justify-between">
                   <div>
                     <Link href={`/events/${event.slug}`}>
-                      <h3 className="text-lg font-semibold hover:text-accent transition-colors">{event.title}</h3>
+                      <h3 className="text-lg font-semibold hover:text-accent transition-colors">{typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title}</h3>
                     </Link>
-                    <p className="text-muted-foreground text-sm mt-1">{event.excerpt}</p>
+                    <p className="text-muted-foreground text-sm mt-1">{typeof event.excerpt === 'string' ? decodeHTMLEntities(event.excerpt.replace(/<[^>]+>/g, '')) : event.excerpt}</p>
                   </div>
                   <Badge variant="secondary">{event.eventDetails.category}</Badge>
                 </div>

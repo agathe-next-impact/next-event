@@ -183,7 +183,6 @@ export default function ReservationForm({ event, reservedSeats, onReservationSuc
           </div>
           {availableSpots <= 5 && availableSpots > 0 && (
             <Alert className="border-orange-200 bg-orange-50">
-              <AlertCircle className="h-4 w-4 text-orange-600" />
               <AlertDescription className="text-orange-800">
                 {availableSpots} place{availableSpots > 1 ? "s" : ""} restante{availableSpots > 1 ? "s" : ""}!
               </AlertDescription>
@@ -194,19 +193,16 @@ export default function ReservationForm({ event, reservedSeats, onReservationSuc
       <CardContent>
         {eventStarted ? (
           <Alert>
-            <AlertCircle className="h-4 w-4" />
             <AlertDescription>Cet événement a déjà commencé. Les réservations ne sont plus possibles.</AlertDescription>
           </Alert>
         ) : !isRegistrationOpen ? (
           <Alert>
-            <AlertCircle className="h-4 w-4" />
             <AlertDescription>
               Les inscriptions sont closes depuis le {formatDate(event.eventDetails.registrationDeadline)}.
             </AlertDescription>
           </Alert>
         ) : isFull ? (
           <Alert className="border-red-200 bg-red-50">
-            <AlertCircle className="h-4 w-4 text-red-600" />
             <AlertDescription className="text-red-800">
               <div className="space-y-2">
                 <p className="font-medium">Événement complet</p>
@@ -221,7 +217,6 @@ export default function ReservationForm({ event, reservedSeats, onReservationSuc
           <form onSubmit={handleSubmit} className="space-y-4">
             {reservationResult && !reservationResult.success && (
               <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
                 <AlertDescription>{reservationResult.message}</AlertDescription>
               </Alert>
             )}

@@ -190,6 +190,14 @@ export default function SpeakersList({
     ))
   }
 
+  // Utility to decode HTML entities in a string
+  function decodeHTMLEntities(text: string): string {
+    if (typeof window === "undefined") return text
+    const textarea = document.createElement("textarea")
+    textarea.innerHTML = text
+    return textarea.value
+  }
+
   const renderGridView = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
       {speakers.map((speaker) => (
@@ -201,7 +209,7 @@ export default function SpeakersList({
                   src={speaker.featuredImage.node.sourceUrl || "/placeholder.svg"}
                   alt={speaker.featuredImage.node.altText || speaker.title}
                   fill
-                  className="object-contain object-left group-hover:scale-105 transition-transform duration-300"
+                  className="object-cover object-left group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
             )}
@@ -238,7 +246,7 @@ export default function SpeakersList({
                 <span>{speaker.speakerDetails.experience} ans d'expérience</span>
               </div>
 
-              <p className="text-muted-foreground text-sm line-clamp-2">{speaker.speakerDetails.bio}</p>
+              <p className="text-muted-foreground text-sm line-clamp-2">{typeof speaker.speakerDetails.bio === "string" ? decodeHTMLEntities(speaker.speakerDetails.bio.replace(/<[^>]+>/g, '')) : speaker.speakerDetails.bio}</p>
 
               <div className="flex flex-wrap gap-1">
                 {speaker.speakerDetails.expertise.slice(0, 3).map((exp, index) => (
