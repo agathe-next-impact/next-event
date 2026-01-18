@@ -71,7 +71,7 @@ export default function RootLayout({
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com"/>
       <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Manrope:wght@200..800&&family=Urbanist:ital,wght@0,100..900;1,100..900" rel="stylesheet" />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/images/logo-next-event.png" />
       <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     </head>
       <body className={cn(inter.className, "min-h-screen bg-background antialiased")}>
