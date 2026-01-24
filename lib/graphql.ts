@@ -793,28 +793,36 @@ export function cancelReservation(confirmationCode: string): boolean {
 // Nouvelle fonction pour interroger l'API GraphQL de WordPress avec gestion du mode preview
 
 export async function getWPData(query: string, variables: any = {}) {
-  const { draftMode } = await import('next/headers');
-  const isDraft = (await draftMode()).isEnabled;
+  const { draftMode } = await import("next/headers")
+  const isDraft = (await draftMode()).isEnabled
 
-  // Si on est en mode preview, on utilise l'authentification
-  const headers: HeadersInit = { 'Content-Type': 'application/json' };
-  
-  if (isDraft) {
-    const auth = Buffer.from(
-      `${process.env.WP_USER}:${process.env.WP_APPLICATION_PASSWORD}`
-    ).toString('base64');
-    headers['Authorization'] = `Basic ${auth}`;
+  const baseEndpoint = process.env.WP_GRAPHQL_ENDPOINT || ""
+  if (!baseEndpoint) {
+    throw new Error("WP_GRAPHQL_ENDPOINT manquant pour l'appel GraphQL")
   }
 
-  const res = await fetch(`${process.env.WORDPRESS_API_URL}/graphql`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({ 
-        query, 
-        variables: { ...variables, status: isDraft ? 'DRAFT' : 'PUBLISH' } 
-    }),
-    cache: isDraft ? 'no-store' : 'force-cache', // Pas de cache en preview !
-  });
+  const headers: HeadersInit = { "Content-Type": "application/json" }
 
-  return res.json();
+  // Active l'authentification Basic uniquement en preview
+  if (isDraft && process.env.WP_USER && process.env.WP_APPLICATION_PASSWORD) {
+    const auth = Buffer.from(`${process.env.WP_USER}:${process.env.WP_APPLICATION_PASSWORD}`).toString("base64")
+    headers["Authorization"] = `Basic ${auth}`
+  }
+
+  const response = await fetch(baseEndpoint, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      query,
+      variables: { ...variables, status: isDraft ? "DRAFT" : "PUBLISH" },
+    }),
+    cache: isDraft ? "no-store" : "force-cache",
+  })
+
+  if (!response.ok) {
+    const reason = await response.text().catch(() => "")
+    throw new Error(`Erreur GraphQL (${response.status}): ${reason}`)
+  }
+
+  return response.json()
 }
