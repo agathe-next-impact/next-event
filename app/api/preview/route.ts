@@ -1,32 +1,36 @@
-import { draftMode } from 'next/headers';
-import { redirect } from 'next/navigation';
-import { NextRequest } from 'next/server';
+import { draftMode } from "next/headers";
+import { redirect } from "next/navigation";
+import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  
-  const secret = searchParams.get('secret');
-  const id = searchParams.get('id');
-  const slug = searchParams.get('slug');
-  const type = searchParams.get('type'); // ex: 'event', 'speaker', 'page'
+
+
+  const secret = searchParams.get("secret");
+  const id = searchParams.get("id");
+  const slug = searchParams.get("slug");
+  const type = searchParams.get("type"); // ex: 'event', 'speaker', 'page'
 
   // 1. Validation de sécurité
-  if (secret !== process.env.WORDPRESS_PREVIEW_SECRET || !id) {
-    return new Response('Requête de prévisualisation invalide', { status: 401 });
+  // WordPress peut envoyer uniquement le slug : on accepte id OU slug.
+  if (secret !== process.env.WORDPRESS_PREVIEW_SECRET || (!id && !slug)) {
+    return new Response("Requête de prévisualisation invalide", {
+      status: 401,
+    });
   }
 
   // 2. Logique d'aiguillage (URL Mapping)
-  let destination = '/';
+  let destination = "/";
 
   switch (type) {
-    case 'event':
+    case "event":
       destination = `/events/${slug || id}`;
       break;
-    case 'speaker':
+    case "speaker":
       destination = `/speakers/${slug || id}`;
       break;
-    case 'post':
-    case 'page':
+    case "post":
+    case "page":
       destination = `/${slug || id}`;
       break;
     default:
