@@ -7,6 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import dynamic from "next/dynamic"
 
+
 // Dynamic imports pour réduire le bundle initial
 const MobileMenu = dynamic(() => import("@/components/mobile-menu"), { ssr: false });
 const AnimatedCursor = dynamic(() => import("react-animated-cursor"), { 
@@ -94,6 +95,7 @@ export default function RootLayout({
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="icon" href="/images/logo-next-event.png" />
       <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      <style href="https://unpkg.com/@wordpress/block-library/build-style/style.css" />
     </head>
       <body className={cn(inter.className, "min-h-screen bg-background antialiased")}>
         <AnimatedCursor

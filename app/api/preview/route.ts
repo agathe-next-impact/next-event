@@ -23,10 +23,10 @@ export async function GET(request: NextRequest) {
   let destination = "/";
 
   switch (type) {
-    case "event":
+    case "events":
       destination = `/events/${slug || id}`;
       break;
-    case "speaker":
+    case "speakers":
       destination = `/speakers/${slug || id}`;
       break;
     case "post":
