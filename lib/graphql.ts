@@ -166,9 +166,9 @@ export function checkEnvironmentVariables() {
   return true
 }
 
-const endpoint = process.env.WP_GRAPHQL_ENDPOINT
+const endpoint = process.env.WORDPRESS_REST_API_ENDPOINT || process.env.WP_GRAPHQL_ENDPOINT
 if (!endpoint && process.env.NODE_ENV === "production") {
-  console.error("WP_GRAPHQL_ENDPOINT n'est pas configuré. Veuillez définir cette variable d'environnement.")
+  console.error("WORDRESS_REST n'est pas configuré. Veuillez définir cette variable d'environnement.")
 }
 
 export const graphqlClient = new GraphQLClient(endpoint || "", {
