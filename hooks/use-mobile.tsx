@@ -15,5 +15,7 @@ export function useIsMobile() {
     return () => mql.removeEventListener("change", onChange)
   }, [])
 
-  return !!isMobile
+  // Retourne undefined si pas encore déterminé (avant useEffect)
+  // Cela permet aux composants de gérer l'état "en attente"
+  return isMobile
 }
