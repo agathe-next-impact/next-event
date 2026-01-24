@@ -792,20 +792,40 @@ export function cancelReservation(confirmationCode: string): boolean {
 
 // Nouvelle fonction pour interroger l'API GraphQL de WordPress avec gestion du mode preview
 
+const normalizeGraphQLEndpoint = (raw?: string | null) => {
+  if (!raw) return ""
+
+  const trimmed = raw.trim().replace(/\/$/, "")
+
+  // Si l'URL pointe encore sur le REST `/wp-json/wp/v2`, on redirige vers `/graphql`
+  if (trimmed.includes("/wp-json/wp/v2")) {
+    return trimmed.replace(/\/wp-json\/wp\/v2.*$/, "/graphql")
+  }
+
+  if (trimmed.endsWith("/graphql")) {
+    return trimmed
+  }
+
+  return `${trimmed}/graphql`
+}
+
 export async function getWPData(query: string, variables: any = {}) {
   const { draftMode } = await import("next/headers")
   const isDraft = (await draftMode()).isEnabled
 
-  const baseEndpoint = process.env.WP_GRAPHQL_ENDPOINT || ""
+  const baseEndpoint = normalizeGraphQLEndpoint(process.env.WP_GRAPHQL_ENDPOINT)
   if (!baseEndpoint) {
     throw new Error("WP_GRAPHQL_ENDPOINT manquant pour l'appel GraphQL")
   }
 
   const headers: HeadersInit = { "Content-Type": "application/json" }
 
-  // Active l'authentification Basic uniquement en preview
-  if (isDraft && process.env.WP_USER && process.env.WP_APPLICATION_PASSWORD) {
-    const auth = Buffer.from(`${process.env.WP_USER}:${process.env.WP_APPLICATION_PASSWORD}`).toString("base64")
+  // Active l'authentification Basic uniquement en preview (utilise WORDPRESS_API_USER/PASSWORD)
+  const previewUser = process.env.WORDPRESS_API_USER || process.env.WP_USER
+  const previewPassword = process.env.WORDPRESS_API_PASSWORD || process.env.WP_APPLICATION_PASSWORD
+
+  if (isDraft && previewUser && previewPassword) {
+    const auth = Buffer.from(`${previewUser}:${previewPassword}`).toString("base64")
     headers["Authorization"] = `Basic ${auth}`
   }
 
