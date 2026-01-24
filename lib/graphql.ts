@@ -609,8 +609,9 @@ export async function getEventSlugs() {
 
 export async function getCityById(cityId: string) {
   try {
+    const apiBase = process.env.WORDPRESS_REST_API_ENDPOINT || "https://admin.next-event.fr/wp-json/wp/v2"
     const res = await fetch(
-      `${process.env.PUBLIC_SITE_URL}/wp-json/wp/v2/cities/${cityId}`,
+      `${apiBase}/cities/${cityId}`,
     )
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`)
