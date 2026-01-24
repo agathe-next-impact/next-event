@@ -67,9 +67,11 @@ const formatEventDate = (value?: string | null) => {
 export default async function EventPage({ params }: EventPageProps) {
   const { isEnabled } = draftMode()
 
+  // On utilise toujours SLUG car WordPress envoie le slug en preview
+  // asPreview permet de récupérer le brouillon même non publié
   const variables = {
     id: params.slug,
-    idType: isEnabled ? "DATABASE_ID" : "SLUG",
+    idType: "SLUG",
     asPreview: isEnabled,
   }
 
