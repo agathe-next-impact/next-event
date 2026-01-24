@@ -1,34 +1,42 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { getEventBySlug } from "@/lib/graphql"
+import { draftMode } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url)
-  const slug = searchParams.get("slug")
-  const secret = searchParams.get("secret")
+  const { searchParams } = new URL(request.url);
+  
+  const secret = searchParams.get('secret');
+  const id = searchParams.get('id');
+  const slug = searchParams.get('slug');
+  const type = searchParams.get('type'); // ex: 'event', 'speaker', 'page'
 
-  // Check for secret and slug
-  if (!secret || !slug) {
-    return NextResponse.json({ message: "Missing parameters" }, { status: 401 })
+  // 1. Validation de sécurité
+  if (secret !== process.env.WORDPRESS_PREVIEW_SECRET || !id) {
+    return new Response('Requête de prévisualisation invalide', { status: 401 });
   }
 
-  // Verify the secret
-  if (secret !== process.env.PREVIEW_SECRET) {
-    return NextResponse.json({ message: "Invalid secret" }, { status: 401 })
+  // 2. Logique d'aiguillage (URL Mapping)
+  let destination = '/';
+
+  switch (type) {
+    case 'event':
+      destination = `/events/${slug || id}`;
+      break;
+    case 'speaker':
+      destination = `/speakers/${slug || id}`;
+      break;
+    case 'post':
+    case 'page':
+      destination = `/${slug || id}`;
+      break;
+    default:
+      destination = `/${slug || id}`;
   }
 
-  // Check if the event exists
-  const event = await getEventBySlug(slug, true)
-  if (!event) {
-    return NextResponse.json({ message: "Event not found" }, { status: 404 })
-  }
+  // 3. Activation du mode Draft
+  (await draftMode()).enable();
 
-  // Enable Preview Mode
-  const response = NextResponse.redirect(new URL(`/events/${slug}?preview=true`, request.url))
-  response.cookies.set("__prerender_bypass", "1", {
-    httpOnly: true,
-    sameSite: "none",
-    secure: true,
-  })
-
-  return response
+  // 4. Redirection vers le bon chemin
+  // On utilise 'replace' pour éviter que l'utilisateur revienne sur l'API avec le bouton "Précédent"
+  redirect(destination);
 }
