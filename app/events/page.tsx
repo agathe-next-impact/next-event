@@ -28,19 +28,12 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
   const page = Number.parseInt(searchParams.page || "1");
   const eventsPerPage = 12;
 
-  // Fetch events with filters
-  const eventsData = await getEvents({
-    first: eventsPerPage * page,
-    category: category !== "all" ? category : undefined,
-    city: city !== "all" ? city : undefined,
-  });
-
-  const events = eventsData.nodes || [];
-  const hasNextPage = eventsData.pageInfo?.hasNextPage || false;
-
-  // Extract unique categories and cities for filters
+  // OPTIMISATION: Un seul appel API qui récupère tous les événements
+  // Le filtrage côté client est plus performant que 2 appels API
   const allEventsData = await getEvents({ first: 100 });
   const allEvents = allEventsData.nodes || [];
+
+  // Extract unique categories and cities for filters depuis les données déjà chargées
   const categories = Array.from(
     new Set(
       allEvents
@@ -52,19 +45,45 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
         })
         .filter(Boolean)
     )
-  );
+  ) as string[];
+
   const cities = Array.from(
     new Set(
       allEvents
         .map((event) => {
-          const city = event.eventDetails.city;
-          if (typeof city === 'object' && city !== null && 'name' in city) return city.name;
-          if (typeof city === 'string') return city;
+          const c = event.eventDetails.city;
+          if (typeof c === 'object' && c !== null && 'name' in c) return c.name;
+          if (typeof c === 'string') return c;
           return undefined;
         })
         .filter(Boolean)
     )
-  );
+  ) as string[];
+
+  // Filtrage côté serveur à partir des données déjà chargées
+  let filteredEvents = allEvents;
+  
+  if (category !== "all") {
+    filteredEvents = filteredEvents.filter((event) => {
+      const cat = event.eventDetails.category;
+      const catName = typeof cat === 'object' && cat !== null && 'name' in cat ? cat.name : cat;
+      return catName === category;
+    });
+  }
+  
+  if (city !== "all") {
+    filteredEvents = filteredEvents.filter((event) => {
+      const c = event.eventDetails.city;
+      const cityName = typeof c === 'object' && c !== null && 'name' in c ? c.name : c;
+      return cityName === city;
+    });
+  }
+
+  // Pagination
+  const startIndex = 0;
+  const endIndex = eventsPerPage * page;
+  const events = filteredEvents.slice(startIndex, endIndex);
+  const hasNextPage = filteredEvents.length > endIndex;
 
   return (
     <div className="container mx-auto px-4 py-8">

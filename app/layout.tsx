@@ -1,15 +1,39 @@
 import React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inter, Urbanist, Manrope } from "next/font/google"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
-import AnimatedCursor from "react-animated-cursor"
 import Link from "next/link"
 import dynamic from "next/dynamic"
-const MobileMenu = dynamic(() => import("@/components/mobile-menu"), { ssr: false });
 
-const inter = Inter({ subsets: ["latin"] })
+// Dynamic imports pour réduire le bundle initial
+const MobileMenu = dynamic(() => import("@/components/mobile-menu"), { ssr: false });
+const AnimatedCursor = dynamic(() => import("react-animated-cursor"), { 
+  ssr: false,
+  loading: () => null, // Pas de loader visible
+});
+
+// Polices optimisées avec next/font (auto-hébergées, sans blocage du rendu)
+const inter = Inter({ 
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+})
+
+const urbanist = Urbanist({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-urbanist",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+})
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-manrope",
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
+})
 
 export const metadata: Metadata = {
   title: {
@@ -64,13 +88,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning className={`${inter.variable} ${urbanist.variable} ${manrope.variable}`}>
     <head>
       <meta charSet="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com"/>
-      <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Manrope:wght@200..800&&family=Urbanist:ital,wght@0,100..900;1,100..900" rel="stylesheet" />
       <link rel="icon" href="/images/logo-next-event.png" />
       <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     </head>

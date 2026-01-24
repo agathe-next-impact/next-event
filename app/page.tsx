@@ -1,12 +1,30 @@
 import { getEvents } from "@/lib/graphql"
-import Calendar from "@/components/calendar"
-import DevTools from "@/components/dev-tools"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
-import { CalendarDays, Users, Settings } from "lucide-react"
-import React from "react"
+import { CalendarDays, Users } from "lucide-react"
+import React, { Suspense } from "react"
 import { cn } from "@/lib/utils"
+import dynamic from "next/dynamic"
+import { Skeleton } from "@/components/ui/skeleton"
+
+// Lazy load du Calendar (composant client lourd avec date-fns)
+const Calendar = dynamic(() => import("@/components/calendar"), {
+  loading: () => (
+    <div className="space-y-4">
+      <div className="flex gap-4 mb-4">
+        <Skeleton className="h-10 w-32" />
+        <Skeleton className="h-10 w-40" />
+      </div>
+      <div className="grid grid-cols-7 gap-2">
+        {Array.from({ length: 35 }).map((_, i) => (
+          <Skeleton key={i} className="h-24 w-full" />
+        ))}
+      </div>
+    </div>
+  ),
+  ssr: true, // On garde le SSR pour le SEO
+})
 
 export default async function HomePage() {
   const eventsData = await getEvents({ first: 50 })

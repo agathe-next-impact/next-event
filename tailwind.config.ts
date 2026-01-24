@@ -1,4 +1,3 @@
-import { text } from "stream/consumers";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -12,8 +11,9 @@ const config: Config = {
   theme: {
   	extend: {
 		fontFamily: {
-			heading: ["Urbanist", "sans-serif"],
-			body: ["Manrope", "sans-serif"]
+			heading: ["var(--font-urbanist)", "sans-serif"],
+			body: ["var(--font-manrope)", "sans-serif"],
+			sans: ["var(--font-inter)", "sans-serif"],
 		},
 		colors: {
 			background: 'hsl(var(--background))',

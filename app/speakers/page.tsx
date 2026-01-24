@@ -36,33 +36,65 @@ export default async function SpeakersPage({ searchParams }: SpeakersPageProps) 
   const page = Number.parseInt(searchParams.page || "1")
   const speakersPerPage = 12
 
-  // Fetch speakers with all filters applied
-  const speakersData = await getSpeakers({
-    first: speakersPerPage * page,
-    expertise: expertise !== "all" ? expertise : undefined,
-    company: company !== "all" ? company : undefined,
-    location: location !== "all" ? location : undefined,
-    search: search || undefined,
-    availability: availability !== "all" ? availability : undefined,
-    experience: experience !== "all" ? experience : undefined,
-  })
-
-  const speakers = speakersData.nodes || []
-  const hasNextPage = speakersData.pageInfo?.hasNextPage || false
-
-  // Extract unique values for filters from all speakers (unfiltered)
+  // OPTIMISATION: Un seul appel API qui récupère tous les speakers
   const allSpeakersData = await getSpeakers({ first: 100 })
   const allSpeakers = allSpeakersData.nodes || []
 
   // Extraire les domaines d'expertise uniques de tous les speakers
   const expertiseAreas = Array.from(
     new Set(allSpeakers.flatMap((speaker) => speaker.speakerDetails.expertise).filter(Boolean)),
-  )
-  const companies = Array.from(new Set(allSpeakers.map((speaker) => speaker.speakerDetails.company).filter(Boolean)))
-  const locations = Array.from(new Set(allSpeakers.map((speaker) => speaker.speakerDetails.location).filter(Boolean)))
+  ) as string[]
+  const companies = Array.from(new Set(allSpeakers.map((speaker) => speaker.speakerDetails.company).filter(Boolean))) as string[]
+  const locations = Array.from(new Set(allSpeakers.map((speaker) => speaker.speakerDetails.location).filter(Boolean))) as string[]
 
-  // Les speakers sont déjà filtrés par la fonction getSpeakers
-  const filteredSpeakers = speakers
+  // Filtrage côté serveur à partir des données déjà chargées
+  let filteredSpeakers = allSpeakers
+
+  if (expertise !== "all") {
+    filteredSpeakers = filteredSpeakers.filter((speaker) => 
+      speaker.speakerDetails.expertise?.includes(expertise)
+    )
+  }
+
+  if (company !== "all") {
+    filteredSpeakers = filteredSpeakers.filter((speaker) => 
+      speaker.speakerDetails.company === company
+    )
+  }
+
+  if (location !== "all") {
+    filteredSpeakers = filteredSpeakers.filter((speaker) => 
+      speaker.speakerDetails.location === location
+    )
+  }
+
+  if (availability !== "all") {
+    filteredSpeakers = filteredSpeakers.filter((speaker) => 
+      (speaker.speakerDetails as any).availability === availability
+    )
+  }
+
+  if (experience !== "all") {
+    const expYears = Number.parseInt(experience)
+    filteredSpeakers = filteredSpeakers.filter((speaker) => 
+      speaker.speakerDetails.experience && speaker.speakerDetails.experience >= expYears
+    )
+  }
+
+  if (search) {
+    const searchLower = search.toLowerCase()
+    filteredSpeakers = filteredSpeakers.filter((speaker) => 
+      speaker.title?.toLowerCase().includes(searchLower) ||
+      speaker.speakerDetails.bio?.toLowerCase().includes(searchLower) ||
+      speaker.speakerDetails.company?.toLowerCase().includes(searchLower)
+    )
+  }
+
+  // Pagination
+  const startIndex = 0
+  const endIndex = speakersPerPage * page
+  const speakers = filteredSpeakers.slice(startIndex, endIndex)
+  const hasNextPage = filteredSpeakers.length > endIndex
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -81,7 +113,7 @@ export default async function SpeakersPage({ searchParams }: SpeakersPageProps) 
       <div className="rounded-lg p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
           <div>
-            <div className="text-3xl font-bold text-accent">{filteredSpeakers.length}</div>
+            <div className="text-3xl font-bold text-accent">{speakers.length}</div>
             <div className="text-sm text-muted-foreground">
               {search ||
               expertise !== "all" ||
@@ -112,7 +144,7 @@ export default async function SpeakersPage({ searchParams }: SpeakersPageProps) 
 
       {/* Speakers List Component */}
       <SpeakersList
-        speakers={filteredSpeakers}
+        speakers={speakers}
         expertiseAreas={expertiseAreas}
         companies={companies}
         locations={locations}
