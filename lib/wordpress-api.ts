@@ -374,3 +374,86 @@ export async function getReservedSeats(eventId: string): Promise<number> {
     return 0
   }
 }
+
+// Fonction pour récupérer un événement par slug en mode preview (avec authentification)
+export async function getEventBySlugWithPreview(slug: string): Promise<any | null> {
+  const username = process.env.WORDPRESS_API_USER
+  const password = process.env.WORDPRESS_API_PASSWORD
+
+  if (!username || !password) {
+    console.error("Identifiants API WordPress manquants pour le mode preview")
+    return null
+  }
+
+  const authHeader = "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
+
+  try {
+    // Essayer d'abord le CPT events avec status=any pour inclure les brouillons
+    const eventsUrl = `${API_BASE_URL}/events?slug=${encodeURIComponent(slug)}&status=any&_embed=true`
+    const response = await fetch(eventsUrl, {
+      headers: { Authorization: authHeader },
+      cache: "no-store",
+    })
+
+    if (response.ok) {
+      const events = await response.json()
+      if (Array.isArray(events) && events.length > 0) {
+        return convertWPPostToEvent(events[0])
+      }
+    }
+
+    // Fallback sur les posts standards
+    const postsUrl = `${API_BASE_URL}/posts?slug=${encodeURIComponent(slug)}&status=any&_embed=true`
+    const postsResponse = await fetch(postsUrl, {
+      headers: { Authorization: authHeader },
+      cache: "no-store",
+    })
+
+    if (postsResponse.ok) {
+      const posts = await postsResponse.json()
+      if (Array.isArray(posts) && posts.length > 0) {
+        return convertWPPostToEvent(posts[0])
+      }
+    }
+
+    return null
+  } catch (error) {
+    console.error("Erreur lors de la récupération de l'événement en preview:", error)
+    return null
+  }
+}
+
+// Convertit un WPPost en format Event attendu par l'application
+function convertWPPostToEvent(post: WPPost): any {
+  const featuredMedia = post._embedded?.["wp:featuredmedia"]?.[0]
+
+  return {
+    id: String(post.id),
+    title: post.title?.rendered || "",
+    slug: post.slug,
+    content: post.content?.rendered || "",
+    excerpt: post.excerpt?.rendered || "",
+    date: post.date,
+    featuredImage: featuredMedia
+      ? {
+          node: {
+            sourceUrl: featuredMedia.source_url,
+            altText: featuredMedia.alt_text || "",
+          },
+        }
+      : undefined,
+    eventDetails: {
+      startDate: post.acf?.start_date || post.acf?.startDate || post.date,
+      endDate: post.acf?.end_date || post.acf?.endDate || post.date,
+      location: post.acf?.location || "",
+      city: post.acf?.city || { name: "", slug: "" },
+      category: post.acf?.category || { name: "", slug: "" },
+      maxAttendees: post.acf?.max_attendees || post.acf?.maxAttendees || 0,
+      currentAttendees: post.acf?.current_attendees || post.acf?.currentAttendees || 0,
+      registrationDeadline: post.acf?.registration_deadline || post.acf?.registrationDeadline,
+      price: post.acf?.price || 0,
+      isFree: post.acf?.is_free ?? post.acf?.isFree ?? true,
+      speakers: post.acf?.speakers || [],
+    },
+  }
+}

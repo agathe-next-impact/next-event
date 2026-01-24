@@ -1,52 +1,15 @@
 import Image from "next/image"
 import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
-import { getWPData } from "@/lib/graphql"
+import { getEventBySlug } from "@/lib/graphql"
+import { getEventBySlugWithPreview } from "@/lib/wordpress-api"
+import { decodeHTMLEntities } from "@/lib/decodeHTMLEntities"
 
 type EventPageProps = {
   params: {
     slug: string
   }
 }
-
-type EventNode = {
-  databaseId: number
-  slug: string
-  title: string
-  content: string
-  date: string
-  featuredImage?: {
-    node?: {
-      sourceUrl: string
-      altText?: string | null
-    } | null
-  } | null
-}
-
-type EventQueryResponse = {
-  data?: {
-    event?: EventNode | null
-  }
-  errors?: { message: string }[]
-}
-
-const EVENT_QUERY = `
-  query EventById($id: ID!, $idType: EventIdTypeEnum!, $asPreview: Boolean = false) {
-    event(id: $id, idType: $idType, asPreview: $asPreview) {
-      databaseId
-      slug
-      title
-      content
-      date
-      featuredImage {
-        node {
-          sourceUrl
-          altText
-        }
-      }
-    }
-  }
-`
 
 const PreviewBanner = () => (
   <div className="bg-amber-200 text-amber-900 px-4 py-2 text-sm font-semibold border-b border-amber-300">
@@ -67,16 +30,11 @@ const formatEventDate = (value?: string | null) => {
 export default async function EventPage({ params }: EventPageProps) {
   const { isEnabled } = draftMode()
 
-  // On utilise toujours SLUG car WordPress envoie le slug en preview
-  // asPreview permet de récupérer le brouillon même non publié
-  const variables = {
-    id: params.slug,
-    idType: "SLUG",
-    asPreview: isEnabled,
-  }
-
-  const response: EventQueryResponse = await getWPData(EVENT_QUERY, variables)
-  const event = response?.data?.event
+  // En mode preview, on utilise l'API REST avec authentification pour récupérer les brouillons
+  // Sinon, on utilise la fonction standard getEventBySlug
+  const event = isEnabled
+    ? await getEventBySlugWithPreview(params.slug)
+    : await getEventBySlug(params.slug)
 
   if (!event) {
     notFound()
@@ -85,6 +43,7 @@ export default async function EventPage({ params }: EventPageProps) {
   const eventDate = formatEventDate(event.date)
   const imageUrl = event.featuredImage?.node?.sourceUrl
   const imageAlt = event.featuredImage?.node?.altText || event.title
+  const title = typeof event.title === "string" ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, "")) : event.title
 
   return (
     <div className="container mx-auto max-w-4xl space-y-6 px-4 py-8">
@@ -92,7 +51,7 @@ export default async function EventPage({ params }: EventPageProps) {
 
       <header className="space-y-2">
         {eventDate && <p className="text-sm text-muted-foreground">{eventDate}</p>}
-        <h1 className="text-3xl font-semibold leading-tight">{event.title}</h1>
+        <h1 className="text-3xl font-semibold leading-tight">{title}</h1>
       </header>
 
       {imageUrl ? (
