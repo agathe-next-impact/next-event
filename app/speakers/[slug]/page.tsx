@@ -375,5 +375,3 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
     </div>
   );
 }
-
-export const revalidate = 3600; // Revalidate every hour
