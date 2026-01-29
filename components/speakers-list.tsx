@@ -255,12 +255,8 @@ export default function SpeakersList({
                     <span>{speakerDetails.years_of_experience} ans d'expérience</span>
                   </div>
                 )}
-                {speakerDetails.bio && typeof speakerDetails.bio === "string" && (
-                  <div
-                    className="text-muted-foreground text-sm line-clamp-2"
-                    dangerouslySetInnerHTML={{
-                      __html: speakerDetails.bio && typeof speakerDetails.bio === 'string' ? sanitizeHtml(decodeHTMLEntities(speakerDetails.bio)) : ''
-                    }}                  />
+                {speakerDetails.bio && (
+                  <p className="text-muted-foreground text-sm line-clamp-2">{typeof speakerDetails.bio === "string" ? decodeHTMLEntities(speakerDetails.bio.replace(/<[^>]+>/g, '')) : speakerDetails.bio}</p>
                 )}
                 {speakerDetails.expertises && Array.isArray(speakerDetails.expertises) && (
                   <div className="flex flex-wrap gap-1">
@@ -363,13 +359,10 @@ export default function SpeakersList({
                         </h3>
                       </Link>
                       {speakerDetails.jobTitle && (
-                        <p className="text-sm font-medium text-muted-foreground mb-2">{decodeHTMLEntities(speakerDetails.jobTitle)}</p>
-                      )}
-                      {speakerDetails.bio && typeof speakerDetails.bio === "string" && (
-                        <div
-                          className="text-muted-foreground mb-3 line-clamp-2"
-                          dangerouslySetInnerHTML={{ __html: sanitizeHtml(decodeHTMLEntities(speakerDetails.bio)) }}
-                        />
+                        <p className="text-sm font-medium text-muted-foreground mb-2">{speakerDetails.jobTitle}</p>
+                      )}               
+                       {speakerDetails.bio && (
+                      <p className="text-muted-foreground text-sm line-clamp-2">{typeof speakerDetails.bio === "string" ? decodeHTMLEntities(speakerDetails.bio.replace(/<[^>]+>/g, '')) : speakerDetails.bio}</p>
                       )}
                     </div>
                     <div className="flex gap-2">
@@ -682,7 +675,7 @@ export default function SpeakersList({
                   </Button>
 
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">Page {currentPage}</span>
+                    <span className="text-sm text-muted-foreground">{decodeHTMLEntities(`Page ${currentPage}`)}</span>
                   </div>
 
                   <Button variant="outline" onClick={() => handlePageChange(currentPage + 1)} disabled={!hasNextPage}>
