@@ -12,7 +12,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input"
 import { getCityById, type Event } from "@/lib/graphql"
 import { formatDate } from "@/lib/utils"
-import { decodeHTMLEntities } from "@/lib/decodeHTMLEntities"
 
 interface EventsListProps {
   events: Event[]

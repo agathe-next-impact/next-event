@@ -1,69 +1,40 @@
-export const revalidate = 3600; // Revalidate every hour
-import type { Metadata } from "next"
-import { notFound } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
-import { Calendar, MapPin, Users, Clock, ArrowLeft, Building, UserCheck } from "lucide-react"
-import { getEventBySlug, getEventSlugs } from "@/lib/graphql"
-import { formatDate, generateOGImageUrl } from "@/lib/utils"
+import dynamic from "next/dynamic"
+import { draftMode } from "next/headers"
+import { notFound } from "next/navigation"
+import { Calendar, MapPin, Users, Clock, ArrowLeft, Building } from "lucide-react"
+import { getEventBySlug } from "@/lib/graphql"
+import { getEventBySlugWithPreview, getReservedSeats } from "@/lib/wordpress-api"
 import { decodeHTMLEntities } from "@/lib/decodeHTMLEntities"
+import { formatDate } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
-import dynamic from "next/dynamic"
-import ReservationForm from "@/components/reservation-form"
-import { getCityById } from "@/lib/graphql"
-import { getReservedSeats } from "@/lib/wordpress-api"
 
-interface EventPageProps {
+type EventPageProps = {
   params: {
     slug: string
   }
-  searchParams: {
-    preview?: string
-  }
 }
 
-export async function generateStaticParams() {
-  const slugs = await getEventSlugs()
-  return slugs.map((slug: string) => ({ slug }))
-}
-
-export async function generateMetadata({ params, searchParams }: EventPageProps): Promise<Metadata> {
-  const event = await getEventBySlug(params.slug, !!searchParams.preview)
-
-  if (!event) {
-    return {
-      title: "Événement introuvable",
-    }
-  }
-
-  const ogImage = event.seo?.opengraphImage?.sourceUrl || generateOGImageUrl(params.slug)
-
-  return {
-    title: event.seo?.title || event.title,
-    description: event.seo?.metaDesc || event.excerpt,
-    openGraph: {
-      title: event.seo?.title || event.title,
-      description: event.seo?.metaDesc || event.excerpt,
-      images: [ogImage],
-      type: "article",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: event.seo?.title || event.title,
-      description: event.seo?.metaDesc || event.excerpt,
-      images: [ogImage],
-    },
-  }
-}
+const PreviewBanner = () => (
+  <div className="bg-amber-200 text-amber-900 px-4 py-2 text-sm font-semibold border-b border-amber-300">
+    Mode preview actif : vous consultez un brouillon WordPress.
+  </div>
+)
 
 const EventReservationSection = dynamic(() => import("./EventReservationSection"), { ssr: false })
 
-export default async function EventPage({ params, searchParams }: EventPageProps) {
-  const event = await getEventBySlug(params.slug, !!searchParams.preview)
-  // Robust fallback for missing event or eventDetails
+export default async function EventPage({ params }: EventPageProps) {
+  const { isEnabled } = draftMode()
+
+  // En mode preview, on utilise l'API REST avec authentification pour récupérer les brouillons
+  // Sinon, on utilise la fonction standard getEventBySlug
+  const event = isEnabled
+    ? await getEventBySlugWithPreview(params.slug)
+    : await getEventBySlug(params.slug)
+
   if (!event || !event.eventDetails) {
     notFound()
   }
@@ -104,11 +75,17 @@ export default async function EventPage({ params, searchParams }: EventPageProps
   // Gratuit
   const isFree = !!event.eventDetails.isFree
 
-  // récupérer le nombre de place réservées
-  const reservedSeats = await getReservedSeats(event.id)
+  // Titre décodé
+  const title = typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title
+
+  // Récupérer le nombre de places réservées (seulement si pas en preview)
+  const reservedSeats = isEnabled ? 0 : await getReservedSeats(event.id)
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
+      {/* Preview Banner */}
+      {isEnabled && <PreviewBanner />}
+
       {/* Back Navigation */}
       <div className="mb-6">
         <Link href="/events">
@@ -132,12 +109,16 @@ export default async function EventPage({ params, searchParams }: EventPageProps
           <div className="absolute inset-0 bg-black/20" />
           <div className="absolute bottom-4 left-4 right-4">
             <div className="flex flex-wrap gap-2 mb-2">
-              <Badge variant="secondary" className="bg-white/90 text-black">
-                {categoryName}
-              </Badge>
-              <Badge variant="secondary" className="bg-white/90 text-black">
-                📍 {cityName}
-              </Badge>
+              {categoryName && (
+                <Badge variant="secondary" className="bg-white/90 text-black">
+                  {categoryName}
+                </Badge>
+              )}
+              {cityName && (
+                <Badge variant="secondary" className="bg-white/90 text-black">
+                  📍 {cityName}
+                </Badge>
+              )}
               {isFree && <Badge className="bg-green-600 text-white">Gratuit</Badge>}
             </div>
           </div>
@@ -145,8 +126,12 @@ export default async function EventPage({ params, searchParams }: EventPageProps
 
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
           <div className="flex-1">
-            <h1 className="text-3xl md:text-4xl mb-2">{typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title}</h1>
-            <p className="text-lg text-muted-foreground">{typeof event.excerpt === 'string' ? decodeHTMLEntities(event.excerpt.replace(/<[^>]+>/g, '')) : event.excerpt}</p>
+            <h1 className="text-3xl md:text-4xl mb-2">{title}</h1>
+            {event.excerpt && (
+              <p className="text-lg text-muted-foreground">
+                {typeof event.excerpt === 'string' ? decodeHTMLEntities(event.excerpt.replace(/<[^>]+>/g, '')) : event.excerpt}
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -160,16 +145,16 @@ export default async function EventPage({ params, searchParams }: EventPageProps
               <CardTitle>Description</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="prose prose-gray dark:prose-invert max-w-none whitespace-pre-line">
-                {event.content && typeof event.content === 'string'
-                  ? decodeHTMLEntities(event.content.replace(/<[^>]+>/g, ''))
-                  : ''}
+              <div className="prose prose-gray dark:prose-invert max-w-none">
+                {event.content && typeof event.content === 'string' ? (
+                  <div dangerouslySetInnerHTML={{ __html: event.content }} />
+                ) : null}
               </div>
             </CardContent>
           </Card>
 
           {/* Participation Section dynamique */}
-          <EventReservationSection event={event} initialReservedSeats={reservedSeats} />
+          {!isEnabled && <EventReservationSection event={event} initialReservedSeats={reservedSeats} />}
         </div>
 
         {/* Sidebar */}

@@ -3,6 +3,7 @@ import { decodeHTMLEntities } from "@/lib/decodeHTMLEntities"
 import { sanitizeHtml } from "@/lib/sanitizeHtml"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { draftMode } from "next/headers"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -32,6 +33,7 @@ import {
   Youtube,
 } from "lucide-react"
 import { getSpeakerBySlug, getSpeakerSlugs, getEventsBySpeakerSlug } from "@/lib/wordpress-rest"
+import { getSpeakerBySlugWithPreview } from "@/lib/wordpress-api"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -78,8 +80,20 @@ export async function generateMetadata({ params }: SpeakerPageProps): Promise<Me
     },
   }
 }
+
+const PreviewBanner = () => (
+  <div className="bg-amber-200 text-amber-900 px-4 py-2 text-sm font-semibold border-b border-amber-300">
+    Mode preview actif : vous consultez un brouillon WordPress.
+  </div>
+)
+
 export default async function SpeakerPage({ params }: SpeakerPageProps) {
-  const speaker = await getSpeakerBySlug(params.slug);
+  const { isEnabled } = draftMode()
+  
+  // En mode preview, on utilise l'API REST avec authentification pour récupérer les brouillons
+  const speaker = isEnabled
+    ? await getSpeakerBySlugWithPreview(params.slug)
+    : await getSpeakerBySlug(params.slug);
   const speakerEvents = await getEventsBySpeakerSlug(params.slug);
   if (!speaker) {
     notFound();
@@ -90,6 +104,9 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
+      {/* Preview Banner */}
+      {isEnabled && <PreviewBanner />}
+      
       {/* Back Navigation */}
       <div className="mb-6">
         <Link href="/speakers">

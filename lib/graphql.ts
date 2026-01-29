@@ -166,9 +166,9 @@ export function checkEnvironmentVariables() {
   return true
 }
 
-const endpoint = process.env.WP_GRAPHQL_ENDPOINT
+const endpoint = process.env.WORDPRESS_REST_API_ENDPOINT || process.env.WP_GRAPHQL_ENDPOINT
 if (!endpoint && process.env.NODE_ENV === "production") {
-  console.error("WP_GRAPHQL_ENDPOINT n'est pas configuré. Veuillez définir cette variable d'environnement.")
+  console.error("WORDRESS_REST n'est pas configuré. Veuillez définir cette variable d'environnement.")
 }
 
 export const graphqlClient = new GraphQLClient(endpoint || "", {
@@ -609,8 +609,9 @@ export async function getEventSlugs() {
 
 export async function getCityById(cityId: string) {
   try {
+    const apiBase = process.env.WORDPRESS_REST_API_ENDPOINT || "https://admin.next-event.fr/wp-json/wp/v2"
     const res = await fetch(
-      `${process.env.PUBLIC_SITE_URL}/wp-json/wp/v2/cities/${cityId}`,
+      `${apiBase}/cities/${cityId}`,
     )
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`)
@@ -788,4 +789,61 @@ export function cancelReservation(confirmationCode: string): boolean {
     return true
   }
   return false
+}
+
+// Nouvelle fonction pour interroger l'API GraphQL de WordPress avec gestion du mode preview
+
+const normalizeGraphQLEndpoint = (raw?: string | null) => {
+  if (!raw) return ""
+
+  const trimmed = raw.trim().replace(/\/$/, "")
+
+  // Si l'URL pointe encore sur le REST `/wp-json/wp/v2`, on redirige vers `/graphql`
+  if (trimmed.includes("/wp-json/wp/v2")) {
+    return trimmed.replace(/\/wp-json\/wp\/v2.*$/, "/graphql")
+  }
+
+  if (trimmed.endsWith("/graphql")) {
+    return trimmed
+  }
+
+  return `${trimmed}/graphql`
+}
+
+export async function getWPData(query: string, variables: any = {}) {
+  const { draftMode } = await import("next/headers")
+  const isDraft = (await draftMode()).isEnabled
+
+  const baseEndpoint = normalizeGraphQLEndpoint(process.env.WP_GRAPHQL_ENDPOINT)
+  if (!baseEndpoint) {
+    throw new Error("WP_GRAPHQL_ENDPOINT manquant pour l'appel GraphQL")
+  }
+
+  const headers: HeadersInit = { "Content-Type": "application/json" }
+
+  // Active l'authentification Basic uniquement en preview (utilise WORDPRESS_API_USER/PASSWORD)
+  const previewUser = process.env.WORDPRESS_API_USER || process.env.WP_USER
+  const previewPassword = process.env.WORDPRESS_API_PASSWORD || process.env.WP_APPLICATION_PASSWORD
+
+  if (isDraft && previewUser && previewPassword) {
+    const auth = Buffer.from(`${previewUser}:${previewPassword}`).toString("base64")
+    headers["Authorization"] = `Basic ${auth}`
+  }
+
+  const response = await fetch(baseEndpoint, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      query,
+      variables: { ...variables, status: isDraft ? "DRAFT" : "PUBLISH" },
+    }),
+    cache: isDraft ? "no-store" : "force-cache",
+  })
+
+  if (!response.ok) {
+    const reason = await response.text().catch(() => "")
+    throw new Error(`Erreur GraphQL (${response.status}): ${reason}`)
+  }
+
+  return response.json()
 }
