@@ -212,6 +212,11 @@ function decodeHTMLEntities(text: string) {
                     alt={event.featuredImage.node.altText || (typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title)}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    placeholder="blur"
+                    blurDataURL="/images/event-1.jpg"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority={event === sortedEvents[0]}
+                    loading={event === sortedEvents[0] ? undefined : "lazy"}
                   />
                 </div>
               )}
@@ -306,6 +311,11 @@ function decodeHTMLEntities(text: string) {
                       width={160}
                       height={120}
                       className="object-cover"
+                      placeholder="blur"
+                      blurDataURL="/placeholder.svg"
+                      sizes="160px"
+                      priority={event === sortedEvents[0]}
+                      loading={event === sortedEvents[0] ? undefined : "lazy"}
                     />
                   </div>
                 )}

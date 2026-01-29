@@ -4,7 +4,8 @@ import { useState, useCallback, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { UserCheck } from "lucide-react"
-import ReservationForm from "@/components/reservation-form"
+import dynamic from "next/dynamic"
+const ReservationForm = dynamic(() => import("@/components/reservation-form"), { ssr: false })
 
 
 export default function EventReservationSection({ event, initialReservedSeats }) {

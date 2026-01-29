@@ -32,7 +32,17 @@ export default function MobileMenu() {
         </SheetTrigger>
         <SheetContent side="top" className="p-0 pt-6 pb-8 bg-background/95 backdrop-blur-xl border-b-0 rounded-b-3xl shadow-xl">
           <div className="flex items-center justify-center py-4">
-            <Image src="/images/logo-next-event.png" alt="Logo Next Event" width={140} height={40} className="object-contain drop-shadow-lg" />
+            <Image
+              src="/images/logo-next-event.png"
+              alt="Logo Next Event"
+              width={140}
+              height={40}
+              className="object-contain drop-shadow-lg"
+              placeholder="blur"
+              blurDataURL="/images/logo-next-event.png"
+              sizes="140px"
+              priority
+            />
           </div>
           <nav>
             <ul className="flex flex-col gap-2 px-6">

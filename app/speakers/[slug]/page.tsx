@@ -1,3 +1,4 @@
+export const revalidate = 3600; // Revalidate every hour
 import { decodeHTMLEntities } from "@/lib/decodeHTMLEntities"
 import { sanitizeHtml } from "@/lib/sanitizeHtml"
 import type { Metadata } from "next"
@@ -217,7 +218,7 @@ export default async function SpeakerPage({ params }: SpeakerPageProps) {
                   <div
                     className="prose prose-gray dark:prose-invert max-w-none"
                     dangerouslySetInnerHTML={{
-                      __html: speakerDetails.bio && typeof speakerDetails.bio === 'string' ? sanitizeHtml(speakerDetails.bio) : ''
+                      __html: speakerDetails.bio && typeof speakerDetails.bio === 'string' ? sanitizeHtml(decodeHTMLEntities(speakerDetails.bio)) : ''
                     }}
                   />
                 </CardContent>

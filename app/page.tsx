@@ -1,12 +1,11 @@
+export const revalidate = 3600; // Revalidate every hour
 import { getEvents } from "@/lib/graphql"
 import Calendar from "@/components/calendar"
-import DevTools from "@/components/dev-tools"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
 import { CalendarDays, Users, Settings } from "lucide-react"
 import React from "react"
-import { cn } from "@/lib/utils"
 
 export default async function HomePage() {
   const eventsData = await getEvents({ first: 50 })
@@ -95,4 +94,3 @@ export default async function HomePage() {
   )
 }
 
-export const revalidate = 3600 // Revalidate every hour

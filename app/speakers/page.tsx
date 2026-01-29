@@ -1,6 +1,8 @@
+export const revalidate = 3600; // Revalidate every hour
 import type { Metadata } from "next"
 import { getSpeakers } from "@/lib/wordpress-rest"
-import SpeakersList from "@/components/speakers-list"
+import dynamic from "next/dynamic"
+const SpeakersList = dynamic(() => import("@/components/speakers-list"), { ssr: false })
 import { Users } from "lucide-react"
 
 export const metadata: Metadata = {

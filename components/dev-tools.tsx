@@ -12,7 +12,8 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Loader2, Check, AlertCircle, Mail, Database, Code, Server, Globe } from "lucide-react"
-import WordPressExplorer from "./wordpress-explorer"
+import dynamic from "next/dynamic"
+const WordPressExplorer = dynamic(() => import("./wordpress-explorer"), { ssr: false })
 
 export default function DevTools() {
   const [emailStatus, setEmailStatus] = useState<{

@@ -33,6 +33,8 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import type { Speaker } from "@/lib/graphql"
+import { decodeHTMLEntities } from "@/lib/decodeHTMLEntities"
+import { sanitizeHtml } from "@/lib/sanitizeHtml"
 
 interface SpeakersListProps {
   speakers: Speaker[]
@@ -74,7 +76,7 @@ export default function SpeakersList({
   const [isFiltering, setIsFiltering] = useState(false)
 
   // Debounce pour la recherche
-  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null)
+  const searchTimeoutRef = useState<{ current: NodeJS.Timeout | null }>({ current: null })[0]
 
   const handleFilterChange = (filterType: string, value: string) => {
     setIsFiltering(true)
@@ -88,8 +90,11 @@ export default function SpeakersList({
 
     params.delete("page") // Reset to first page when changing filters
 
-    // Ajouter un indicateur de chargement
-    setTimeout(() => {
+    // Use a timeout to show loading state, but clear any previous timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current)
+    }
+    searchTimeoutRef.current = setTimeout(() => {
       router.push(`/speakers?${params.toString()}`)
       setIsFiltering(false)
     }, 100)
@@ -99,12 +104,12 @@ export default function SpeakersList({
     setSearchQuery(value)
 
     // Clear existing timeout
-    if (searchTimeout) {
-      clearTimeout(searchTimeout)
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current)
     }
 
     // Set new timeout for debounced search
-    const timeout = setTimeout(() => {
+    searchTimeoutRef.current = setTimeout(() => {
       setIsFiltering(true)
       const params = new URLSearchParams(searchParams.toString())
 
@@ -119,18 +124,17 @@ export default function SpeakersList({
       router.push(`/speakers?${params.toString()}`)
       setIsFiltering(false)
     }, 500) // 500ms debounce
-
-    setSearchTimeout(timeout)
   }
 
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
-      if (searchTimeout) {
-        clearTimeout(searchTimeout)
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current)
       }
     }
-  }, [searchTimeout])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // ... rest of the component remains the same but add loading states
 
@@ -184,23 +188,25 @@ export default function SpeakersList({
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
       <Star
-        key={i}
+        key={"star-" + i}
         className={`h-4 w-4 ${i < Math.floor(rating) ? "text-yellow-400 fill-current" : "text-gray-300"}`}
+        aria-label={i < Math.floor(rating) ? "star filled" : "star empty"}
       />
     ))
   }
 
   // Utility to decode HTML entities in a string
-  function decodeHTMLEntities(text: string): string {
-    if (typeof window === "undefined") return text
-    const textarea = document.createElement("textarea")
-    textarea.innerHTML = text
-    return textarea.value
-  }
+  // Not used, can be removed
+  // function decodeHTMLEntities(text: string): string {
+  //   if (typeof window === "undefined") return text
+  //   const textarea = document.createElement("textarea")
+  //   textarea.innerHTML = text
+  //   return textarea.value
+  // }
 
   const renderGridView = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-      {speakers.map((speaker) => {
+      {speakers.map((speaker, idx) => {
         const { speakerDetails = {}, socialLinks = {} } = speaker;
         return (
           <Card key={speaker.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
@@ -209,9 +215,14 @@ export default function SpeakersList({
                 <div className="relative h-48 overflow-hidden">
                   <Image
                     src={speaker.featuredImage.node.sourceUrl || "/placeholder.svg"}
-                    alt={speaker.featuredImage.node.altText || speaker.title}
+                    alt={decodeHTMLEntities(speaker.featuredImage.node.altText || speaker.title)}
                     fill
                     className="object-cover object-left group-hover:scale-105 transition-transform duration-300"
+                    placeholder="blur"
+                    blurDataURL="/placeholder.svg"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority={idx === 0}
+                    loading={idx === 0 ? undefined : "lazy"}
                   />
                 </div>
               )}
@@ -220,22 +231,22 @@ export default function SpeakersList({
               <div className="space-y-3">
                 <Link href={`/speakers/${speaker.slug}`}>
                   <h3 className="text-2xl font-regular line-clamp-1 hover:text-primary transition-colors">
-                    {speaker.title}
+                    {decodeHTMLEntities(speaker.title)}
                   </h3>
                 </Link>
                 {speakerDetails.jobTitle && (
-                  <p className="text-sm font-medium">{speakerDetails.jobTitle}</p>
+                  <p className="text-sm font-medium">{decodeHTMLEntities(speakerDetails.jobTitle)}</p>
                 )}
                 {speakerDetails.company && (
                   <div className="flex items-center gap-2 text-sm">
                     <Building className="h-4 w-4 text-accent" />
-                    <span className="line-clamp-1">{speakerDetails.company}</span>
+                    <span className="line-clamp-1">{decodeHTMLEntities(speakerDetails.company)}</span>
                   </div>
                 )}
                 {speakerDetails.location && (
                   <div className="flex items-center gap-2 text-sm">
                     <MapPin className="h-4 w-4 text-accent" />
-                    <span>{speakerDetails.location}</span>
+                    <span>{decodeHTMLEntities(speakerDetails.location)}</span>
                   </div>
                 )}
                 {speakerDetails.years_of_experience && (
@@ -244,13 +255,17 @@ export default function SpeakersList({
                     <span>{speakerDetails.years_of_experience} ans d'expérience</span>
                   </div>
                 )}
-                {speakerDetails.bio && (
-                  <p className="text-muted-foreground text-sm line-clamp-2">{typeof speakerDetails.bio === "string" ? speakerDetails.bio.replace(/<[^>]+>/g, '') : speakerDetails.bio}</p>
+                {speakerDetails.bio && typeof speakerDetails.bio === "string" && (
+                  <div
+                    className="text-muted-foreground text-sm line-clamp-2"
+                    dangerouslySetInnerHTML={{
+                      __html: speakerDetails.bio && typeof speakerDetails.bio === 'string' ? sanitizeHtml(decodeHTMLEntities(speakerDetails.bio)) : ''
+                    }}                  />
                 )}
                 {speakerDetails.expertises && Array.isArray(speakerDetails.expertises) && (
                   <div className="flex flex-wrap gap-1">
                     {speakerDetails.expertises.slice(0, 3).map((exp, index) => (
-                      <Badge key={index}>{exp.name}</Badge>
+                      <Badge key={index}>{decodeHTMLEntities(exp.name)}</Badge>
                     ))}
                     {speakerDetails.expertises.length > 3 && (
                       <Badge variant="outline" className="text-xs">
@@ -305,7 +320,7 @@ export default function SpeakersList({
 
   const renderListView = () => (
     <div className="space-y-4">
-      {speakers.map((speaker) => {
+      {speakers.map((speaker, idx) => {
         const { speakerDetails = {}, socialLinks = {} } = speaker;
         return (
           <Card key={speaker.id} className="hover:shadow-md transition-shadow">
@@ -315,10 +330,15 @@ export default function SpeakersList({
                   <div className="flex-shrink-0">
                     <Image
                       src={speaker.featuredImage.node.sourceUrl || "/placeholder.svg"}
-                      alt={speaker.featuredImage.node.altText || speaker.title}
+                      alt={decodeHTMLEntities(speaker.featuredImage.node.altText || speaker.title)}
                       width={120}
                       height={120}
                       className="object-contain rounded-lg"
+                      placeholder="blur"
+                      blurDataURL="/placeholder.svg"
+                      sizes="120px"
+                      priority={idx === 0}
+                      loading={idx === 0 ? undefined : "lazy"}
                     />
                   </div>
                 )}
@@ -328,7 +348,7 @@ export default function SpeakersList({
                       {speakerDetails.expertises && Array.isArray(speakerDetails.expertises) && (
                         <div className="flex items-center gap-2 mb-2 flex-wrap">
                           {speakerDetails.expertises.slice(0, 3).map((exp, index) => (
-                            <Badge key={index}>{exp.name}</Badge>
+                            <Badge key={index}>{decodeHTMLEntities(exp.name)}</Badge>
                           ))}
                           {speakerDetails.expertises.length > 3 && (
                             <Badge variant="outline" className="text-xs">
@@ -339,14 +359,17 @@ export default function SpeakersList({
                       )}
                       <Link href={`/speakers/${speaker.slug}`}>
                         <h3 className="text-xl font-semibold hover:text-primary transition-colors mb-1">
-                          {speaker.title}
+                          {decodeHTMLEntities(speaker.title)}
                         </h3>
                       </Link>
                       {speakerDetails.jobTitle && (
-                        <p className="text-sm font-medium text-muted-foreground mb-2">{speakerDetails.jobTitle}</p>
+                        <p className="text-sm font-medium text-muted-foreground mb-2">{decodeHTMLEntities(speakerDetails.jobTitle)}</p>
                       )}
-                      {speakerDetails.bio && (
-                        <p className="text-muted-foreground mb-3 line-clamp-2">{typeof speakerDetails.bio === "string" ? speakerDetails.bio.replace(/<[^>]+>/g, '') : speakerDetails.bio}</p>
+                      {speakerDetails.bio && typeof speakerDetails.bio === "string" && (
+                        <div
+                          className="text-muted-foreground mb-3 line-clamp-2"
+                          dangerouslySetInnerHTML={{ __html: sanitizeHtml(decodeHTMLEntities(speakerDetails.bio)) }}
+                        />
                       )}
                     </div>
                     <div className="flex gap-2">
@@ -367,13 +390,13 @@ export default function SpeakersList({
                     {speakerDetails.company && (
                       <div className="flex items-center gap-2">
                         <Building className="h-4 w-4 text-accent" />
-                        <span>{speakerDetails.company}</span>
+                        <span>{decodeHTMLEntities(speakerDetails.company)}</span>
                       </div>
                     )}
                     {speakerDetails.location && (
                       <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4 text-accent" />
-                        <span>{speakerDetails.location}</span>
+                        <span>{decodeHTMLEntities(speakerDetails.location)}</span>
                       </div>
                     )}
                     {speakerDetails.years_of_experience && (
@@ -425,6 +448,7 @@ export default function SpeakersList({
   ].reduce((a, b) => a + b, 0)
 
   const handlePageChange = (page: number) => {
+    if (page < 1) return;
     const params = new URLSearchParams(searchParams.toString())
     params.set("page", page.toString())
     router.push(`/speakers?${params.toString()}`)

@@ -1,6 +1,8 @@
+export const revalidate = 3600; // Revalidate every hour
 import type { Metadata } from "next";
 import { getEvents } from "@/lib/graphql";
-import EventsList from "@/components/events-list";
+import dynamic from "next/dynamic";
+const EventsList = dynamic(() => import("@/components/events-list"), { ssr: false });
 
 export const metadata: Metadata = {
   title: "Tous les Événements - Event Portal",

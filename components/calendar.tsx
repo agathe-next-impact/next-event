@@ -122,6 +122,11 @@ export default function Calendar({ events, categories }: CalendarProps) {
                     width={120}
                     height={80}
                     className="object-cover"
+                    placeholder="blur"
+                    blurDataURL="/placeholder.svg"
+                    sizes="120px"
+                    priority={event === filteredEvents[0]}
+                    loading={event === filteredEvents[0] ? undefined : "lazy"}
                   />
                 </div>
               )}

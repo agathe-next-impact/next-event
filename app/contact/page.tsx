@@ -1,3 +1,4 @@
+export const revalidate = 3600; // Revalidate every hour
 import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"

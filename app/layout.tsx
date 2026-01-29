@@ -4,7 +4,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
-import AnimatedCursor from "react-animated-cursor"
+import AnimatedCursorWrapper from "@/components/animated-cursor-wrapper"
 import Link from "next/link"
 import dynamic from "next/dynamic"
 const MobileMenu = dynamic(() => import("@/components/mobile-menu"), { ssr: false });
@@ -75,24 +75,7 @@ export default function RootLayout({
       <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     </head>
       <body className={cn(inter.className, "min-h-screen bg-background antialiased")}>
-        <AnimatedCursor
-          innerSize={8}
-          outerSize={15}
-          color="255, 219, 0"
-          outerAlpha={0.2}
-          innerScale={0.7}
-          outerScale={5}
-          trailingSpeed={5}
-          showSystemCursor={false}
-          clickables={[
-            "a",
-            "button",
-            ".cursor-pointer",
-            ".cursor-default",
-            ".cursor-move",
-            ".cursor-grab",
-          ]}
-        />
+        <AnimatedCursorWrapper />
         <header className="border-b sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container mx-auto px-4 py-4">
             <nav className="flex justify-between items-center">
