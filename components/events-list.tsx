@@ -195,12 +195,11 @@ function decodeHTMLEntities(text: string) {
 }
 
   const renderGridView = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {sortedEvents.map(event => {
         const isUpcoming = new Date(event.eventDetails.startDate) > new Date();
         const isRegistrationOpen = event.eventDetails.registrationDeadline ? (new Date() < new Date(event.eventDetails.registrationDeadline)) : false;
         const cityName = getEventCityName(event);
-        const categoryName = getEventCategoryName(event);
         return (
           <Card key={event.id} className="bg-background group hover:shadow-lg transition-all duration-300 overflow-hidden">
             <div className="relative">
@@ -223,7 +222,6 @@ function decodeHTMLEntities(text: string) {
                 <Badge variant="outline" className="bg-white/90 backdrop-blur-sm">
                   {getCityIcon(cityName)} {cityName}
                 </Badge>
-                <Badge variant="secondary">{categoryName}</Badge>
               </div>
               {!isUpcoming && (
                 <div className="absolute top-3 right-3">
@@ -292,7 +290,7 @@ function decodeHTMLEntities(text: string) {
   )
 
   const renderListView = () => (
-    <div className="space-y-1">
+    <div className="space-y-4">
       {sortedEvents.map(event => {
         const isUpcoming = new Date(event.eventDetails.startDate) > new Date();
         const isRegistrationOpen = event.eventDetails.registrationDeadline ? (new Date() < new Date(event.eventDetails.registrationDeadline)) : false;
@@ -300,26 +298,26 @@ function decodeHTMLEntities(text: string) {
         const categoryName = getEventCategoryName(event);
         return (
           <Card key={event.id} className="bg-background hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex gap-6">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                 {event.featuredImage && (
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 w-full sm:w-auto">
                     <Image
                       src={event.featuredImage.node.sourceUrl || "/placeholder.svg"}
                       alt={event.featuredImage.node.altText || (typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title)}
                       width={160}
                       height={120}
-                      className="object-cover"
+                      className="w-full h-40 sm:w-40 sm:h-auto object-cover rounded"
                       placeholder="blur"
                       blurDataURL="/placeholder.svg"
-                      sizes="160px"
+                      sizes="(max-width: 640px) 100vw, 160px"
                       priority={event === sortedEvents[0]}
                       loading={event === sortedEvents[0] ? undefined : "lazy"}
                     />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between mb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
                         <Badge variant="outline">
@@ -344,8 +342,8 @@ function decodeHTMLEntities(text: string) {
                         {typeof event.excerpt === 'string' ? decodeHTMLEntities(event.excerpt.replace(/<[^>]+>/g, '')) : event.excerpt}
                       </p>
                     </div>
-                    <Link href={`/events/${event.slug}`}>
-                      <Button variant="outline">Voir détails</Button>
+                    <Link href={`/events/${event.slug}`} className="shrink-0">
+                      <Button variant="outline" className="w-full sm:w-auto">Voir détails</Button>
                     </Link>
                   </div>
 
@@ -388,20 +386,20 @@ function decodeHTMLEntities(text: string) {
       <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center flex-wrap">
           {/* Search */}
-          <div className="relative">
+          <div className="relative w-full sm:w-auto">
             <Input
               placeholder="Rechercher un événement..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-64"
+              className="w-full sm:w-64"
             />
           </div>
 
           {/* Category Filter */}
-          <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-accent" />
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Filter className="h-4 w-4 text-accent shrink-0" />
             <Select value={currentCategory} onValueChange={(value) => handleFilterChange("category", value)}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Filtrer par catégorie" />
               </SelectTrigger>
               <SelectContent>
@@ -416,10 +414,10 @@ function decodeHTMLEntities(text: string) {
           </div>
 
           {/* City Filter */}
-          <div className="flex items-center gap-2">
-            <Building className="h-4 w-4 text-accent" />
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Building className="h-4 w-4 text-accent shrink-0" />
             <Select value={currentCity} onValueChange={(value) => handleFilterChange("city", value)}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Filtrer par ville" />
               </SelectTrigger>
               <SelectContent>

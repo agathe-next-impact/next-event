@@ -57,7 +57,7 @@
     @apply text-foreground;
   }
   h1 {
-    @apply text-2xl md:text-3xl lg:text-4xl font-heading text-black font-light; 
+    @apply font-heading text-black font-light;
   }
   h2, h3, h4, h5, h6 {
     @apply font-light font-heading;

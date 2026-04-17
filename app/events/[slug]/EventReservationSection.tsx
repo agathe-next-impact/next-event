@@ -39,7 +39,7 @@ export default function EventReservationSection({ event, initialReservedSeats })
             </span>
           </div>
           <Progress value={occupancyRate} className="h-2" />
-          <div className="grid grid-cols-3 gap-4 text-center text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center text-sm">
             <div>
               <div className="font-bold text-lg text-black">{reservedSeats}</div>
               <div className="text-muted-foreground">Confirmées</div>

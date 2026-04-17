@@ -6,7 +6,6 @@ import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSam
 import { CalendarIcon, Grid, List, ChevronLeft, ChevronRight, Filter } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import type { Event } from "@/lib/graphql"
 import { formatDate } from "@/lib/utils"
@@ -73,9 +72,9 @@ export default function Calendar({ events, categories }: CalendarProps) {
     const days = eachDayOfInterval({ start: monthStart, end: monthEnd })
 
     return (
-      <div className="grid grid-cols-7 gap-1">
+      <div className="grid grid-cols-7 gap-0.5 sm:gap-1">
         {["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"].map((day) => (
-          <div key={day} className="p-2 text-center font-semibold text-sm text-muted-foreground">
+          <div key={day} className="p-1 sm:p-2 text-center font-semibold text-xs sm:text-sm text-muted-foreground">
             {day}
           </div>
         ))}
@@ -86,7 +85,7 @@ export default function Calendar({ events, categories }: CalendarProps) {
           return (
             <div
               key={day.toISOString()}
-              className={`min-h-[100px] p-1 border border-border ${isCurrentMonth ? "bg-background" : "bg-muted/50"}`}
+              className={`min-h-[60px] sm:min-h-[100px] p-0.5 sm:p-1 border border-border ${isCurrentMonth ? "bg-background" : "bg-muted/50"}`}
             >
               <div className="text-sm font-medium mb-1">{format(day, "d")}</div>
               <div className="space-y-1">
@@ -131,16 +130,13 @@ export default function Calendar({ events, categories }: CalendarProps) {
                 </div>
               )}
               <div className="flex-1">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <Link href={`/events/${event.slug}`}>
-                      <h3 className="text-lg font-semibold hover:text-accent transition-colors">{typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title}</h3>
-                    </Link>
-                    <p className="text-muted-foreground text-sm mt-1">{typeof event.excerpt === 'string' ? decodeHTMLEntities(event.excerpt.replace(/<[^>]+>/g, '')) : event.excerpt}</p>
-                  </div>
-                  <Badge variant="secondary">{typeof event.eventDetails.category === 'object' ? event.eventDetails.category.name : event.eventDetails.category}</Badge>
+                <div>
+                  <Link href={`/events/${event.slug}`}>
+                    <h3 className="text-lg font-semibold hover:text-accent transition-colors">{typeof event.title === 'string' ? decodeHTMLEntities(event.title.replace(/<[^>]+>/g, '')) : event.title}</h3>
+                  </Link>
+                  <p className="text-muted-foreground text-sm mt-1">{typeof event.excerpt === 'string' ? decodeHTMLEntities(event.excerpt.replace(/<[^>]+>/g, '')) : event.excerpt}</p>
                 </div>
-                <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
+                <div className="flex flex-col gap-1 mt-3 text-sm text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <CalendarIcon className="h-4 w-4" />
                     {formatDate(event.eventDetails.startDate, "long")}
@@ -180,10 +176,10 @@ export default function Calendar({ events, categories }: CalendarProps) {
           </Button>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Filter className="h-4 w-4 text-accent" />
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <Filter className="h-4 w-4 text-accent shrink-0" />
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-full sm:w-[180px]">
               <SelectValue placeholder="Filtrer par catégorie" />
             </SelectTrigger>
             <SelectContent>

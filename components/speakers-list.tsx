@@ -205,7 +205,7 @@ export default function SpeakersList({
   // }
 
   const renderGridView = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {speakers.map((speaker, idx) => {
         const { speakerDetails = {}, socialLinks = {} } = speaker;
         return (
@@ -320,26 +320,26 @@ export default function SpeakersList({
         const { speakerDetails = {}, socialLinks = {} } = speaker;
         return (
           <Card key={speaker.id} className="hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex gap-6">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                 {speaker.featuredImage && (
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 w-full sm:w-auto">
                     <Image
                       src={speaker.featuredImage.node.sourceUrl || "/placeholder.svg"}
                       alt={decodeHTMLEntities(speaker.featuredImage.node.altText || speaker.title)}
                       width={120}
                       height={120}
-                      className="object-contain rounded-lg"
+                      className="w-full h-48 sm:w-[120px] sm:h-[120px] object-contain rounded-lg"
                       placeholder="blur"
                       blurDataURL="/placeholder.svg"
-                      sizes="120px"
+                      sizes="(max-width: 640px) 100vw, 120px"
                       priority={idx === 0}
                       loading={idx === 0 ? undefined : "lazy"}
                     />
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between mb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-3">
                     <div className="flex-1">
                       {speakerDetails.expertises && Array.isArray(speakerDetails.expertises) && (
                         <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -472,14 +472,14 @@ export default function SpeakersList({
         <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center flex-wrap">
             {/* Expertise Filter */}
-            <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-accent" />
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <Filter className="h-4 w-4 text-accent shrink-0" />
               <Select
                 value={currentExpertise}
                 onValueChange={(value) => handleFilterChange("expertise", value)}
                 disabled={isFiltering}
               >
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-full sm:w-[180px]">
                   <SelectValue placeholder="Expertise" />
                 </SelectTrigger>
                 <SelectContent>
@@ -494,14 +494,14 @@ export default function SpeakersList({
             </div>
 
             {/* Company Filter */}
-            <div className="flex items-center gap-2">
-              <Building className="h-4 w-4 text-accent" />
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <Building className="h-4 w-4 text-accent shrink-0" />
               <Select
                 value={currentCompany}
                 onValueChange={(value) => handleFilterChange("company", value)}
                 disabled={isFiltering}
               >
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-full sm:w-[180px]">
                   <SelectValue placeholder="Entreprise" />
                 </SelectTrigger>
                 <SelectContent>

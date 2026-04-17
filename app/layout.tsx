@@ -109,7 +109,7 @@ export default function RootLayout({
                   alt="Next Event Portal Logo"
                   width={150}
                   height={50}
-                  className="h-12 w-max object-contain"
+                  className="h-10 sm:h-12 w-max max-w-[140px] sm:max-w-none object-contain"
                 />
               </Link>
               {/* Menu desktop */}

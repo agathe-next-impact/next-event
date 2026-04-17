@@ -136,16 +136,16 @@ export default async function EventPage({ params }: EventPageProps) {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-3 gap-6 md:gap-8">
         {/* Main Content */}
-        <div className="lg:col-span-2 space-y-8">
+        <div className="md:col-span-2 space-y-8">
           {/* Event Content */}
           <Card>
             <CardHeader>
               <CardTitle>Description</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="prose prose-gray dark:prose-invert max-w-none">
+              <div className="prose prose-gray dark:prose-invert max-w-none overflow-x-auto">
                 {event.content && typeof event.content === 'string' ? (
                   <div dangerouslySetInnerHTML={{ __html: event.content }} />
                 ) : null}

@@ -47,7 +47,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <div className="container min-h-[60vh] grid grid-cols-1 md:grid-cols-2 items-center gap-12 md:gap-24 mx-auto px-4 py-8">
+      <div className="container min-h-[60vh] grid grid-cols-1 md:grid-cols-2 items-center gap-6 md:gap-12 lg:gap-24 mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="mb-8 md:mb-0 flex flex-col justify-center">
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-light text-black mb-4 leading-tight">
@@ -99,8 +99,8 @@ export default async function HomePage() {
       </div>
 
       {/* Calendar Component */}
-      <div className=" container col-span-2 mx-auto px-4 py-8 ">
-        <h2 className="text-4xl font-heading font-light mb-6">Calendrier des événements</h2>
+      <div className="container mx-auto px-4 py-8">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-light mb-6">Calendrier des événements</h2>
         <Calendar events={events} categories={categories} />
       </div>
 
